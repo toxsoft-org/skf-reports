@@ -1,11 +1,13 @@
 package org.toxsoft.skf.reports.skide.main;
 
+import static org.toxsoft.skf.reports.skide.ISkidePluginReportsConstants.*;
 import static org.toxsoft.skf.reports.skide.ISkidePluginReportsSharedResources.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
+import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.skide.core.api.*;
 import org.toxsoft.skide.core.api.impl.*;
@@ -26,8 +28,9 @@ class SkideUnitPanelReports
 
   @Override
   protected Control doCreateControl( Composite aParent ) {
-    aParent.setLayout( new BorderLayout() );
-    TabFolder tabFolder = new TabFolder( aParent, SWT.TOP );
+    TsPanel backPanel = new TsPanel( aParent, tsContext() );
+    backPanel.setLayout( new BorderLayout() );
+    TabFolder tabFolder = new TabFolder( backPanel, SWT.TOP );
     EIconSize tabIconSize = hdpiService().getJFaceCellIconsSize();
     // reports tab
     TabItem tiReports = new TabItem( tabFolder, SWT.NONE );
@@ -35,7 +38,7 @@ class SkideUnitPanelReports
     tiReports.setControl( panel );
     tiReports.setText( STR_TAB_REPORTS );
     tiReports.setToolTipText( STR_TAB_REPORTS_D );
-    // tiReports.setImage( iconManager().loadStdIcon( ICONID_USERS_LIST, tabIconSize ) );
+    tiReports.setImage( iconManager().loadStdIcon( ICONID_REPORT_TEMPL, tabIconSize ) );
 
     // graphs tab
     TabItem tiGraphs = new TabItem( tabFolder, SWT.NONE );
@@ -43,8 +46,8 @@ class SkideUnitPanelReports
     tiGraphs.setControl( gPanel );
     tiGraphs.setText( STR_TAB_GRAPHS );
     tiGraphs.setToolTipText( STR_TAB_GRAPHS_D );
-    // tiRoles.setImage( iconManager().loadStdIcon( ICONID_ROLES_LIST, tabIconSize ) );
-    return tabFolder;
+    tiGraphs.setImage( iconManager().loadStdIcon( ICONID_GRAPH_TEMPL, tabIconSize ) );
+    return backPanel;
   }
 
 }

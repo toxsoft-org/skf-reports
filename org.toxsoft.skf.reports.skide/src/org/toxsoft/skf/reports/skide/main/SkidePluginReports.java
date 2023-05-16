@@ -21,7 +21,7 @@ public class SkidePluginReports
   /**
    * The plugin ID.
    */
-  public static final String SKIDE_PLUGIN_ID = SKIDE_FULL_ID + ".plugin.vetrol.systools"; //$NON-NLS-1$
+  public static final String SKIDE_PLUGIN_ID = SKIDE_FULL_ID + ".plugin.skide.reports"; //$NON-NLS-1$
 
   /**
    * The singleton instance.

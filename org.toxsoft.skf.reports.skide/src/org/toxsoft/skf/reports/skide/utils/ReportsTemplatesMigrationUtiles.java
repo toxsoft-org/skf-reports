@@ -3,8 +3,10 @@ package org.toxsoft.skf.reports.skide.utils;
 import static org.toxsoft.skf.reports.skide.ISkidePluginReportsConstants.*;
 import static org.toxsoft.skf.reports.skide.ISkidePluginReportsSharedResources.*;
 
+import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.gui.*;
@@ -61,12 +63,18 @@ public class ReportsTemplatesMigrationUtiles {
       return;
     }
 
-    for( IVtReportTemplate template : selectedTemplates ) {
-      DtoFullObject objDto = DtoFullObject.createDtoFullObject( template.skid(), srcConnection.coreApi() );
+    try {
+      for( IVtReportTemplate template : selectedTemplates ) {
+        DtoFullObject objDto = DtoFullObject.createDtoFullObject( template.skid(), srcConnection.coreApi() );
 
-      IVtReportTemplateService reportTemplateService =
-          aDestConnection.coreApi().getService( IVtReportTemplateService.SERVICE_ID );
-      reportTemplateService.createReportTemplate( objDto );
+        IVtReportTemplateService reportTemplateService =
+            aDestConnection.coreApi().getService( IVtReportTemplateService.SERVICE_ID );
+        reportTemplateService.createReportTemplate( objDto );
+      }
+      TsDialogUtils.info( aSrcContext.get( Shell.class ), STR_EXPORT_COMPLETE_DIALOG );
+    }
+    catch( Exception e ) {
+      TsDialogUtils.error( aSrcContext.get( Shell.class ), e );
     }
   }
 
@@ -101,12 +109,18 @@ public class ReportsTemplatesMigrationUtiles {
       return;
     }
 
-    for( IVtGraphTemplate template : selectedTemplates ) {
-      DtoFullObject objDto = DtoFullObject.createDtoFullObject( template.skid(), srcConnection.coreApi() );
+    try {
+      for( IVtGraphTemplate template : selectedTemplates ) {
+        DtoFullObject objDto = DtoFullObject.createDtoFullObject( template.skid(), srcConnection.coreApi() );
 
-      IVtGraphTemplateService reportTemplateService =
-          aDestConnection.coreApi().getService( IVtGraphTemplateService.SERVICE_ID );
-      reportTemplateService.createGraphTemplate( objDto );
+        IVtGraphTemplateService reportTemplateService =
+            aDestConnection.coreApi().getService( IVtGraphTemplateService.SERVICE_ID );
+        reportTemplateService.createGraphTemplate( objDto );
+      }
+      TsDialogUtils.info( aSrcContext.get( Shell.class ), STR_EXPORT_COMPLETE_DIALOG );
+    }
+    catch( Exception e ) {
+      TsDialogUtils.error( aSrcContext.get( Shell.class ), e );
     }
   }
 }

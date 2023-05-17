@@ -18,6 +18,12 @@ public interface ISkidePluginReportsConstants {
   String ICONID_GRAPH_TEMPL        = "pattern_otchet_graf"; //$NON-NLS-1$
   String ICONID_REPORT_TEMPL       = "pattern_otchet_txt";  //$NON-NLS-1$
 
+  // ---------------------------------------------------------------------------------------
+  // Models Ids
+
+  String REPORTS_TEMPORARY_MODEL_ID = "Export.reports.templates.model.id"; //$NON-NLS-1$
+  String GRAPHS_TEMPORARY_MODEL_ID  = "Export.graphs.templates.model.id";  //$NON-NLS-1$
+
   /**
    * Constants registration.
    *

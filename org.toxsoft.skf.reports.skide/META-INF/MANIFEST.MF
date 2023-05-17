@@ -26,7 +26,8 @@ Require-Bundle:
  org.toxsoft.uskat.core.gui,
  org.toxsoft.skide.core,
  org.toxsoft.skide.exe;bundle-version="1.0.0",
- org.toxsoft.skf.reports.gui
+ org.toxsoft.skf.reports.gui,
+ org.toxsoft.skide.plugin.exconn;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: org.toxsoft.skf.reports.skide
 Import-Package: javax.annotation;version="1.2.0"

@@ -179,8 +179,8 @@ public class VtGraphTemplateEditorPanel
               EIconSize aIconSize, IListEdit<ITsActionDef> aActs ) {
             aActs.add( ITsStdActionDefs.ACDEF_SEPARATOR );
             aActs.add( VtReportTemplateEditorPanel.ACDEF_COPY_TEMPLATE );
-            aActs.add( ITsStdActionDefs.ACDEF_SEPARATOR );
-            aActs.add( ACDEF_FORM_GRAPH );
+            // aActs.add( ITsStdActionDefs.ACDEF_SEPARATOR ); //TODO - сделать параметр индикатор - показывать или нет
+            // aActs.add( ACDEF_FORM_GRAPH );
 
             ITsToolbar toolbar =
 

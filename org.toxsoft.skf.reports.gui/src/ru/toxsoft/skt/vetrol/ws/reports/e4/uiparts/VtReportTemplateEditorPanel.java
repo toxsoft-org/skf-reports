@@ -85,8 +85,8 @@ public class VtReportTemplateEditorPanel
         IListEdit<ITsActionDef> aActs ) {
       aActs.add( ACDEF_SEPARATOR );
       aActs.add( ACDEF_COPY_TEMPLATE );
-      aActs.add( ACDEF_SEPARATOR );
-      aActs.add( ACDEF_FORM_REPORT );
+      // aActs.add( ACDEF_SEPARATOR );
+      // aActs.add( ACDEF_FORM_REPORT );//TODO - сделать параметр индикатор - показывать или нет
 
       ITsToolbar toolbar =
 

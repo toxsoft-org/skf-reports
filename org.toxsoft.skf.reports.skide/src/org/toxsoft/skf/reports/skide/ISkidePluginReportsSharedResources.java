@@ -19,8 +19,16 @@ public interface ISkidePluginReportsSharedResources {
   /**
    * {@link SkideUnitPanelReports}
    */
-  String STR_TAB_REPORTS   = "Шаблоны отчётов";
-  String STR_TAB_REPORTS_D = "Редактор шаблонов отчётов";
-  String STR_TAB_GRAPHS    = "Шаблоны графиков";
-  String STR_TAB_GRAPHS_D  = "Редактор шаблонов графиков";
+  String STR_TAB_REPORTS     = "Шаблоны отчётов";
+  String STR_TAB_REPORTS_D   = "Редактор шаблонов отчётов";
+  String STR_TAB_GRAPHS      = "Шаблоны графиков";
+  String STR_TAB_GRAPHS_D    = "Редактор шаблонов графиков";
+  String STR_BUTTON_EXPORT_D = "Экспорт шаблонов";
+
+  String STR_MODEL_GRAPH              = "Шаблоны графиков";
+  String STR_MODEL_GRAPH_D            = "Шаблоны графиков";
+  String STR_MODEL_REPORT             = "Шаблоны отчётов";
+  String STR_MODEL_REPORT_D           = "Шаблоны отчётов";
+  String STR_EXPORT_TEMPLATE_DIALOG   = "Шаблоны для экспорта ";
+  String STR_EXPORT_TEMPLATE_DIALOG_D = "Выбор шаблонов для экспорта";
 }

@@ -1,5 +1,6 @@
 package org.toxsoft.skf.reports.gui;
 
+import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.users.*;
@@ -25,7 +26,8 @@ public class ConnectionUtiles {
    */
   public static ISkUser getConnectedUser( ISkCoreApi aCoreApi ) {
     TsNullArgumentRtException.checkNull( aCoreApi );
+    Skid userSkid = aCoreApi.getCurrentUserInfo().userSkid();
 
-    return aCoreApi.userService().getUser( "root" );
+    return aCoreApi.userService().getUser( userSkid.strid() );
   }
 }

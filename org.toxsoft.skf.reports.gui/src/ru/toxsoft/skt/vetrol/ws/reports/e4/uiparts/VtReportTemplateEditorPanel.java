@@ -45,13 +45,13 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.skf.reports.gui.*;
+import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 import org.toxsoft.uskat.core.gui.glib.query.*;
 
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.*;
 import ru.toxsoft.skt.vetrol.ws.core.templates.gui.m5.*;
 import ru.toxsoft.skt.vetrol.ws.core.templates.utils.*;
 

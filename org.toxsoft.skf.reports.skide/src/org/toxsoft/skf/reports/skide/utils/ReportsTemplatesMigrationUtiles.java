@@ -13,12 +13,12 @@ import org.toxsoft.core.tsgui.m5.gui.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 import org.toxsoft.uskat.core.gui.km5.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.*;
 import ru.toxsoft.skt.vetrol.ws.core.templates.gui.m5.*;
 
 /**

@@ -4,21 +4,18 @@ import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
-import static ru.toxsoft.skt.vetrol.ws.core.templates.api.IVtTemplateEditorServiceHardConstants.*;
+import static org.toxsoft.skf.reports.templates.service.IVtTemplateEditorServiceHardConstants.*;
 import static ru.toxsoft.skt.vetrol.ws.core.templates.gui.m5.IVtResources.*;
 
-import org.toxsoft.core.tsgui.chart.api.ETimeUnit;
-import org.toxsoft.core.tsgui.m5.model.IM5LifecycleManager;
-import org.toxsoft.core.tsgui.m5.model.IM5MultiModownFieldDef;
-import org.toxsoft.core.tsgui.m5.model.impl.M5AttributeFieldDef;
-import org.toxsoft.core.tsgui.m5.model.impl.M5MultiModownFieldDef;
-import org.toxsoft.core.tslib.av.IAtomicValue;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.gui.km5.KM5ModelBasic;
-
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.*;
+import org.toxsoft.core.tsgui.chart.api.*;
+import org.toxsoft.core.tsgui.m5.model.*;
+import org.toxsoft.core.tsgui.m5.model.impl.*;
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.skf.reports.templates.service.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.gui.km5.*;
 
 /**
  * M5-model of {@link IVtGraphTemplate}.

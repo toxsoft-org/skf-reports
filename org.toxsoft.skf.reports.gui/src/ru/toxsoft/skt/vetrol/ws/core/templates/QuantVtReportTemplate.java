@@ -5,12 +5,12 @@ import org.toxsoft.core.tsgui.bricks.quant.*;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.valed.impl.*;
 import org.toxsoft.core.tslib.utils.valobj.*;
+import org.toxsoft.skf.reports.templates.service.*;
+import org.toxsoft.skf.reports.templates.service.impl.*;
 import org.toxsoft.uskat.core.gui.km5.*;
 import org.toxsoft.uskat.core.impl.*;
 
 import ru.toxsoft.skt.vetrol.ws.core.*;
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.*;
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.impl.*;
 import ru.toxsoft.skt.vetrol.ws.core.templates.gui.m5.*;
 import ru.toxsoft.skt.vetrol.ws.core.templates.gui.valed.*;
 

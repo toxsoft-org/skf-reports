@@ -1,7 +1,7 @@
 package ru.toxsoft.skt.vetrol.ws.core.templates.gui.m5;
 
+import static org.toxsoft.skf.reports.templates.service.IVtTemplateEditorServiceHardConstants.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
-import static ru.toxsoft.skt.vetrol.ws.core.templates.api.IVtTemplateEditorServiceHardConstants.*;
 
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tslib.bricks.strid.idgen.*;
@@ -10,15 +10,13 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.skf.reports.gui.*;
+import org.toxsoft.skf.reports.templates.service.*;
+import org.toxsoft.skf.reports.templates.service.impl.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.km5.*;
-//import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 import org.toxsoft.uskat.core.impl.dto.*;
-
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.*;
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.impl.*;
 
 /**
  * Lifecycle manager for {@link VtReportTemplateM5Model}.

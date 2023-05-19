@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Reports Lib
+Bundle-SymbolicName: org.toxsoft.skf.reports.lib
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Toxsoft
+Automatic-Module-Name: org.toxsoft.skf.reports.lib
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: org.toxsoft.core.tslib;bundle-version="1.0.0",
+ org.toxsoft.core.tsgui;bundle-version="1.0.0",
+ org.toxsoft.core.tsgui.chart;bundle-version="1.0.0",
+ org.toxsoft.uskat.core;bundle-version="1.0.0"
+Export-Package: org.toxsoft.skf.reports.templates.service,
+ org.toxsoft.skf.reports.templates.service.impl

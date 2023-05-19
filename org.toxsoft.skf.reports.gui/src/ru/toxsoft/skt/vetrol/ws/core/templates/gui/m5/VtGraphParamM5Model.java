@@ -35,11 +35,11 @@ import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.*;
 import ru.toxsoft.skt.vetrol.ws.core.templates.gui.*;
 import ru.toxsoft.skt.vetrol.ws.core.templates.gui.valed.*;
 

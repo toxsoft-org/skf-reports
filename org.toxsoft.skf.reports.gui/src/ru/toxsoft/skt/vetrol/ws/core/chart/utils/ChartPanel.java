@@ -32,13 +32,13 @@ import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.skf.reports.gui.*;
+import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 
 import ru.toxsoft.skt.vetrol.ws.core.chart.utils.console.*;
 import ru.toxsoft.skt.vetrol.ws.core.chart.utils.tools.axes_markup.*;
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.*;
 import ru.toxsoft.skt.vetrol.ws.core.templates.utils.*;
 
 /**

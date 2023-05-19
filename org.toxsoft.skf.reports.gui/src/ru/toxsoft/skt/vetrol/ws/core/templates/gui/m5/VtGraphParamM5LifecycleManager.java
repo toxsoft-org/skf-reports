@@ -10,10 +10,9 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.helpers.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.skf.reports.templates.service.*;
+import org.toxsoft.skf.reports.templates.service.impl.*;
 import org.toxsoft.uskat.core.connection.*;
-
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.*;
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.impl.*;
 
 /**
  * @author dima

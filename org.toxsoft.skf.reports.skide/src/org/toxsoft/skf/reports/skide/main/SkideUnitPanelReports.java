@@ -2,14 +2,17 @@ package org.toxsoft.skf.reports.skide.main;
 
 import static org.toxsoft.skf.reports.skide.ISkidePluginReportsConstants.*;
 import static org.toxsoft.skf.reports.skide.ISkidePluginReportsSharedResources.*;
+import static ru.toxsoft.skt.vetrol.ws.core.IVtWsCoreConstants.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.skf.reports.skide.utils.*;
 import org.toxsoft.skide.core.api.*;
@@ -74,7 +77,10 @@ class SkideUnitPanelReports
       }
     } );
 
-    VtReportTemplateEditorPanel panel = new VtReportTemplateEditorPanel( reportsBack, tsContext() );
+    TsGuiContext reportContext = new TsGuiContext( tsContext() );
+    SHOW_APPLY_BUTTON.setValue( reportContext.params(), AvUtils.AV_FALSE );
+
+    VtReportTemplateEditorPanel panel = new VtReportTemplateEditorPanel( reportsBack, reportContext );
     panel.setLayoutData( BorderLayout.CENTER );
 
     // graphs tab
@@ -111,7 +117,10 @@ class SkideUnitPanelReports
       }
     } );
 
-    VtGraphTemplateEditorPanel gPanel = new VtGraphTemplateEditorPanel( graphsBack, tsContext() );
+    TsGuiContext graphContext = new TsGuiContext( tsContext() );
+    SHOW_APPLY_BUTTON.setValue( graphContext.params(), AvUtils.AV_FALSE );
+
+    VtGraphTemplateEditorPanel gPanel = new VtGraphTemplateEditorPanel( graphsBack, graphContext );
     gPanel.setLayoutData( BorderLayout.CENTER );
 
     return backPanel;

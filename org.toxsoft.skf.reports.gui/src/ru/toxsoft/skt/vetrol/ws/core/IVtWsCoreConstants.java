@@ -1,7 +1,14 @@
 package ru.toxsoft.skt.vetrol.ws.core;
 
+import static org.toxsoft.core.tslib.av.EAtomicType.*;
+import static org.toxsoft.core.tslib.av.impl.DataDef.*;
+import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
+import static ru.toxsoft.skt.vetrol.ws.core.IVtResources.*;
+
 import org.eclipse.e4.core.contexts.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.skf.reports.gui.*;
 
 /**
@@ -30,6 +37,14 @@ public interface IVtWsCoreConstants {
   String ICONID_TEMPLATE        = "gdp-shablons";       //$NON-NLS-1$
   String ICONID_REPORT_TEMPLATE = "uipart-events";      //$NON-NLS-1$
   String ICONID_GRAPH_TEMPLATE  = "uipart-ws-profiles"; //$NON-NLS-1$
+
+  String SHOW_APPLY_BUTTON_ID = "show.apply.button"; //$NON-NLS-1$
+
+  /**
+   * Параметр, определяющий показывать кнопку "сформировать отчёт".
+   */
+  IDataDef SHOW_APPLY_BUTTON = create( SHOW_APPLY_BUTTON_ID, BOOLEAN, TSID_NAME, SHOW_APPLY_BUTTON_STR,
+      TSID_DEFAULT_VALUE, AvUtils.avBool( true ), TSID_IS_MANDATORY, Boolean.FALSE );
 
   /**
    * Constants registration.

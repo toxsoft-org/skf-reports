@@ -1,5 +1,6 @@
 package ru.toxsoft.skt.vetrol.ws.reports.e4.uiparts;
 
+import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 import static ru.toxsoft.skt.vetrol.ws.core.IVtWsCoreConstants.*;
@@ -179,8 +180,11 @@ public class VtGraphTemplateEditorPanel
               EIconSize aIconSize, IListEdit<ITsActionDef> aActs ) {
             aActs.add( ITsStdActionDefs.ACDEF_SEPARATOR );
             aActs.add( VtReportTemplateEditorPanel.ACDEF_COPY_TEMPLATE );
-            // aActs.add( ITsStdActionDefs.ACDEF_SEPARATOR ); //TODO - сделать параметр индикатор - показывать или нет
-            // aActs.add( ACDEF_FORM_GRAPH );
+
+            if( SHOW_APPLY_BUTTON.getValue( aContext.params() ).asBool() ) {
+              aActs.add( ACDEF_SEPARATOR );
+              aActs.add( ACDEF_FORM_GRAPH );
+            }
 
             ITsToolbar toolbar =
 

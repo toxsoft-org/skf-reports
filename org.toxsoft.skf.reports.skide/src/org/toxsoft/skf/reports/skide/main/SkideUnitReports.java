@@ -30,7 +30,7 @@ public class SkideUnitReports
     super( UNIT_ID, OptionSetUtils.createOpSet( //
         TSID_NAME, STR_SKIDE_REPORTS_MANAGEMENT, //
         TSID_DESCRIPTION, STR_SKIDE_REPORTS_MANAGEMENT_D, //
-        TSID_ICON_ID, ICONID_SKIDE_PLUGIN //
+        TSID_ICON_ID, ICONID_TEMPLATE_EDITOR //
     ), aContext, aCreator );
     unitActions().add( ACDEF_ABOUT );
   }

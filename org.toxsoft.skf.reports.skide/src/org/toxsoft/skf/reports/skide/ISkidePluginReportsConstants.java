@@ -14,6 +14,7 @@ public interface ISkidePluginReportsConstants {
   // Icons
 
   String PREFIX_OF_ICON_FIELD_NAME = "ICONID_";             //$NON-NLS-1$
+  String ICONID_TEMPLATE_EDITOR    = "app-shablons-editor"; //$NON-NLS-1$
   String ICONID_SKIDE_PLUGIN       = "pattern_otchet_graf"; //$NON-NLS-1$
   String ICONID_GRAPH_TEMPL        = "pattern_otchet_graf"; //$NON-NLS-1$
   String ICONID_REPORT_TEMPL       = "pattern_otchet_txt";  //$NON-NLS-1$

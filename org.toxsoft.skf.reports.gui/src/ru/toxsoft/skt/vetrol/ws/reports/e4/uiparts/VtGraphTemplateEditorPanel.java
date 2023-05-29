@@ -44,6 +44,8 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.skf.reports.chart.utils.gui.dataset.*;
+import org.toxsoft.skf.reports.chart.utils.gui.panels.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.users.*;
@@ -51,8 +53,6 @@ import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 import org.toxsoft.uskat.core.gui.glib.query.*;
 
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.*;
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.dataset.*;
 import ru.toxsoft.skt.vetrol.ws.core.templates.gui.m5.*;
 import ru.toxsoft.skt.vetrol.ws.core.templates.utils.*;
 
@@ -278,7 +278,8 @@ public class VtGraphTemplateEditorPanel
 
                       tabItem.setControl( chartPanel );
                       tabFolder.setSelection( tabItem );
-                      chartPanel.setReportAnswer( graphData, aSelTemplate, true );
+                      // chartPanel.setReportAnswer( graphData, aSelTemplate, true );
+                      ReportTemplateUtilities.setReportAnswerToChart( chartPanel, graphData, aSelTemplate, true );
                       chartPanel.requestLayout();
                     }
                     if( q.state() == ESkQueryState.FAILED ) {

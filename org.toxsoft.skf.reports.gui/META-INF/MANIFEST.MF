@@ -21,17 +21,13 @@ Require-Bundle: javax.annotation,
  org.toxsoft.uskat.core,
  org.toxsoft.uskat.core.gui;bundle-version="1.0.0",
  org.toxsoft.core.jasperreports.gui;bundle-version="1.0.0",
- org.toxsoft.skf.reports.lib;bundle-version="1.0.0"
+ org.toxsoft.skf.reports.lib;bundle-version="1.0.0",
+ org.toxsoft.skf.reports.chart.utils.gui
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: org.toxsoft.skf.reports.gui
 Bundle-ActivationPolicy: lazy
 Export-Package: org.toxsoft.skf.reports.gui,
  ru.toxsoft.skt.vetrol.ws.core,
- ru.toxsoft.skt.vetrol.ws.core.chart.utils,
- ru.toxsoft.skt.vetrol.ws.core.chart.utils.console,
- ru.toxsoft.skt.vetrol.ws.core.chart.utils.dataset,
- ru.toxsoft.skt.vetrol.ws.core.chart.utils.tools.aux_types,
- ru.toxsoft.skt.vetrol.ws.core.chart.utils.tools.axes_markup,
  ru.toxsoft.skt.vetrol.ws.core.templates,
  ru.toxsoft.skt.vetrol.ws.core.templates.gui,
  ru.toxsoft.skt.vetrol.ws.core.templates.gui.m5,

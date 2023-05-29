@@ -2,7 +2,10 @@ package ru.toxsoft.skt.vetrol.ws.core.templates;
 
 import org.eclipse.e4.core.contexts.*;
 import org.toxsoft.core.tsgui.bricks.quant.*;
+import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.valed.impl.*;
+import org.toxsoft.core.tslib.utils.valobj.*;
+import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.skf.reports.templates.service.impl.*;
 import org.toxsoft.uskat.core.gui.km5.*;
 import org.toxsoft.uskat.core.impl.*;
@@ -27,11 +30,14 @@ public class QuantVtReportTemplate
 
     SkCoreUtils.registerSkServiceCreator( VtReportTemplateService.CREATOR );
     SkCoreUtils.registerSkServiceCreator( VtGraphTemplateService.CREATOR );
+
     // dima 26.05.23 падает в этом месте если запускать в SkIDE вместе с другими плагинами
-    // TsValobjUtils.registerKeeper( EAggregationFunc.KEEPER_ID, EAggregationFunc.KEEPER );
-    // TsValobjUtils.registerKeeper( EDisplayFormat.KEEPER_ID, EDisplayFormat.KEEPER );
-    // TsValobjUtils.registerKeeper( ETimeUnit.KEEPER_ID, ETimeUnit.KEEPER );
-    // TsValobjUtils.registerKeeper( VtGraphParamsList.KEEPER_ID, VtGraphParamsList.KEEPER );
+    // max 29.05.23 поставил
+    TsValobjUtils.registerKeeperIfNone( EAggregationFunc.KEEPER_ID, EAggregationFunc.KEEPER );
+    TsValobjUtils.registerKeeperIfNone( EDisplayFormat.KEEPER_ID, EDisplayFormat.KEEPER );
+    TsValobjUtils.registerKeeperIfNone( ETimeUnit.KEEPER_ID, ETimeUnit.KEEPER );
+    TsValobjUtils.registerKeeperIfNone( VtGraphParamsList.KEEPER_ID, VtGraphParamsList.KEEPER );
+
     KM5Utils.registerContributorCreator( KM5TemplateContributor.CREATOR );
   }
 

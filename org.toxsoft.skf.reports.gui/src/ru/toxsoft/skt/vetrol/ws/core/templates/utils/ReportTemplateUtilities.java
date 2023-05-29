@@ -8,11 +8,13 @@ import static ru.toxsoft.skt.vetrol.ws.core.templates.utils.IVtResources.*;
 import java.text.*;
 import java.util.*;
 
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.chart.impl.*;
 import org.toxsoft.core.tsgui.graphics.colors.*;
+import org.toxsoft.core.tsgui.graphics.lines.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
@@ -22,6 +24,8 @@ import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.av.temporal.*;
 import org.toxsoft.core.tslib.bricks.filter.*;
+import org.toxsoft.core.tslib.bricks.strid.*;
+import org.toxsoft.core.tslib.bricks.strid.impl.*;
 import org.toxsoft.core.tslib.bricks.time.*;
 import org.toxsoft.core.tslib.bricks.time.impl.*;
 import org.toxsoft.core.tslib.coll.*;
@@ -31,6 +35,8 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.skf.reports.chart.utils.gui.dataset.*;
+import org.toxsoft.skf.reports.chart.utils.gui.panels.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
@@ -39,9 +45,6 @@ import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 import org.toxsoft.uskat.core.impl.dto.*;
-
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.*;
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.dataset.*;
 
 /**
  * Утилитный класс для работы с шаблонами
@@ -620,7 +623,8 @@ public class ReportTemplateUtilities {
             ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> popupChart.refresh() );
           }
         }
-        popupChart.setReportAnswer( graphData, selTemplate, false );
+        // popupChart.setReportAnswer( graphData, selTemplate, false );
+        setReportAnswerToChart( popupChart, graphData, selTemplate, false );
         popupChart.requestLayout();
       }
     } );
@@ -628,6 +632,101 @@ public class ReportTemplateUtilities {
     // создаем новую панель
     popupChart = new ChartPanel( aParent, aContext );
     return popupChart;
+  }
+
+  /**
+   * Устанавливает в график данные, полученные по шаблону.
+   *
+   * @param aTargetChart ChartPanel - целевой график, в который будуд устанавливаться данные.
+   * @param aGraphData IList - данные, полученные по шаблону, предназначенные для установки в график.
+   * @param aTemplate IVtGraphTemplate - шаблон, по которому получены данные.
+   * @param aFromBegin boolean - показывать данные сначала.
+   */
+  public static void setReportAnswerToChart( ChartPanel aTargetChart, IList<IG2DataSet> aGraphData,
+      IVtGraphTemplate aTemplate, boolean aFromBegin ) {
+
+    IStringMapEdit<YAxisInfo> axisInfoes = new StringMap<>();
+    IListEdit<GraphicInfo> graphicInfoes = new ElemArrayList<>();
+
+    for( int i = 0; i < aGraphData.size(); i++ ) {
+      IVtGraphParam param = aTemplate.listParams().get( i );
+      IList<ITemporalAtomicValue> values = aGraphData.get( i ).getValues( ITimeInterval.NULL );
+      Pair<Double, Double> minMax = calcMinMax( values );
+
+      String graphDataSetId = graphDataSetId( param );
+
+      YAxisInfo axisInfo;
+      if( axisInfoes.hasKey( param.unitId() ) ) {
+        axisInfo = axisInfoes.getByKey( param.unitId() );
+      }
+      else {
+        axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( param.unitId(), param.unitName() ) );
+        axisInfoes.put( param.unitId(), axisInfo );
+      }
+
+      // chart.dataSets().add( aAnswer.get( i ) );
+
+      IStridable graphStridable = new Stridable( graphDataSetId, param.title(), param.description() );
+
+      GraphicInfo graphInfo =
+          new GraphicInfo( graphStridable, axisInfo.id(), graphDataSetId, minMax, param.isLadder() );
+
+      PlotDefTuner plotTuner = new PlotDefTuner( aTargetChart.tsContext() );
+      RGB plotColor = param.color().rgb();
+      int lineWidth = param.lineWidth();
+      EDisplayFormat displayFormat = param.displayFormat();
+      plotTuner.setLineInfo( TsLineInfo.ofWidth( lineWidth ) );
+      plotTuner.setRGBA( new RGBA( plotColor.red, plotColor.green, plotColor.blue, 255 ) );
+      plotTuner.setDisplayFormat( displayFormat );
+
+      plotTuner.setSetPointsList( param.setPoints() );
+      graphInfo.createPlotDef( plotTuner );
+
+      graphicInfoes.add( graphInfo );
+      axisInfo.putGraphicInfo( graphInfo );
+    }
+
+    String chartTitle = aTemplate.title().strip().length() > 0 ? aTemplate.title() : aTemplate.nmName();
+    aTargetChart.setReportAnswer( aGraphData, graphicInfoes, axisInfoes, aTemplate.aggrStep(), chartTitle, aFromBegin );
+  }
+
+  /**
+   * Вычисление min & max диапазона значений
+   *
+   * @param aValues значения выборки с сервиса данных
+   * @return пара значений {@link Pair}
+   */
+  public static Pair<Double, Double> calcMinMax( IList<ITemporalAtomicValue> aValues ) {
+
+    if( aValues.size() > 0 ) {
+      double max = Double.NEGATIVE_INFINITY;
+      double min = Double.POSITIVE_INFINITY;
+      // счетчик присвоенных значений
+      int assignedValuesCounter = 0;
+      for( ITemporalAtomicValue value : aValues ) {
+        if( !(value.value().isAssigned()) ) {
+          continue;
+        }
+        assignedValuesCounter++;
+        double dVal = value.value().asDouble();
+        if( dVal < min ) {
+          min = dVal;
+        }
+        if( dVal > max ) {
+          max = dVal;
+        }
+      }
+
+      if( min > 0 ) {
+        min = 0;
+      }
+
+      min = Math.ceil( min );
+
+      return assignedValuesCounter >= 2 ? new Pair<>( Double.valueOf( min ), Double.valueOf( max ) )
+          : new Pair<>( Double.valueOf( 0 ), Double.valueOf( 10 ) );
+    }
+    return new Pair<>( Double.valueOf( 0 ), Double.valueOf( 10 ) );
   }
 
   /**

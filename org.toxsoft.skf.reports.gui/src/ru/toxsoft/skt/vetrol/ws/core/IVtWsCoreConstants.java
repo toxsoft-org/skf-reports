@@ -19,13 +19,6 @@ import org.toxsoft.skf.reports.gui.*;
 @SuppressWarnings( "javadoc" )
 public interface IVtWsCoreConstants {
 
-  String CI_ID = "ci"; //$NON-NLS-1$
-
-  // ------------------------------------------------------------------------------------
-  // E4
-
-  String PERSPID_CI_MAIN = "ru.toxsoft.ci.persp.ci_main"; //$NON-NLS-1$
-
   // ------------------------------------------------------------------------------------
   // Icons
 

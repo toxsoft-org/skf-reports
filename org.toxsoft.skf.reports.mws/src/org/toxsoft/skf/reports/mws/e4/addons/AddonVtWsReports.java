@@ -1,8 +1,12 @@
 package org.toxsoft.skf.reports.mws.e4.addons;
 
 import org.eclipse.e4.core.contexts.*;
+import org.toxsoft.core.tsgui.bricks.quant.*;
 import org.toxsoft.core.tsgui.mws.bases.*;
+import org.toxsoft.skf.reports.chart.utils.gui.QuantReportsChartUtilsGui;
 import org.toxsoft.skf.reports.mws.*;
+
+import ru.toxsoft.skt.vetrol.ws.core.templates.*;
 
 /**
  * Plugin adoon.
@@ -44,4 +48,9 @@ public class AddonVtWsReports
 
   }
 
+  @Override
+  protected void doRegisterQuants( IQuantRegistrator aQuantRegistrator ) {
+    aQuantRegistrator.registerQuant( new QuantReportsChartUtilsGui());
+    aQuantRegistrator.registerQuant( new QuantVtReportTemplate() );
+  }
 }

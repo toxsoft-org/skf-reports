@@ -4,9 +4,8 @@ import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tsgui.widgets.*;
+import org.toxsoft.skf.reports.gui.panels.*;
 import org.toxsoft.uskat.core.gui.e4.uiparts.*;
-
-import ru.toxsoft.skt.vetrol.ws.reports.e4.uiparts.*;
 
 /**
  * Вью работы c шаблонами графиков: список, создание, правка, удаление.
@@ -17,12 +16,12 @@ import ru.toxsoft.skt.vetrol.ws.reports.e4.uiparts.*;
 public class UipartGraphTemplates
     extends SkMwsAbstractPart {
 
-  VtGraphTemplateEditorPanel panel;
+  GraphTemplateEditorPanel panel;
 
   @Override
   protected void doCreateContent( TsComposite aParent ) {
     ITsGuiContext ctx = new TsGuiContext( getWindowContext() );
-    panel = new VtGraphTemplateEditorPanel( aParent, ctx );
+    panel = new GraphTemplateEditorPanel( aParent, ctx );
     panel.setLayoutData( BorderLayout.CENTER );
   }
 

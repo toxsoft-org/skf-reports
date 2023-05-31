@@ -7,8 +7,6 @@ import org.toxsoft.skf.reports.skide.*;
 import org.toxsoft.skf.reports.skide.main.*;
 import org.toxsoft.skide.core.api.*;
 
-import ru.toxsoft.skt.vetrol.ws.core.templates.*;
-
 /**
  * Plugin addon.
  *
@@ -36,7 +34,7 @@ public class AddonSkidePluginReports
 
   @Override
   protected void doRegisterQuants( IQuantRegistrator aQuantRegistrator ) {
-    aQuantRegistrator.registerQuant( new QuantVtReportTemplate() );
+    aQuantRegistrator.registerQuant( new org.toxsoft.skf.reports.gui.QuantVtReportTemplate() );
   }
 
   @Override

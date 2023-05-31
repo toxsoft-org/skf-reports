@@ -13,13 +13,12 @@ import org.toxsoft.core.tsgui.m5.gui.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.skf.reports.gui.km5.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 import org.toxsoft.uskat.core.gui.km5.*;
 import org.toxsoft.uskat.core.impl.dto.*;
-
-import ru.toxsoft.skt.vetrol.ws.core.templates.gui.m5.*;
 
 /**
  * Migration utils to move reports templates from one sk to another.
@@ -53,7 +52,7 @@ public class ReportsTemplatesMigrationUtiles {
     model.addFieldDefs( model.NAME, model.DESCRIPTION );
     m5.initTemporaryModel( model );
 
-    IM5LifecycleManager<IVtReportTemplate> lm = new VtReportTemplateM5LifecycleManager( model, srcConnection );
+    IM5LifecycleManager<IVtReportTemplate> lm = new ReportTemplateM5LifecycleManager( model, srcConnection );
 
     TsDialogInfo di = new TsDialogInfo( srcCtx, STR_EXPORT_TEMPLATE_DIALOG, STR_EXPORT_TEMPLATE_DIALOG_D );
     IList<IVtReportTemplate> selectedTemplates =
@@ -99,7 +98,7 @@ public class ReportsTemplatesMigrationUtiles {
     model.addFieldDefs( model.NAME, model.DESCRIPTION );
     m5.initTemporaryModel( model );
 
-    IM5LifecycleManager<IVtGraphTemplate> lm = new VtGraphTemplateM5LifecycleManager( model, srcConnection );
+    IM5LifecycleManager<IVtGraphTemplate> lm = new GraphTemplateM5LifecycleManager( model, srcConnection );
 
     TsDialogInfo di = new TsDialogInfo( srcCtx, STR_EXPORT_TEMPLATE_DIALOG, STR_EXPORT_TEMPLATE_DIALOG_D );
     IList<IVtGraphTemplate> selectedTemplates =

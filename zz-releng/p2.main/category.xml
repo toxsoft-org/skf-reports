@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <category-def name="org.toxsoft.skf.reports.releng.category" label="org.toxsoft.skf.reports.releng Category">
+      <description>
+         org.toxsoft.skf.reports.releng Category
+      </description>
+   </category-def>
+   <!-- <bundle id="org.toxsoft.skf.reports.lib"/> -->
+
+   <!-- sources -->
+   <!-- <bundle id="org.toxsoft.skf.reports.lib.source"/> -->
+
+</site>

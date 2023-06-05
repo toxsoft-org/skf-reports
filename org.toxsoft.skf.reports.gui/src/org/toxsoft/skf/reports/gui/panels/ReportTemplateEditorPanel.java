@@ -61,16 +61,8 @@ import org.toxsoft.uskat.core.gui.glib.query.*;
 public class ReportTemplateEditorPanel
     extends TsPanel {
 
-  private static class ReportTemplatePaneComponentModown
+  private class ReportTemplatePaneComponentModown
       extends MultiPaneComponentModown<IVtReportTemplate> {
-
-    private static final String timestampFormatString  = "dd.MM.yy HH:mm:ss"; //$NON-NLS-1$
-    private static final String timestampFormat4TabStr = "dd.MM HH:mm";       //$NON-NLS-1$
-
-    private static final DateFormat timestampFormat     = new SimpleDateFormat( timestampFormatString );
-    private static final DateFormat timestampFormat4Tab = new SimpleDateFormat( timestampFormat4TabStr );
-
-    private JasperReportViewer reportV;
 
     ReportTemplatePaneComponentModown( ITsGuiContext aContext, IM5Model<IVtReportTemplate> aModel,
         IM5ItemsProvider<IVtReportTemplate> aItemsProvider, IM5LifecycleManager<IVtReportTemplate> aLifecycleManager ) {
@@ -120,9 +112,9 @@ public class ReportTemplateEditorPanel
 
     private void copyTemplate( IVtReportTemplate aSelTemplate ) {
       ISkConnectionSupplier connSup = tsContext().get( ISkConnectionSupplier.class );
-      ISkConnection conn = connSup.defConn();
+      ISkConnection connection = connSup.defConn();
 
-      IM5Domain m5 = conn.scope().get( IM5Domain.class );
+      IM5Domain m5 = connection.scope().get( IM5Domain.class );
       IM5Model<IVtReportTemplate> model = m5.getModel( IVtReportTemplate.CLASS_ID, IVtReportTemplate.class );
       IM5Bunch<IVtReportTemplate> originalBunch = model.valuesOf( aSelTemplate );
       IM5BunchEdit<IVtReportTemplate> copyBunch = new M5BunchEdit<>( model );
@@ -136,116 +128,6 @@ public class ReportTemplateEditorPanel
         // создали копию, обновим список
         refresh();
       }
-    }
-
-    private void formReport( IVtReportTemplate aSelTemplate ) {
-      Shell shell = tsContext().get( Shell.class );
-      // запросим у пользователя интервал времени
-      TimeInterval retVal = IntervalSelectionDialogPanel.getParams( shell, initValues, tsContext() );
-      if( retVal == null ) {
-        return;
-      }
-      // запомним выбранный интервал
-      initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
-
-      IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
-      ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
-
-      // Максимальное время выполнения запроса (мсек)
-      long timeout = aSelTemplate.maxExecutionTime();
-      try {
-        // Создание диалога прогресса выполнения запроса
-        SkQueryDialog progressDialog = new SkQueryDialog( getShell(), STR_EXEC_QUERY_REPORT, timeout );
-        // fork = true, cancelable = true
-        progressDialog.run( true, true, aMonitor -> {
-          // Параметры запроса
-          IOptionSetEdit options = new OptionSet( OptionSetUtils.createOpSet( //
-              ISkHistoryQueryServiceConstants.OP_SK_MAX_EXECUTION_TIME, AvUtils.avInt( timeout ) //
-          ) );
-          // Формирование запроса
-          ISkQueryProcessedData query = connSupp.defConn().coreApi().hqService().createProcessedQuery( options );
-          try {
-            // Подготовка запроса
-            query.prepare( queryParams );
-            // Настройка обработки результатов запроса
-            IM5Model<IStringMap<IAtomicValue>> resultModel =
-                ReportTemplateUtilities.createM5ModelForTemplate( aSelTemplate );
-            query.genericChangeEventer().addListener( aSource -> {
-              ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-              if( q.state() == ESkQueryState.READY ) {
-                IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( query, queryParams );
-                IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
-                    ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
-                // if( reportV == null ) {
-                // reportV = new JasperReportViewer( rightBoard, tsContext() );
-                // }
-
-                ITsGuiContext reportContext = new TsGuiContext( tsContext() );
-                IJasperReportConstants.REPORT_TITLE_M5_ID.setValue( reportContext.params(),
-                    AvUtils.avStr( aSelTemplate.description() ) );
-
-                // IJasperReportConstants.HAS_NUMBER_COLUMN_M5_ID.setValue( reportContext.params(),
-                // AvUtils.avBool( false ) );
-
-                // Многострочный подзаголовок отчёта
-                IJasperReportConstants.SUBTITLE_STRINGS.setValue( reportContext.params(),
-                    AvUtils.avValobj( new StringArrayList( getIntervalTitle( retVal, timestampFormat ) ) ) );
-
-                // веса в процентах первых колонок
-                // IJasperReportConstants.COLUMNS_WEIGTHS.setValue( reportContext.params(),
-                // AvUtils.avValobj( new IntArrayList( 10, 20, 30 ) ) );
-
-                // Многострочный заголовок страниц
-                // IJasperReportConstants.PAGE_HEADER_STRINGS.setValue( reportContext.params(), AvUtils.avValobj(
-                // new StringArrayList( "Заголовок страницы 1", "Заголовок страницы 2", "Заголовок страницы 3" ) ) );
-
-                // выясняем текущего пользователя
-                ISkConnection conn = connSupp.defConn();
-                ISkUser user = ConnectionUtiles.getConnectedUser( conn.coreApi() );
-                String userName = user.nmName().trim().length() > 0 ? user.nmName() : user.login();
-
-                IJasperReportConstants.LEFT_BOTTOM_STR_M5_ID.setValue( reportContext.params(),
-                    AvUtils.avStr( AUTHOR_STR + userName ) );
-                IJasperReportConstants.RIGHT_BOTTOM_STR_M5_ID.setValue( reportContext.params(),
-                    AvUtils.avStr( DATE_STR + timestampFormat.format( new Date() ) ) );
-
-                // reportV.setJasperReportPrint( reportContext, resultModel, resultProvider );
-                // создаем новую закладку
-                CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
-                tabItem.setText( aSelTemplate.nmName() + getIntervalTitle( retVal, timestampFormat4Tab ) );
-                reportV = new JasperReportViewer( tabFolder, tsContext() );
-                tabItem.setControl( reportV );
-
-                tabFolder.setSelection( tabItem );
-                reportV.setJasperReportPrint( reportContext, resultModel, resultProvider );
-                reportV.requestLayout();
-
-              }
-              if( q.state() == ESkQueryState.FAILED ) {
-                String stateMessage = q.stateMessage();
-                TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
-              }
-            } );
-            // Интервал запроса
-            IQueryInterval interval =
-                new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() );
-            // Выполнение запроса
-            SkQueryUtils.execQueryWithProgress( query, interval, aMonitor, progressDialog );
-          }
-          finally {
-            query.close();
-          }
-        } );
-      }
-      catch( InvocationTargetException | InterruptedException ex ) {
-        LoggerUtils.errorLogger().error( ex );
-      }
-    }
-
-    @SuppressWarnings( { "nls", "boxing" } )
-    private static String getIntervalTitle( TimeInterval aInrvl, DateFormat aDateFormat ) {
-      // формируем строку интервала времени
-      return " [" + aDateFormat.format( aInrvl.startTime() ) + " - " + aDateFormat.format( aInrvl.endTime() ) + "]";
     }
 
   }
@@ -263,11 +145,9 @@ public class ReportTemplateEditorPanel
   static TimeInterval initValues =
       new TimeInterval( System.currentTimeMillis() - 24L * 60L * 60L * 1000L, System.currentTimeMillis() );
 
-  final ISkConnection                   conn;
   IM5CollectionPanel<IVtReportTemplate> reportTemplatesPanel;
 
-  // private TsComposite rightBoard;
-  private static CTabFolder tabFolder;
+  private CTabFolder tabFolder;
 
   /**
    * лист шаблона
@@ -286,6 +166,14 @@ public class ReportTemplateEditorPanel
   private ReportTemplatePaneComponentModown componentModown;
 
   static final String TMIID_GROUP_BY_USER = "GroupByUser"; //$NON-NLS-1$
+
+  private static final String timestampFormatString  = "dd.MM.yy HH:mm:ss"; //$NON-NLS-1$
+  private static final String timestampFormat4TabStr = "dd.MM HH:mm";       //$NON-NLS-1$
+
+  private static final DateFormat timestampFormat     = new SimpleDateFormat( timestampFormatString );
+  private static final DateFormat timestampFormat4Tab = new SimpleDateFormat( timestampFormat4TabStr );
+
+  private JasperReportViewer reportV;
 
   /**
    * Создатель дерева пользователи-отчеты
@@ -350,7 +238,7 @@ public class ReportTemplateEditorPanel
     super( aParent, aContext );
     this.setLayout( new BorderLayout() );
     ISkConnectionSupplier connSup = aContext.get( ISkConnectionSupplier.class );
-    conn = connSup.defConn();
+    ISkConnection conn = connSup.defConn();
 
     IM5Domain m5 = conn.scope().get( IM5Domain.class );
     IM5Model<IVtReportTemplate> model = m5.getModel( IVtReportTemplate.CLASS_ID, IVtReportTemplate.class );
@@ -377,8 +265,8 @@ public class ReportTemplateEditorPanel
 
     componentModown.tree().setTreeMaker( treeMaker );
 
-    componentModown.treeModeManager().addTreeMode( new TreeModeInfo<>( TMIID_GROUP_BY_USER, IReportsGuiResources.STR_N_BY_USERS,
-        IReportsGuiResources.STR_D_BY_USERS, null, treeMaker ) );
+    componentModown.treeModeManager().addTreeMode( new TreeModeInfo<>( TMIID_GROUP_BY_USER,
+        IReportsGuiResources.STR_N_BY_USERS, IReportsGuiResources.STR_D_BY_USERS, null, treeMaker ) );
     componentModown.treeModeManager().setCurrentMode( TMIID_GROUP_BY_USER );
 
     reportTemplatesPanel = new M5CollectionPanelMpcModownWrapper<>( componentModown, false );
@@ -390,5 +278,169 @@ public class ReportTemplateEditorPanel
 
     sf.setWeights( 300, 500 );
 
+  }
+
+  protected void formReport( IVtReportTemplate aSelTemplate ) {
+    ISkConnectionSupplier conSupp = tsContext().get( ISkConnectionSupplier.class );
+
+    doFormReport( aSelTemplate, conSupp.defConn() );
+  }
+
+  protected void doFormReport( IVtReportTemplate aSelTemplate, ISkConnection aReportDataConnection ) {
+    Shell shell = tsContext().get( Shell.class );
+    // запросим у пользователя интервал времени
+    TimeInterval retVal = IntervalSelectionDialogPanel.getParams( shell, initValues, tsContext() );
+    if( retVal == null ) {
+      return;
+    }
+    // запомним выбранный интервал
+    initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
+
+    IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
+
+    // Максимальное время выполнения запроса (мсек)
+    long timeout = aSelTemplate.maxExecutionTime();
+    try {
+      // Создание диалога прогресса выполнения запроса
+      SkQueryDialog progressDialog = new SkQueryDialog( getShell(), STR_EXEC_QUERY_REPORT, timeout );
+      // fork = true, cancelable = true
+      progressDialog.run( true, true, aMonitor -> {
+        // Параметры запроса
+        IOptionSetEdit options = new OptionSet( OptionSetUtils.createOpSet( //
+            ISkHistoryQueryServiceConstants.OP_SK_MAX_EXECUTION_TIME, AvUtils.avInt( timeout ) //
+        ) );
+        // Формирование запроса
+        ISkQueryProcessedData query = aReportDataConnection.coreApi().hqService().createProcessedQuery( options );
+        try {
+          // Подготовка запроса
+          query.prepare( queryParams );
+          // Настройка обработки результатов запроса
+          IM5Model<IStringMap<IAtomicValue>> resultModel =
+              ReportTemplateUtilities.createM5ModelForTemplate( aSelTemplate );
+          query.genericChangeEventer().addListener( aSource -> {
+            ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+            LoggerUtils.defaultLogger().info( "State %s , %s", q.toString(), q.state().nmName() );
+            if( q.state() == ESkQueryState.READY ) {
+              IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( query, queryParams );
+              IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
+                  ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
+              // if( reportV == null ) {
+              // reportV = new JasperReportViewer( rightBoard, tsContext() );
+              // }
+
+              ITsGuiContext reportContext = new TsGuiContext( tsContext() );
+              IJasperReportConstants.REPORT_TITLE_M5_ID.setValue( reportContext.params(),
+                  AvUtils.avStr( aSelTemplate.description() ) );
+
+              // IJasperReportConstants.HAS_NUMBER_COLUMN_M5_ID.setValue( reportContext.params(),
+              // AvUtils.avBool( false ) );
+
+              // Многострочный подзаголовок отчёта
+              IJasperReportConstants.SUBTITLE_STRINGS.setValue( reportContext.params(),
+                  AvUtils.avValobj( new StringArrayList( getIntervalTitle( retVal, timestampFormat ) ) ) );
+
+              // веса в процентах первых колонок
+              // IJasperReportConstants.COLUMNS_WEIGTHS.setValue( reportContext.params(),
+              // AvUtils.avValobj( new IntArrayList( 10, 20, 30 ) ) );
+
+              // Многострочный заголовок страниц
+              // IJasperReportConstants.PAGE_HEADER_STRINGS.setValue( reportContext.params(), AvUtils.avValobj(
+              // new StringArrayList( "Заголовок страницы 1", "Заголовок страницы 2", "Заголовок страницы 3" ) ) );
+
+              // выясняем текущего пользователя
+              ISkConnectionSupplier conSupp = tsContext().get( ISkConnectionSupplier.class );
+              ISkConnection connectionForUser = conSupp.defConn();
+              ISkUser user = ConnectionUtiles.getConnectedUser( connectionForUser.coreApi() );
+              String userName = user.nmName().trim().length() > 0 ? user.nmName() : user.login();
+
+              IJasperReportConstants.LEFT_BOTTOM_STR_M5_ID.setValue( reportContext.params(),
+                  AvUtils.avStr( AUTHOR_STR + userName ) );
+              IJasperReportConstants.RIGHT_BOTTOM_STR_M5_ID.setValue( reportContext.params(),
+                  AvUtils.avStr( DATE_STR + timestampFormat.format( new Date() ) ) );
+
+              // reportV.setJasperReportPrint( reportContext, resultModel, resultProvider );
+              // создаем новую закладку
+              CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
+              tabItem.setText( aSelTemplate.nmName() + getIntervalTitle( retVal, timestampFormat4Tab ) );
+              reportV = new JasperReportViewer( tabFolder, tsContext() );
+              tabItem.setControl( reportV );
+
+              tabFolder.setSelection( tabItem );
+              reportV.setJasperReportPrint( reportContext, resultModel, resultProvider );
+              reportV.requestLayout();
+
+            }
+            if( q.state() == ESkQueryState.FAILED ) {
+              String stateMessage = q.stateMessage();
+              TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
+            }
+          } );
+          // Интервал запроса
+          IQueryInterval interval = new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() );
+          // Выполнение запроса
+          SkQueryUtils.execQueryWithProgress( query, interval, aMonitor, progressDialog );
+        }
+        finally {
+          query.close();
+        }
+      } );
+    }
+    catch( InvocationTargetException | InterruptedException ex ) {
+      LoggerUtils.errorLogger().error( ex );
+    }
+  }
+
+  protected void doFormReportTest( IVtReportTemplate aSelTemplate, ISkConnection aReportDataConnection ) {
+    Shell shell = tsContext().get( Shell.class );
+    // запросим у пользователя интервал времени
+    TimeInterval retVal = IntervalSelectionDialogPanel.getParams( shell, initValues, tsContext() );
+    if( retVal == null ) {
+      return;
+    }
+    // запомним выбранный интервал
+    initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
+    // Интервал запроса
+    IQueryInterval interval = new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() );
+
+    IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
+
+    // Максимальное время выполнения запроса (мсек)
+    long timeout = aSelTemplate.maxExecutionTime();
+
+    // IOptionSetEdit options = new OptionSet();
+    // Параметры запроса
+    IOptionSetEdit options = new OptionSet( OptionSetUtils.createOpSet( //
+        ISkHistoryQueryServiceConstants.OP_SK_MAX_EXECUTION_TIME, AvUtils.avInt( timeout ) //
+    ) );
+
+    // Формирование запроса
+    ISkQueryProcessedData query = aReportDataConnection.coreApi().hqService().createProcessedQuery( options );
+    try {
+      // Подготовка запроса
+      query.prepare( queryParams );
+
+      // query.
+
+      query.genericChangeEventer().addListener( aSource -> {
+        LoggerUtils.defaultLogger().info( "addListener Quary state: %s", query.state().nmName() );
+        if( query != aSource ) {
+          return;
+        }
+
+        LoggerUtils.defaultLogger().info( "Quary state: %s", query.state().nmName() );
+      } );
+
+      query.exec( interval );
+
+    }
+    catch( Exception ex ) {
+      LoggerUtils.errorLogger().error( ex );
+    }
+  }
+
+  @SuppressWarnings( { "nls", "boxing" } )
+  private static String getIntervalTitle( TimeInterval aInrvl, DateFormat aDateFormat ) {
+    // формируем строку интервала времени
+    return " [" + aDateFormat.format( aInrvl.startTime() ) + " - " + aDateFormat.format( aInrvl.endTime() ) + "]";
   }
 }

@@ -16,6 +16,7 @@ import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.skf.reports.gui.panels.*;
 import org.toxsoft.skf.reports.skide.utils.*;
+import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.skide.core.api.*;
 import org.toxsoft.skide.core.api.impl.*;
 import org.toxsoft.skide.plugin.exconn.service.*;
@@ -77,9 +78,25 @@ class SkideUnitPanelReports
     } );
 
     TsGuiContext reportContext = new TsGuiContext( tsContext() );
-    SHOW_APPLY_BUTTON.setValue( reportContext.params(), AvUtils.AV_FALSE );
+    // SHOW_APPLY_BUTTON.setValue( reportContext.params(), AvUtils.AV_FALSE );
 
-    ReportTemplateEditorPanel panel = new ReportTemplateEditorPanel( reportsBack, reportContext );
+    ReportTemplateEditorPanel panel = new ReportTemplateEditorPanel( reportsBack, reportContext ) {
+
+      @Override
+      protected void formReport( IVtReportTemplate aSelTemplate ) {
+        // Display.getDefault().asyncExec( () -> {
+        ISkConnection destConn = selectConnection( tsContext() );
+
+        IVtReportTemplateService service = destConn.coreApi().getService( IVtReportTemplateService.SERVICE_ID );
+
+        IVtReportTemplate loadedSelTemplate = service.findReportTemplate( aSelTemplate.strid() );
+
+        doFormReport( loadedSelTemplate, destConn );
+        // } );
+      }
+
+    };
+
     panel.setLayoutData( BorderLayout.CENTER );
 
     // graphs tab

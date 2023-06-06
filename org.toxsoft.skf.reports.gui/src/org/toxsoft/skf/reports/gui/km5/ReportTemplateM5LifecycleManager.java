@@ -26,7 +26,10 @@ import org.toxsoft.uskat.core.impl.dto.*;
 public class ReportTemplateM5LifecycleManager
     extends KM5LifecycleManagerBasic<IVtReportTemplate, ISkConnection> {
 
-  private static SimpleStridGenaretor stridGenerator = new SimpleStridGenaretor();
+  private static String PREFIX_TEMPLATE = "template"; //$NON-NLS-1$
+
+  private static IStridGenerator stridGenerator =
+      new UuidStridGenerator( UuidStridGenerator.createState( PREFIX_TEMPLATE ) );
 
   /**
    * Constructor.

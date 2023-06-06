@@ -84,15 +84,13 @@ class SkideUnitPanelReports
 
       @Override
       protected void formReport( IVtReportTemplate aSelTemplate ) {
-        // Display.getDefault().asyncExec( () -> {
         ISkConnection destConn = selectConnection( tsContext() );
+        doFormReport( aSelTemplate, destConn );
 
-        IVtReportTemplateService service = destConn.coreApi().getService( IVtReportTemplateService.SERVICE_ID );
+        // IVtReportTemplateService service = destConn.coreApi().getService( IVtReportTemplateService.SERVICE_ID );
+        // IVtReportTemplate loadedSelTemplate = service.findReportTemplate( aSelTemplate.strid() );
+        // doFormReport( loadedSelTemplate, destConn );
 
-        IVtReportTemplate loadedSelTemplate = service.findReportTemplate( aSelTemplate.strid() );
-
-        doFormReport( loadedSelTemplate, destConn );
-        // } );
       }
 
     };

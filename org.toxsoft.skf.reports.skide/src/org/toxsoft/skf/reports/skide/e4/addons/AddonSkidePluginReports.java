@@ -34,6 +34,7 @@ public class AddonSkidePluginReports
 
   @Override
   protected void doRegisterQuants( IQuantRegistrator aQuantRegistrator ) {
+    aQuantRegistrator.registerQuant( new org.toxsoft.skf.reports.chart.utils.gui.QuantReportsChartUtilsGui() );
     aQuantRegistrator.registerQuant( new org.toxsoft.skf.reports.gui.QuantVtReportTemplate() );
   }
 

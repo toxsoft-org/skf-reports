@@ -1,6 +1,5 @@
 package org.toxsoft.skf.reports.skide.main;
 
-import static org.toxsoft.skf.reports.gui.IReportsGuiConstants.*;
 import static org.toxsoft.skf.reports.skide.ISkidePluginReportsConstants.*;
 import static org.toxsoft.skf.reports.skide.ISkidePluginReportsSharedResources.*;
 
@@ -12,7 +11,6 @@ import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.skf.reports.gui.panels.*;
 import org.toxsoft.skf.reports.skide.utils.*;
@@ -132,9 +130,17 @@ class SkideUnitPanelReports
     } );
 
     TsGuiContext graphContext = new TsGuiContext( tsContext() );
-    SHOW_APPLY_BUTTON.setValue( graphContext.params(), AvUtils.AV_FALSE );
+    // SHOW_APPLY_BUTTON.setValue( graphContext.params(), AvUtils.AV_FALSE );
 
-    GraphTemplateEditorPanel gPanel = new GraphTemplateEditorPanel( graphsBack, graphContext );
+    GraphTemplateEditorPanel gPanel = new GraphTemplateEditorPanel( graphsBack, graphContext ) {
+
+      @Override
+      protected void formGraph( IVtGraphTemplate aSelTemplate ) {
+        ISkConnection destConn = selectConnection( tsContext() );
+        doFormGraph( aSelTemplate, destConn );
+      }
+
+    };
     gPanel.setLayoutData( BorderLayout.CENTER );
 
     return backPanel;

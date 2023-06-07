@@ -229,78 +229,6 @@ public class GraphTemplateEditorPanel
             }
           }
 
-          private void formGraph( IVtGraphTemplate aSelTemplate ) {
-            Shell shell = aContext.get( Shell.class );
-            // запросим у пользователя интервал времени
-            TimeInterval retVal = IntervalSelectionDialogPanel.getParams( shell, initValues, aContext );
-            if( retVal == null ) {
-              return;
-            }
-            // запомним выбранный интервал
-            initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
-            // формируем запрос к одноименному сервису
-            IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
-            ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
-
-            // Максимальное время выполнения запроса (мсек)
-            long timeout = aSelTemplate.maxExecutionTime();
-            try {
-              // Создание диалога прогресса выполнения запроса
-              SkQueryDialog progressDialog = new SkQueryDialog( getShell(), STR_EXEC_QUERY_FOR_GRAPH, timeout );
-              // fork = true, cancelable = true
-              progressDialog.run( true, true, aMonitor -> {
-                // Параметры запроса
-                IOptionSetEdit options = new OptionSet( OptionSetUtils.createOpSet( //
-                    ISkHistoryQueryServiceConstants.OP_SK_MAX_EXECUTION_TIME, AvUtils.avInt( timeout ) //
-                ) );
-                // Формирование запроса
-                ISkQueryProcessedData query = connSupp.defConn().coreApi().hqService().createProcessedQuery( options );
-                try {
-                  // Подготовка запроса
-                  query.prepare( queryParams );
-                  // Настройка обработки результатов запроса
-                  query.genericChangeEventer().addListener( aSource -> {
-                    ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-                    if( q.state() == ESkQueryState.READY ) {
-                      IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( query, queryParams );
-                      IList<IG2DataSet> graphData =
-                          createG2SelfUploDataSetList( aSelTemplate, requestAnswer, connSupp.defConn() );
-                      for( IG2DataSet ds : graphData ) {
-                        if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
-                          ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> chartPanel.refresh() );
-                        }
-                      }
-                      // создаем новую закладку
-                      CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
-                      tabItem.setText( aSelTemplate.nmName() );
-                      chartPanel = new ChartPanel( tabFolder, tsContext() );
-
-                      tabItem.setControl( chartPanel );
-                      tabFolder.setSelection( tabItem );
-                      // chartPanel.setReportAnswer( graphData, aSelTemplate, true );
-                      ReportTemplateUtilities.setReportAnswerToChart( chartPanel, graphData, aSelTemplate, true );
-                      chartPanel.requestLayout();
-                    }
-                    if( q.state() == ESkQueryState.FAILED ) {
-                      String stateMessage = q.stateMessage();
-                      TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
-                    }
-                  } );
-                  // Интервал запроса
-                  IQueryInterval interval =
-                      new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() );
-                  // Выполнение запроса
-                  SkQueryUtils.execQueryWithProgress( query, interval, aMonitor, progressDialog );
-                }
-                finally {
-                  query.close();
-                }
-              } );
-            }
-            catch( InvocationTargetException | InterruptedException ex ) {
-              LoggerUtils.errorLogger().error( ex );
-            }
-          }
         };
 
     User2GraphTemplatesTreeMaker treeMaker =
@@ -308,8 +236,8 @@ public class GraphTemplateEditorPanel
 
     componentModown.tree().setTreeMaker( treeMaker );
 
-    componentModown.treeModeManager().addTreeMode( new TreeModeInfo<>( TMID_GROUP_BY_USER, IReportsGuiResources.STR_N_BY_USERS,
-        IReportsGuiResources.STR_D_BY_USERS, null, treeMaker ) );
+    componentModown.treeModeManager().addTreeMode( new TreeModeInfo<>( TMID_GROUP_BY_USER,
+        IReportsGuiResources.STR_N_BY_USERS, IReportsGuiResources.STR_D_BY_USERS, null, treeMaker ) );
     componentModown.treeModeManager().setCurrentMode( TMID_GROUP_BY_USER );
 
     componentModown.addTsSelectionListener( ( aSource, aSelectedItem ) -> {
@@ -371,4 +299,82 @@ public class GraphTemplateEditorPanel
     return retVal;
   }
 
+  protected void formGraph( IVtGraphTemplate aSelTemplate ) {
+    ISkConnectionSupplier conSupp = tsContext().get( ISkConnectionSupplier.class );
+
+    doFormGraph( aSelTemplate, conSupp.defConn() );
+  }
+
+  protected void doFormGraph( IVtGraphTemplate aSelTemplate, ISkConnection aReportDataConnection ) {
+
+    Shell shell = tsContext().get( Shell.class );
+    // запросим у пользователя интервал времени
+    TimeInterval retVal = IntervalSelectionDialogPanel.getParams( shell, initValues, tsContext() );
+    if( retVal == null ) {
+      return;
+    }
+    // запомним выбранный интервал
+    initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
+    // формируем запрос к одноименному сервису
+    IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
+    // ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
+
+    // Максимальное время выполнения запроса (мсек)
+    long timeout = aSelTemplate.maxExecutionTime();
+    try {
+      // Создание диалога прогресса выполнения запроса
+      SkQueryDialog progressDialog = new SkQueryDialog( getShell(), STR_EXEC_QUERY_FOR_GRAPH, timeout );
+      // fork = true, cancelable = true
+      progressDialog.run( true, true, aMonitor -> {
+        // Параметры запроса
+        IOptionSetEdit options = new OptionSet( OptionSetUtils.createOpSet( //
+            ISkHistoryQueryServiceConstants.OP_SK_MAX_EXECUTION_TIME, AvUtils.avInt( timeout ) //
+        ) );
+        // Формирование запроса
+        ISkQueryProcessedData query = aReportDataConnection.coreApi().hqService().createProcessedQuery( options );
+        try {
+          // Подготовка запроса
+          query.prepare( queryParams );
+          // Настройка обработки результатов запроса
+          query.genericChangeEventer().addListener( aSource -> {
+            ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+            if( q.state() == ESkQueryState.READY ) {
+              IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( query, queryParams );
+              IList<IG2DataSet> graphData =
+                  createG2SelfUploDataSetList( aSelTemplate, requestAnswer, aReportDataConnection );
+              for( IG2DataSet ds : graphData ) {
+                if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
+                  ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> chartPanel.refresh() );
+                }
+              }
+              // создаем новую закладку
+              CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
+              tabItem.setText( aSelTemplate.nmName() );
+              chartPanel = new ChartPanel( tabFolder, tsContext() );
+
+              tabItem.setControl( chartPanel );
+              tabFolder.setSelection( tabItem );
+              // chartPanel.setReportAnswer( graphData, aSelTemplate, true );
+              ReportTemplateUtilities.setReportAnswerToChart( chartPanel, graphData, aSelTemplate, true );
+              chartPanel.requestLayout();
+            }
+            if( q.state() == ESkQueryState.FAILED ) {
+              String stateMessage = q.stateMessage();
+              TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
+            }
+          } );
+          // Интервал запроса
+          IQueryInterval interval = new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() );
+          // Выполнение запроса
+          SkQueryUtils.execQueryWithProgress( query, interval, aMonitor, progressDialog );
+        }
+        finally {
+          query.close();
+        }
+      } );
+    }
+    catch( InvocationTargetException | InterruptedException ex ) {
+      LoggerUtils.errorLogger().error( ex );
+    }
+  }
 }

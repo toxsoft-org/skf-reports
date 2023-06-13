@@ -48,8 +48,8 @@ public class GraphTemplateM5Model
    * Attribute {@link IVtGraphTemplate#aggrStep() } step of aggregation for values
    */
   public M5AttributeFieldDef<IVtGraphTemplate> AGGR_STEP = new M5AttributeFieldDef<>( ATRID_AGGR_STEP, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_AGGR_STEP, //
-      TSID_DESCRIPTION, STR_D_PARAM_AGGR_STEP, //
+      TSID_NAME, STR_PARAM_AGGR_STEP, //
+      TSID_DESCRIPTION, STR_PARAM_AGGR_STEP_D, //
       TSID_KEEPER_ID, ETimeUnit.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( ETimeUnit.MIN01 ) ) {
 

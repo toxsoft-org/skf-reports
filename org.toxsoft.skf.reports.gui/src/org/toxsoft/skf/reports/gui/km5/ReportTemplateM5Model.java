@@ -73,8 +73,8 @@ public class ReportTemplateM5Model
    * Attribute {@link IVtReportTemplate#aggrStep() } step of aggregation for values
    */
   public M5AttributeFieldDef<IVtReportTemplate> AGGR_STEP = new M5AttributeFieldDef<>( FID_AGGR_STEP, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_AGGR_STEP, //
-      TSID_DESCRIPTION, STR_D_PARAM_AGGR_STEP, //
+      TSID_NAME, STR_PARAM_AGGR_STEP, //
+      TSID_DESCRIPTION, STR_PARAM_AGGR_STEP_D, //
       TSID_KEEPER_ID, ETimeUnit.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( ETimeUnit.MIN01 ) ) {
 

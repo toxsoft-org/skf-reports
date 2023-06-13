@@ -57,9 +57,9 @@ interface IReportsGuiResources {
   String STR_D_FDEF_HAS_SUMMARY = "отображать область 'Итого'";
   String STR_N_FDEF_NAME        = "название";
   String STR_D_FDEF_NAME        = "название шаблона";
-  String STR_N_FDEF_DESCR       = "описание";
-  String STR_D_FDEF_DESCR       = "описание шаблона";
-  String STR_N_PARAM_AGGR_STEP  = "шаг";
-  String STR_D_PARAM_AGGR_STEP  = "шаг агрегации";
+  // String STR_FDEF_DESCR = "описание";
+  // String STR_FDEF_DESCR_D = "описание шаблона";
+  String STR_PARAM_AGGR_STEP   = Messages.getString( "STR_PARAM_AGGR_STEP" );   //$NON-NLS-1$
+  String STR_PARAM_AGGR_STEP_D = Messages.getString( "STR_PARAM_AGGR_STEP_D" ); //$NON-NLS-1$
 
 }

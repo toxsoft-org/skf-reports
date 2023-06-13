@@ -1,13 +1,13 @@
 package org.toxsoft.skf.reports.gui;
 
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
+import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.impl.DataDef.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static org.toxsoft.skf.reports.gui.IReportsGuiResources.*;
 
 import org.eclipse.e4.core.contexts.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
-import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
 
 /**
@@ -21,8 +21,8 @@ public interface IReportsGuiConstants {
   // ------------------------------------------------------------------------------------
   // Icons
 
-  String PREFIX_OF_ICON_FIELD_NAME = "ICONID_";  //$NON-NLS-1$
-  String ICONID_APP_ICON           = "app-icon"; //$NON-NLS-1$
+  String PREFIX_OF_ICON_FIELD_NAME = "ICONID_"; //$NON-NLS-1$
+  // String ICONID_APP_ICON = "app-icon"; //$NON-NLS-1$
 
   String ICONID_USER            = "user-red";           //$NON-NLS-1$
   String ICONID_RUN             = "run";                //$NON-NLS-1$
@@ -35,8 +35,12 @@ public interface IReportsGuiConstants {
   /**
    * Параметр, определяющий показывать кнопку "сформировать отчёт".
    */
-  IDataDef SHOW_APPLY_BUTTON = create( SHOW_APPLY_BUTTON_ID, BOOLEAN, TSID_NAME, SHOW_APPLY_BUTTON_STR,
-      TSID_DEFAULT_VALUE, AvUtils.avBool( true ), TSID_IS_MANDATORY, Boolean.FALSE );
+  IDataDef SHOW_APPLY_BUTTON = create( SHOW_APPLY_BUTTON_ID, BOOLEAN, //
+      TSID_NAME, STR_SHOW_APPLY_BUTTON, //
+      TSID_DESCRIPTION, STR_SHOW_APPLY_BUTTON_D, //
+      TSID_DEFAULT_VALUE, avBool( true ), //
+      TSID_IS_MANDATORY, Boolean.FALSE //
+  );
 
   /**
    * Constants registration.

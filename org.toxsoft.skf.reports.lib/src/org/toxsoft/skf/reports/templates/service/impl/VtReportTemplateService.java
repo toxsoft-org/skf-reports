@@ -2,8 +2,8 @@ package org.toxsoft.skf.reports.templates.service.impl;
 
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.gw.IGwHardConstants.*;
+import static org.toxsoft.skf.reports.templates.service.IVtResources.*;
 import static org.toxsoft.skf.reports.templates.service.IVtTemplateEditorServiceHardConstants.*;
-import static org.toxsoft.skf.reports.templates.service.impl.IVtResources.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
 import org.toxsoft.core.tslib.av.opset.*;

@@ -1,5 +1,6 @@
 package org.toxsoft.skf.reports.chart.utils.gui.panels;
 
+import static org.toxsoft.skf.reports.chart.utils.gui.IChartUtilsGuiSharedResources.*;
 import static org.toxsoft.skf.reports.chart.utils.gui.IReportsChartUtilsGuiConstants.*;
 
 import org.eclipse.swt.*;
@@ -42,6 +43,9 @@ import org.toxsoft.uskat.core.gui.conn.*;
  */
 public class ChartPanel
     extends TsPanel {
+
+  private static final String FORMAT_Y_AXIS_VALUE = "%.1f";  //$NON-NLS-1$
+  private static final String FONT_NAME           = "Arial"; //$NON-NLS-1$
 
   Button btnPageLeft;
   Button btnStepLeft;
@@ -97,7 +101,7 @@ public class ChartPanel
     comp.setLayoutData( BorderLayout.NORTH );
 
     btnPageLeft = new Button( comp, SWT.PUSH );
-    btnPageLeft.setToolTipText( "Экран назад" );
+    btnPageLeft.setToolTipText( STR_DISPLAY_BACK );
     btnPageLeft.setImage( iconManager().loadStdIcon( ICONID_SHIFT_DISPLAY_LEFT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
     btnPageLeft.addDisposeListener( aE -> btnPageLeft.getImage().dispose() );
@@ -114,7 +118,7 @@ public class ChartPanel
     } );
 
     btnStepLeft = new Button( comp, SWT.PUSH );
-    btnStepLeft.setToolTipText( "Назад" );
+    btnStepLeft.setToolTipText( STR_BACK );
     btnStepLeft.setImage( iconManager().loadStdIcon( ICONID_SHIFT_STEP_LEFT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
     btnStepLeft.addDisposeListener( aE -> btnStepLeft.getImage().dispose() );
@@ -131,7 +135,7 @@ public class ChartPanel
     } );
 
     btnStepRight = new Button( comp, SWT.PUSH );
-    btnStepRight.setToolTipText( "Вперед" );
+    btnStepRight.setToolTipText( STR_FORWARD );
     btnStepRight.setImage( iconManager().loadStdIcon( ICONID_SHIFT_STEP_RIGHT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
     btnStepRight.addDisposeListener( aE -> btnStepRight.getImage().dispose() );
@@ -148,7 +152,7 @@ public class ChartPanel
     } );
 
     btnPageRight = new Button( comp, SWT.PUSH );
-    btnPageRight.setToolTipText( "Экран вперед" );
+    btnPageRight.setToolTipText( STR_DISPLAY_FORWARD );
     btnPageRight.setImage( iconManager().loadStdIcon( ICONID_SHIFT_DISPLAY_RIGHT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
     btnPageRight.addDisposeListener( aE -> btnPageRight.getImage().dispose() );
@@ -165,7 +169,7 @@ public class ChartPanel
     } );
 
     btnSelect = new Button( comp, SWT.PUSH );
-    btnSelect.setText( "Выбор" );
+    btnSelect.setText( STR_CHOICE );
     btnSelect.setImage( iconManager().loadStdIcon( ICONID_GRAPHIC_LIST, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
     btnSelect.addDisposeListener( aE -> btnSelect.getImage().dispose() );
@@ -205,7 +209,7 @@ public class ChartPanel
     } );
 
     btnVisir = new Button( comp, SWT.CHECK );
-    btnVisir.setText( "Визир" );
+    btnVisir.setText( STR_VIZIER );
     btnVisir.setSelection( false );
     btnVisir.setImage( iconManager().loadStdIcon( ICONID_VIZIR, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
@@ -221,7 +225,7 @@ public class ChartPanel
     } );
 
     btnLegend = new Button( comp, SWT.CHECK );
-    btnLegend.setText( "Легенда" );
+    btnLegend.setText( STR_LEGEND );
     btnLegend.setImage( iconManager().loadStdIcon( ICONID_LEGENDA_ON, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
     btnLegend.addDisposeListener( aE -> btnLegend.getImage().dispose() );
@@ -246,7 +250,7 @@ public class ChartPanel
     } );
 
     btnConsole = new Button( comp, SWT.CHECK );
-    btnConsole.setText( "Пульт" );
+    btnConsole.setText( STR_N_CONTROL_PANEL );
     btnConsole.setImage( iconManager().loadStdIcon( ICONID_MANAGE_PULT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
     btnConsole.addDisposeListener( aE -> btnConsole.getImage().dispose() );
@@ -271,7 +275,7 @@ public class ChartPanel
     } );
 
     btnPrint = new Button( comp, SWT.PUSH );
-    btnPrint.setText( "Печать" );
+    btnPrint.setText( STR_PRINT );
     btnPrint.setImage( iconManager().loadStdIcon( ICONID_DOCUMENT_PRINT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
     btnPrint.addDisposeListener( aE -> btnPrint.getImage().dispose() );
@@ -329,7 +333,7 @@ public class ChartPanel
     } );
 
     CLabel l = new CLabel( comp, SWT.CENTER );
-    l.setText( "Цена деления:" );
+    l.setText( STR_SCALE_VALUE );
 
     IList<ETimeUnit> values = new ElemArrayList<>( ETimeUnit.values() );
     ITsVisualsProvider<ETimeUnit> visualsProvider = ETimeUnit::nmName;
@@ -352,11 +356,14 @@ public class ChartPanel
   }
 
   /**
-   * Отобразить набор данных на графической компоненте
+   * Shows list of data at graphic component.
    *
-   * @param aAnswer - набор данных для отображения
-   * @param aTemplate - шаблон описания графика
-   * @param aFromBegin - флаг отображение с начала диапазона или с конца диапазона
+   * @param aAnswer IList - list of data
+   * @param aGraphicInfoes IList - list of graphic infoes
+   * @param aAxisInfoes IStringMapEdit - Y axes infoes
+   * @param aAggrStep ETimeUnit - aggregation step
+   * @param aChartTitle String - chart title.
+   * @param aFromBegin boolean true - from th begining, false - from the ending.
    */
   public void setReportAnswer( IList<IG2DataSet> aAnswer, IList<GraphicInfo> aGraphicInfoes,
       IStringMapEdit<YAxisInfo> aAxisInfoes, ETimeUnit aAggrStep, String aChartTitle, boolean aFromBegin ) {
@@ -470,7 +477,7 @@ public class ChartPanel
           max = graphInfo.minMax().right().doubleValue();
         }
       }
-      IYAxisDef yAxisDef = createYAxisDef( axisInfo.id(), min, max, "%.1f", axisInfo.unitInfo() );
+      IYAxisDef yAxisDef = createYAxisDef( axisInfo.id(), min, max, FORMAT_Y_AXIS_VALUE, axisInfo.unitInfo() );
       aChart.yAxisDefs().add( yAxisDef );
     }
   }
@@ -482,7 +489,7 @@ public class ChartPanel
     // yTuner.setEndValue( aMax );
     yTuner.setFormatString( aFormatStr );
 
-    double val = Math.abs( (aMax - aMin) / 10 );
+    // double val = Math.abs( (aMax - aMin) / 10 );
     // int exp = calcExponent( val );
 
     AxisMarkupTuner mt = new AxisMarkupTuner( aMin, aMax );
@@ -494,13 +501,13 @@ public class ChartPanel
 
     yTuner.setTitle( aUnitInfo.right() );
     yTuner.setTitleOrientation( ETsOrientation.VERTICAL );
-    yTuner.setTitleFont( new FontInfo( "Arial", 18, false, false ) );
+    yTuner.setTitleFont( new FontInfo( FONT_NAME, 18, false, false ) );
 
     return yTuner.createAxisDef( aId, aUnitInfo.right(), aUnitInfo.left() );
   }
 
   void createPlots() {
-    int idx = 0;
+    // int idx = 0;
     for( GraphicInfo graphInfo : graphicInfoes ) {
       // PlotDefTuner plotTuner = new PlotDefTuner( tsContext() );
       // RGB plotColor = aTemplate.listParams().get( idx ).color().rgb();
@@ -514,7 +521,7 @@ public class ChartPanel
 
       IPlotDef plotDef = graphInfo.plotDef();// .createPlotDef( plotTuner );
       chart.plotDefs().add( plotDef );
-      idx++;
+      // idx++;
     }
   }
 

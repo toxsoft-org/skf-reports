@@ -45,6 +45,15 @@ public class PlotDefTuner {
     context = aContext;
   }
 
+  /**
+   * Creates plot definition.
+   *
+   * @param aNameable IStridable - id and name.
+   * @param aAxisId String - id of Y axis.
+   * @param aDataSetId String - id of chart - the same as from aNameable //TODO - FIXIT
+   * @param aCanvasId String - id of canvas.
+   * @return IPlotDef - plot definition.
+   */
   public IPlotDef createPlotDef( IStridable aNameable, String aAxisId, String aDataSetId, String aCanvasId ) {
     IOptionSetEdit opSet = new OptionSet();
     if( lineInfo != null ) {

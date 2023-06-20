@@ -11,6 +11,12 @@ import org.toxsoft.core.tsgui.graphics.icons.*;
 @SuppressWarnings( "javadoc" )
 public interface IReportsChartUtilsGuiConstants {
 
+  // -------------------------------------------------------------------------------------
+  // Ids
+
+  String ACTID_PLOT_ZOOM_IN  = "plot.zoom.in";  //$NON-NLS-1$
+  String ACTID_PLOT_ZOOM_OUT = "plot.zoom.out"; //$NON-NLS-1$
+
   // ------------------------------------------------------------------------------------
   // Icons
 

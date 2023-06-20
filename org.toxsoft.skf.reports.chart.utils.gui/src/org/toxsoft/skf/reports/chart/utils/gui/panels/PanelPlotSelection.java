@@ -1,5 +1,6 @@
 package org.toxsoft.skf.reports.chart.utils.gui.panels;
 
+import static org.toxsoft.skf.reports.chart.utils.gui.IChartUtilsGuiSharedResources.*;
 import static org.toxsoft.skf.reports.chart.utils.gui.IReportsChartUtilsGuiConstants.*;
 
 import org.eclipse.jface.viewers.*;
@@ -18,6 +19,8 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.*;
 
 /**
+ * Dialog panel for change visibility of charts
+ *
  * @author vs
  * @author dima // conversion ts4
  */
@@ -59,12 +62,12 @@ public class PanelPlotSelection
     gl.marginHeight = 8;
     tbPanel.setLayout( gl );
     CLabel l = new CLabel( tbPanel, SWT.CENTER );
-    l.setText( "Видимые графики:" );
+    l.setText( STR_VISIBLE_CHARTS );
     Button btnHide = new Button( tbPanel, SWT.PUSH );
     btnHide.setImage( iconManager().loadStdIcon( ICONID_VISIBLE_OFF, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
     btnHide.addDisposeListener( aE -> btnHide.getImage().dispose() );
-    btnHide.setToolTipText( "Скрыть график" );
+    btnHide.setToolTipText( STR_HIDE_CHARTS );
     btnHide.setEnabled( false );
     btnHide.addSelectionListener( new SelectionAdapter() {
 
@@ -107,12 +110,12 @@ public class PanelPlotSelection
     tbPanel.setLayoutData( BorderLayout.NORTH );
     tbPanel.setLayout( gl );
     l = new CLabel( tbPanel, SWT.CENTER );
-    l.setText( "Скрытые графики:" );
+    l.setText( STR_HIDED_CHARTS );
     Button btnShow = new Button( tbPanel, SWT.PUSH );
     btnShow.setImage( iconManager().loadStdIcon( ICONID_VISIBLE_ON, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
     btnShow.addDisposeListener( aE -> btnShow.getImage().dispose() );
-    btnShow.setToolTipText( "Показать график" );
+    btnShow.setToolTipText( STR_SHOW_CHARTS );
     btnShow.setEnabled( false );
     btnShow.addSelectionListener( new SelectionAdapter() {
 
@@ -172,10 +175,18 @@ public class PanelPlotSelection
   // Статический метод вызова диалога
   //
 
+  /**
+   * Selects plots for visibility
+   *
+   * @param aShell Shell - shell
+   * @param aPlots Pair - initially visible (left) and hided (right) plots
+   * @param aContext ITsGuiContext - context
+   * @return Pair - resulted visible (left) and hided (right) plots
+   */
   public static Pair<IList<IPlotDef>, IList<IPlotDef>> selectPlots( Shell aShell,
       Pair<IList<IPlotDef>, IList<IPlotDef>> aPlots, ITsGuiContext aContext ) {
-    String caption = "Выбор графиков для отображения";
-    String title = "Двойной щелчек мышкой меняет видимость выбранного графика";
+    String caption = STR_CAP_CHART_SELECTION_FOR_VISUALIZATION;
+    String title = STR_TITLE_DOUBLE_CLICK_FOR_CHANGE_VISIBILITY;
     // CommonDialogBase<Pair<IList<IPlotDef>, IList<IPlotDef>>, ITsGuiContext> dlg;
     // dlg = new CommonDialogBase<>( aShell, aPlots, aContext, caption, title, 0, creator );
     IDialogPanelCreator<Pair<IList<IPlotDef>, IList<IPlotDef>>, ITsGuiContext> locCreator = PanelPlotSelection::new;

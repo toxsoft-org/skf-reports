@@ -1,6 +1,8 @@
 package org.toxsoft.skf.reports.chart.utils.gui.console;
 
 import static org.toxsoft.core.tsgui.graphics.icons.ITsStdIconIds.*;
+import static org.toxsoft.skf.reports.chart.utils.gui.IChartUtilsGuiSharedResources.*;
+import static org.toxsoft.skf.reports.chart.utils.gui.IReportsChartUtilsGuiConstants.*;
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.*;
@@ -18,22 +20,18 @@ import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 
 /**
- * Пульт управления графической компонентой.
+ * Control panel of graphic component.
  *
  * @author vs
  * @author dima // ts4 conversion
  */
 public class ConsoleWindow {
 
-  final static String ACTID_ZOOM_IN = "plot.zoom.in";
+  final static TsActionDef ACDEF_ZOOM_IN =
+      TsActionDef.ofPush2( ACTID_PLOT_ZOOM_IN, STR_N_PLOT_ZOOM_IN, STR_D_PLOT_ZOOM_IN, ICONID_ZOOM_IN );
 
-  final static TsActionDef ACDEF_ZOOM_IN = TsActionDef.ofPush2( ACTID_ZOOM_IN, "Увеличить масштаб",
-      "Увеличить масштаб по всем отмеченным осям", ICONID_ZOOM_IN );
-
-  final static String ACTID_ZOOM_OUT = "plot.zoom.out";
-
-  final static TsActionDef ACDEF_ZOOM_OUT = TsActionDef.ofPush2( ACTID_ZOOM_OUT, "Увеличить масштаб",
-      "Уменьшить масштаб по всем отмеченным осям", ICONID_ZOOM_OUT );
+  final static TsActionDef ACDEF_ZOOM_OUT =
+      TsActionDef.ofPush2( ACTID_PLOT_ZOOM_OUT, STR_N_PLOT_ZOOM_OUT, STR_D_PLOT_ZOOM_OUT, ICONID_ZOOM_OUT );
 
   Shell            wnd = null;
   final Control    parent;
@@ -49,6 +47,13 @@ public class ConsoleWindow {
 
   private final ITsGuiContext context;
 
+  /**
+   * Constructor.
+   *
+   * @param aParent Control - parent control.
+   * @param aChart G2Chart - chart.
+   * @param aContext ITsGuiContext - context.
+   */
   public ConsoleWindow( Control aParent, G2Chart aChart, ITsGuiContext aContext ) {
     parent = aParent;
     g2Chart = aChart;
@@ -59,7 +64,7 @@ public class ConsoleWindow {
 
     Shell aShell = aParent.getShell();
     wnd = new Shell( aShell, SWT.BORDER | SWT.CLOSE );
-    wnd.setText( "Пульт управления" );
+    wnd.setText( STR_N_CONTROL_PANEL );
     wnd.setLayout( new BorderLayout() );
     wnd.addDisposeListener( aE -> {
       // FIXME чего-нибудь уничтожить (если надо)
@@ -73,10 +78,10 @@ public class ConsoleWindow {
     miniMap = new MiniMap( wnd );
     miniMap.addGenericChangeListener( aSource -> {
       Pair<Double, Double> dragShif = miniMap.dragShift();
-      if( dragShif.left() != 0.0 ) {
-        g2Console.changeXScale( -dragShif.left(), 1.0 );
+      if( dragShif.left().doubleValue() != 0.0 ) {
+        g2Console.changeXScale( -dragShif.left().doubleValue(), 1.0 );
       }
-      if( dragShif.right() != 0.0 ) {
+      if( dragShif.right().doubleValue() != 0.0 ) {
         doVerticalShift( dragShif.right() );
       }
       g2Chart.refresh();
@@ -96,6 +101,9 @@ public class ConsoleWindow {
   // API
   //
 
+  /**
+   * Disposes window.
+   */
   public void dispose() {
     if( wnd != null && !wnd.isDisposed() ) {
       wnd.dispose();
@@ -103,6 +111,11 @@ public class ConsoleWindow {
     }
   }
 
+  /**
+   * Returns shell.
+   *
+   * @return Shell - shell.
+   */
   public Shell shell() {
     return wnd;
   }
@@ -136,11 +149,11 @@ public class ConsoleWindow {
     retVal.setIconSize( EIconSize.IS_64X64 );
     retVal.addListener( aActionId -> {
       switch( aActionId ) {
-        case ACTID_ZOOM_IN: {
+        case ACTID_PLOT_ZOOM_IN: {
           doZoomIn();
           break;
         }
-        case ACTID_ZOOM_OUT: {
+        case ACTID_PLOT_ZOOM_OUT: {
           doZoomOut();
           break;
         }

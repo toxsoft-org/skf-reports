@@ -47,6 +47,14 @@ public class YAxisTuner {
     annoParams = G2ChartUtils.createParams( annoRendererClass, annoOps, context );
   }
 
+  /**
+   * Creates Y axis definition
+   *
+   * @param aId String - Y axis id
+   * @param aDescription String - description
+   * @param aName String - name.
+   * @return IYAxisDef - Y axis definition
+   */
   public IYAxisDef createAxisDef( String aId, String aDescription, String aName ) {
 
     String annoRendererClass = IStdG2AxisAnnotationRendererOptions.CONSUMER_NAME;
@@ -74,30 +82,65 @@ public class YAxisTuner {
     return G2ChartUtils.createYAxisDef( aId, aDescription, aName, rendererParams, startVal, endVal, stepVal );
   }
 
+  /**
+   * Sets start value.
+   *
+   * @param aValue double - start value.
+   */
   public void setStartValue( double aValue ) {
     startVal = aValue;
   }
 
+  /**
+   * Sets end value.
+   *
+   * @param aValue double - end value.
+   */
   public void setEndValue( double aValue ) {
     endVal = aValue;
   }
 
+  /**
+   * Sets step.
+   *
+   * @param aValue double - value of step.
+   */
   public void setStepValue( double aValue ) {
     stepVal = aValue;
   }
 
+  /**
+   * Sets title.
+   *
+   * @param aTitle String - title.
+   */
   public void setTitle( String aTitle ) {
     title = aTitle;
   }
 
+  /**
+   * Sets title orientation.
+   *
+   * @param aOrientation ETsOrientation - title orientation.
+   */
   public void setTitleOrientation( ETsOrientation aOrientation ) {
     titleOrientation = aOrientation;
   }
 
+  /**
+   * Sets title font.
+   *
+   * @param aFontInfo IFontInfo - title font.
+   */
   public void setTitleFont( IFontInfo aFontInfo ) {
     titleFontInfo = aFontInfo;
   }
 
+  /**
+   * Sets y axis values format.
+   *
+   * @param aFormatStr String - values format.
+   */
   public void setFormatString( String aFormatStr ) {
     formatStr = aFormatStr;
   }

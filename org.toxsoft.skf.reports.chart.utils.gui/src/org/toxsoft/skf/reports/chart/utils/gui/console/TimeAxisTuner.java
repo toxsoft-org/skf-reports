@@ -25,6 +25,8 @@ import org.toxsoft.core.tslib.bricks.time.impl.*;
  */
 public class TimeAxisTuner {
 
+  private static final String TIME_FORMAT_VALUE = "%1$tH:%1$tM:%1tS"; //$NON-NLS-1$
+
   IOptionSetEdit annoOps;
   IG2Params      annoParams;
   ETimeUnit      timeUnit = ETimeUnit.HOUR01;
@@ -45,6 +47,12 @@ public class TimeAxisTuner {
     timeInterval = new TimeInterval( time, time + 10 * 3600 * 1000 );
   }
 
+  /**
+   * Sets time interval.
+   *
+   * @param aInterval TimeInterval - time interval.
+   * @param aAutoFitTimeUnit - true - fit time unit, false - else.
+   */
   public void setTimeInterval( TimeInterval aInterval, boolean aAutoFitTimeUnit ) {
     timeInterval = aInterval;
     if( aAutoFitTimeUnit ) {
@@ -58,35 +66,70 @@ public class TimeAxisTuner {
     }
   }
 
+  /**
+   * Sets date format.
+   *
+   * @param aFormat String - date format.
+   */
   public void setDateFormat( String aFormat ) {
     DATE_FORMAT.setValue( annoOps, AvUtils.avStr( aFormat ) );
   }
 
+  /**
+   * Sets time format.
+   *
+   * @param aFormat String - time format.
+   */
   public void setTimeFormat( String aFormat ) {
     TIME_FORMAT.setValue( annoOps, AvUtils.avStr( aFormat ) );
   }
 
+  /**
+   * Sets date wrap.
+   *
+   * @param aWrap true - wrap date, false - else.
+   */
   public void setDateWrap( boolean aWrap ) {
     DATE_WRAP.setValue( annoOps, AvUtils.avBool( aWrap ) );
   }
 
+  /**
+   * Sets time unit.
+   *
+   * @param aTimeUnit ETimeUnit - time unit.
+   */
   public void setTimeUnit( ETimeUnit aTimeUnit ) {
     timeUnit = aTimeUnit;
   }
 
+  /**
+   * Returns time unit.
+   *
+   * @return ETimeUnit - time unit.
+   */
   public ETimeUnit timeUnit() {
     return timeUnit;
   }
 
+  /**
+   * Sets font info.
+   *
+   * @param aFontInfo IFontInfo - font info.
+   */
   public void setFont( IFontInfo aFontInfo ) {
     FONT_INFO.setValue( annoOps, AvUtils.avValobj( aFontInfo ) );
   }
 
+  /**
+   * Creates axis definition.
+   *
+   * @return IXAxisDef - axis definition.
+   */
   public IXAxisDef createAxisDef() {
 
     String annoRendererClass = IStdG2TimeAxisAnnotationRendererOptions.CONSUMER_NAME;
     if( timeUnit.timeInMills() < 60000 ) {
-      TIME_FORMAT.setValue( annoOps, AvUtils.avStr( "%1$tH:%1$tM:%1tS" ) );
+      TIME_FORMAT.setValue( annoOps, AvUtils.avStr( TIME_FORMAT_VALUE ) );
     }
     annoParams = G2ChartUtils.createParams( annoRendererClass, annoOps, context );
 

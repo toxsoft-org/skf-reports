@@ -115,7 +115,7 @@ class MiniMap
   //
 
   Pair<Double, Double> dragShift() {
-    return new Pair<>( dragDX, dragDY );
+    return new Pair<>( Double.valueOf( dragDX ), Double.valueOf( dragDY ) );
   }
 
   // ------------------------------------------------------------------------------------

@@ -319,7 +319,7 @@ public class ReportTemplateEditorPanel
               ReportTemplateUtilities.createM5ModelForTemplate( aSelTemplate );
           query.genericChangeEventer().addListener( aSource -> {
             ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-            LoggerUtils.defaultLogger().info( "State %s , %s", q.toString(), q.state().nmName() );
+            LoggerUtils.defaultLogger().info( "State %s , %s", q.toString(), q.state().nmName() ); //$NON-NLS-1$
             if( q.state() == ESkQueryState.READY ) {
               IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( query, queryParams );
               IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
@@ -422,12 +422,12 @@ public class ReportTemplateEditorPanel
       // query.
 
       query.genericChangeEventer().addListener( aSource -> {
-        LoggerUtils.defaultLogger().info( "addListener Quary state: %s", query.state().nmName() );
+        LoggerUtils.defaultLogger().info( "addListener Quary state: %s", query.state().nmName() ); //$NON-NLS-1$
         if( query != aSource ) {
           return;
         }
 
-        LoggerUtils.defaultLogger().info( "Quary state: %s", query.state().nmName() );
+        LoggerUtils.defaultLogger().info( "Quary state: %s", query.state().nmName() ); //$NON-NLS-1$
       } );
 
       query.exec( interval );

@@ -1,5 +1,7 @@
 package org.toxsoft.skf.reports.gui.panels;
 
+import org.toxsoft.skf.reports.gui.*;
+
 /**
  * Localizable resources.
  *
@@ -11,42 +13,42 @@ interface IReportsGuiResources {
   /**
    * {@link PanelGwidSelector}
    */
-  String DLG_T_GWID_SEL         = "Выбор данного (Gwid)";
-  String STR_MSG_GWID_SELECTION = "Выберите класс, объект и его данное";
-  String STR_MSG_SELECT_OBJ     = "не указан объект";
-  String STR_MSG_SELECT_DATA    = "не указано данное";
+  String DLG_T_GWID_SEL         = Messages.getString( "DLG_T_GWID_SEL" );
+  String STR_MSG_GWID_SELECTION = Messages.getString( "STR_MSG_GWID_SELECTION" );
+  String STR_MSG_SELECT_OBJ     = Messages.getString( "STR_MSG_SELECT_OBJ" );
+  String STR_MSG_SELECT_DATA    = Messages.getString( "STR_MSG_SELECT_DATA" );
 
   /**
    * {@link PanelGwidListSelector}
    */
-  String DLG_T_GWID_LIST_SEL         = "Выбор списка данных (IGwidList)";
-  String STR_MSG_GWID_LIST_SELECTION = "Выберите класс, пометьте объекты и данные";
+  String DLG_T_GWID_LIST_SEL         = Messages.getString( "DLG_T_GWID_LIST_SEL" );
+  String STR_MSG_GWID_LIST_SELECTION = Messages.getString( "STR_MSG_GWID_LIST_SELECTION" );
 
   /**
    * {@link RtDataInfoViewerPanel}
    */
-  String STR_N_HIDE_ASYNC = "Спрятать асинхронные";
-  String STR_D_HIDE_ASYNC = "Не показывать асинхронные данные";
+  String STR_N_HIDE_ASYNC = Messages.getString( "STR_N_HIDE_ASYNC" );
+  String STR_D_HIDE_ASYNC = Messages.getString( "STR_D_HIDE_ASYNC" );
 
   /**
    * {@link GraphTemplateEditorPanel}
    */
-  String STR_N_BY_USERS           = "по пользователям";
-  String STR_D_BY_USERS           = "Дерево пользователи-шаблоны отчетов";
-  String STR_N_GENERATE_CHART     = "Сформировать график";
-  String STR_D_GENERATE_CHART     = "Загрузка данных из БД и формирование графика";
-  String STR_EXEC_QUERY_REPORT    = "Запрос данных для отчета";
-  String STR_EXEC_QUERY_FOR_GRAPH = "Запрос данных для графика";
-  String ERR_QUERY_FAILED         = "Ошибка выполнения запроса данных: %s";
+  String STR_N_BY_USERS           = Messages.getString( "STR_N_BY_USERS" );
+  String STR_D_BY_USERS           = Messages.getString( "STR_D_BY_USERS" );
+  String STR_N_GENERATE_CHART     = Messages.getString( "STR_N_GENERATE_CHART" );
+  String STR_D_GENERATE_CHART     = Messages.getString( "STR_D_GENERATE_CHART" );
+  String STR_EXEC_QUERY_REPORT    = Messages.getString( "STR_EXEC_QUERY_REPORT" );
+  String STR_EXEC_QUERY_FOR_GRAPH = Messages.getString( "STR_EXEC_QUERY_FOR_GRAPH" );
+  String ERR_QUERY_FAILED         = Messages.getString( "ERR_QUERY_FAILED" );
 
   /**
    * {@link ReportTemplateEditorPanel}
    */
-  String STR_N_GENERATE_REPORT = "Сформировать отчёт";
-  String STR_D_GENERATE_REPORT = "Загрузка данных из БД и формирование отчёта";
-  String STR_N_COPY_TEMPLATE   = "Копия шаблона";
-  String STR_D_COPY_TEMPLATE   = "Сделать копию шаблона";
-  String AUTHOR_STR            = "Автор: ";
-  String DATE_STR              = "Дата печати: ";
+  String STR_N_GENERATE_REPORT = Messages.getString( "STR_N_GENERATE_REPORT" );
+  String STR_D_GENERATE_REPORT = Messages.getString( "STR_D_GENERATE_REPORT" );
+  String STR_N_COPY_TEMPLATE   = Messages.getString( "STR_N_COPY_TEMPLATE" );
+  String STR_D_COPY_TEMPLATE   = Messages.getString( "STR_D_COPY_TEMPLATE" );
+  String AUTHOR_STR            = Messages.getString( "AUTHOR_STR" );
+  String DATE_STR              = Messages.getString( "DATE_STR" );
 
 }

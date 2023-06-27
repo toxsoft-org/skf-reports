@@ -230,15 +230,15 @@ public class GraphTemplateEditorPanel
           }
 
         };
-
-    User2GraphTemplatesTreeMaker treeMaker =
-        new User2GraphTemplatesTreeMaker( conn.coreApi().getService( IVtGraphTemplateService.SERVICE_ID ) );
-
-    componentModown.tree().setTreeMaker( treeMaker );
-
-    componentModown.treeModeManager().addTreeMode( new TreeModeInfo<>( TMID_GROUP_BY_USER,
-        IReportsGuiResources.STR_N_BY_USERS, IReportsGuiResources.STR_D_BY_USERS, null, treeMaker ) );
-    componentModown.treeModeManager().setCurrentMode( TMID_GROUP_BY_USER );
+    // dima 27.06.23 отключаем дерево, автор шаблона непонятно как испарился
+    // User2GraphTemplatesTreeMaker treeMaker =
+    // new User2GraphTemplatesTreeMaker( conn.coreApi().getService( IVtGraphTemplateService.SERVICE_ID ) );
+    //
+    // componentModown.tree().setTreeMaker( treeMaker );
+    //
+    // componentModown.treeModeManager().addTreeMode( new TreeModeInfo<>( TMID_GROUP_BY_USER,
+    // IReportsGuiResources.STR_N_BY_USERS, IReportsGuiResources.STR_D_BY_USERS, null, treeMaker ) );
+    // componentModown.treeModeManager().setCurrentMode( TMID_GROUP_BY_USER );
 
     componentModown.addTsSelectionListener( ( aSource, aSelectedItem ) -> {
       componentModown.toolbar().setActionEnabled( ACTID_FORM_GRAPH, aSelectedItem != null );

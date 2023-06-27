@@ -259,15 +259,16 @@ public class ReportTemplateEditorPanel
     // dima 03.11.22 вынес в отдельный класс
     componentModown = new ReportTemplatePaneComponentModown( ctx, model, lm.itemsProvider(), lm );
 
+    // dima 27.06.23 отключаем дерево, автор шаблона непонятно как испарился
     // дерево пользователи -> их шаблоны
-    User2ReportTemplatesTreeMaker treeMaker =
-        new User2ReportTemplatesTreeMaker( conn.coreApi().getService( IVtReportTemplateService.SERVICE_ID ) );
-
-    componentModown.tree().setTreeMaker( treeMaker );
-
-    componentModown.treeModeManager().addTreeMode( new TreeModeInfo<>( TMIID_GROUP_BY_USER,
-        IReportsGuiResources.STR_N_BY_USERS, IReportsGuiResources.STR_D_BY_USERS, null, treeMaker ) );
-    componentModown.treeModeManager().setCurrentMode( TMIID_GROUP_BY_USER );
+    // User2ReportTemplatesTreeMaker treeMaker =
+    // new User2ReportTemplatesTreeMaker( conn.coreApi().getService( IVtReportTemplateService.SERVICE_ID ) );
+    //
+    // componentModown.tree().setTreeMaker( treeMaker );
+    //
+    // componentModown.treeModeManager().addTreeMode( new TreeModeInfo<>( TMIID_GROUP_BY_USER,
+    // IReportsGuiResources.STR_N_BY_USERS, IReportsGuiResources.STR_D_BY_USERS, null, treeMaker ) );
+    // componentModown.treeModeManager().setCurrentMode( TMIID_GROUP_BY_USER );
 
     reportTemplatesPanel = new M5CollectionPanelMpcModownWrapper<>( componentModown, false );
 

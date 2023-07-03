@@ -1,9 +1,10 @@
 package org.toxsoft.skf.reports.templates.service;
 
-import org.toxsoft.core.tsgui.chart.api.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.core.tsgui.chart.api.ETimeUnit;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.utils.TsLibUtils;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.api.users.ISkUser;
 
 /**
  * Interface to specify template of doc report.
@@ -35,7 +36,10 @@ public interface IVtBaseTemplate<T extends IVtTemplateParam>
    * @return String - title of report
    */
   default String title() {
-    return attrs().getStr( IVtTemplateEditorServiceHardConstants.ATRID_TITLE );
+    if( attrs().hasValue( IVtTemplateEditorServiceHardConstants.ATRID_TITLE ) ) {
+      return attrs().getStr( IVtTemplateEditorServiceHardConstants.ATRID_TITLE );
+    }
+    return TsLibUtils.EMPTY_STRING;
   }
 
   /**

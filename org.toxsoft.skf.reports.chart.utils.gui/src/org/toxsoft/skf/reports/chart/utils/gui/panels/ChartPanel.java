@@ -3,37 +3,42 @@ package org.toxsoft.skf.reports.chart.utils.gui.panels;
 import static org.toxsoft.skf.reports.chart.utils.gui.IChartUtilsGuiSharedResources.*;
 import static org.toxsoft.skf.reports.chart.utils.gui.IReportsChartUtilsGuiConstants.*;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.*;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.printing.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.chart.impl.*;
-import org.toxsoft.core.tsgui.graphics.*;
-import org.toxsoft.core.tsgui.graphics.colors.*;
-import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.utils.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tsgui.valed.controls.basic.*;
-import org.toxsoft.core.tslib.bricks.geometry.impl.*;
-import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.skf.reports.chart.utils.gui.console.*;
-import org.toxsoft.skf.reports.chart.utils.gui.tools.axes_markup.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.gui.conn.*;
+import org.toxsoft.core.tsgui.graphics.ETsOrientation;
+import org.toxsoft.core.tsgui.graphics.colors.ETsColor;
+import org.toxsoft.core.tsgui.graphics.fonts.impl.FontInfo;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.utils.ITsVisualsProvider;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tsgui.valed.controls.basic.ValedComboSelector;
+import org.toxsoft.core.tslib.bricks.geometry.impl.TsPoint;
+import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
+import org.toxsoft.core.tslib.bricks.time.impl.TimeInterval;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMapEdit;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
+import org.toxsoft.core.tslib.utils.Pair;
+import org.toxsoft.skf.reports.chart.utils.gui.console.ConsoleWindow;
+import org.toxsoft.skf.reports.chart.utils.gui.console.TimeAxisTuner;
+import org.toxsoft.skf.reports.chart.utils.gui.tools.axes_markup.AxisMarkupTuner;
+import org.toxsoft.skf.reports.chart.utils.gui.tools.axes_markup.MarkUpInfo;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
 /**
  * Панель для отображения отчета в виде графиков.
@@ -104,7 +109,7 @@ public class ChartPanel
     btnPageLeft.setToolTipText( STR_DISPLAY_BACK );
     btnPageLeft.setImage( iconManager().loadStdIcon( ICONID_SHIFT_DISPLAY_LEFT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
-    btnPageLeft.addDisposeListener( aE -> btnPageLeft.getImage().dispose() );
+    // btnPageLeft.addDisposeListener( aE -> btnPageLeft.getImage().dispose() );
 
     btnPageLeft.addSelectionListener( new SelectionAdapter() {
 
@@ -121,7 +126,7 @@ public class ChartPanel
     btnStepLeft.setToolTipText( STR_BACK );
     btnStepLeft.setImage( iconManager().loadStdIcon( ICONID_SHIFT_STEP_LEFT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
-    btnStepLeft.addDisposeListener( aE -> btnStepLeft.getImage().dispose() );
+    // btnStepLeft.addDisposeListener( aE -> btnStepLeft.getImage().dispose() );
 
     btnStepLeft.addSelectionListener( new SelectionAdapter() {
 
@@ -138,7 +143,7 @@ public class ChartPanel
     btnStepRight.setToolTipText( STR_FORWARD );
     btnStepRight.setImage( iconManager().loadStdIcon( ICONID_SHIFT_STEP_RIGHT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
-    btnStepRight.addDisposeListener( aE -> btnStepRight.getImage().dispose() );
+    // btnStepRight.addDisposeListener( aE -> btnStepRight.getImage().dispose() );
 
     btnStepRight.addSelectionListener( new SelectionAdapter() {
 
@@ -155,7 +160,7 @@ public class ChartPanel
     btnPageRight.setToolTipText( STR_DISPLAY_FORWARD );
     btnPageRight.setImage( iconManager().loadStdIcon( ICONID_SHIFT_DISPLAY_RIGHT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
-    btnPageRight.addDisposeListener( aE -> btnPageRight.getImage().dispose() );
+    // btnPageRight.addDisposeListener( aE -> btnPageRight.getImage().dispose() );
 
     btnPageRight.addSelectionListener( new SelectionAdapter() {
 
@@ -172,7 +177,7 @@ public class ChartPanel
     btnSelect.setText( STR_CHOICE );
     btnSelect.setImage( iconManager().loadStdIcon( ICONID_GRAPHIC_LIST, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
-    btnSelect.addDisposeListener( aE -> btnSelect.getImage().dispose() );
+    // btnSelect.addDisposeListener( aE -> btnSelect.getImage().dispose() );
 
     btnSelect.addSelectionListener( new SelectionAdapter() {
 
@@ -213,7 +218,7 @@ public class ChartPanel
     btnVisir.setSelection( false );
     btnVisir.setImage( iconManager().loadStdIcon( ICONID_VIZIR, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
-    btnVisir.addDisposeListener( aE -> btnVisir.getImage().dispose() );
+    // btnVisir.addDisposeListener( aE -> btnVisir.getImage().dispose() );
 
     btnVisir.addSelectionListener( new SelectionAdapter() {
 
@@ -228,7 +233,7 @@ public class ChartPanel
     btnLegend.setText( STR_LEGEND );
     btnLegend.setImage( iconManager().loadStdIcon( ICONID_LEGENDA_ON, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
-    btnLegend.addDisposeListener( aE -> btnLegend.getImage().dispose() );
+    // btnLegend.addDisposeListener( aE -> btnLegend.getImage().dispose() );
 
     btnLegend.setSelection( false );
     btnLegend.addSelectionListener( new SelectionAdapter() {
@@ -253,7 +258,7 @@ public class ChartPanel
     btnConsole.setText( STR_N_CONTROL_PANEL );
     btnConsole.setImage( iconManager().loadStdIcon( ICONID_MANAGE_PULT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
-    btnConsole.addDisposeListener( aE -> btnConsole.getImage().dispose() );
+    // btnConsole.addDisposeListener( aE -> btnConsole.getImage().dispose() );
 
     btnConsole.setSelection( false );
     btnConsole.addSelectionListener( new SelectionAdapter() {
@@ -278,7 +283,7 @@ public class ChartPanel
     btnPrint.setText( STR_PRINT );
     btnPrint.setImage( iconManager().loadStdIcon( ICONID_DOCUMENT_PRINT, tabIconSize ) );
     // явно удаляем ранее загруженную картинку
-    btnPrint.addDisposeListener( aE -> btnPrint.getImage().dispose() );
+    // btnPrint.addDisposeListener( aE -> btnPrint.getImage().dispose() );
 
     btnPrint.addSelectionListener( new SelectionAdapter() {
 

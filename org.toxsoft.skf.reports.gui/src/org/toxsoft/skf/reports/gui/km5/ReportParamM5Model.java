@@ -6,7 +6,7 @@ import static org.toxsoft.core.tsgui.valed.api.IValedControlConstants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
-import static org.toxsoft.skf.reports.gui.km5.IReportsGuiResources.*;
+import static org.toxsoft.skf.reports.gui.km5.ISkResources.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
 import org.toxsoft.core.tsgui.bricks.actions.*;

@@ -4,7 +4,7 @@ import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
-import static org.toxsoft.skf.reports.gui.km5.IReportsGuiResources.*;
+import static org.toxsoft.skf.reports.gui.km5.ISkResources.*;
 import static org.toxsoft.skf.reports.templates.service.IVtTemplateEditorServiceHardConstants.*;
 
 import org.toxsoft.core.tsgui.chart.api.*;

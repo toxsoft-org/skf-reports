@@ -1,6 +1,6 @@
 package org.toxsoft.skf.reports.gui.panels;
 
-import static org.toxsoft.skf.reports.gui.panels.IReportsGuiResources.*;
+import static org.toxsoft.skf.reports.gui.panels.ISkResources.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
@@ -20,9 +20,9 @@ import org.toxsoft.core.tslib.utils.errors.*;
 public class PanelGwidSelector
     extends AbstractTsDialogPanel<Gwid, ITsGuiContext> {
 
-  private ClassInfoViewerPanel classesPanel;
-  private ObjectViewerPanel    skObjectsPanel;
-  private RtDataInfoViewerPanel  rtDataPanel;
+  private ClassInfoViewerPanel  classesPanel;
+  private ObjectViewerPanel     skObjectsPanel;
+  private RtDataInfoViewerPanel rtDataPanel;
 
   /**
    * Конструктор панели, предназаначенной для вставки в диалог {@link TsDialog}.
@@ -91,7 +91,7 @@ public class PanelGwidSelector
   public static final Gwid selectGwid( Gwid aGwid, ITsGuiContext aContext ) {
     TsNullArgumentRtException.checkNull( aContext );
     IDialogPanelCreator<Gwid, ITsGuiContext> creator = PanelGwidSelector::new;
-    ITsDialogInfo dlgInfo = new TsDialogInfo( aContext, DLG_T_GWID_SEL, STR_MSG_GWID_SELECTION );
+    ITsDialogInfo dlgInfo = new TsDialogInfo( aContext, DLG_GWID_SELECTOR, DLG_GWID_SELECTOR_D );
     TsDialog<Gwid, ITsGuiContext> d = new TsDialog<>( dlgInfo, aGwid, aContext, creator );
     return d.execData();
   }
@@ -100,11 +100,11 @@ public class PanelGwidSelector
   protected ValidationResult doValidate() {
     // check selected object
     if( skObjectsPanel.getSelectedObj() == null ) {
-      return ValidationResult.error( STR_MSG_SELECT_OBJ );
+      return ValidationResult.error( MSG_ERR_NO_OBJ_SELECTED );
     }
     // check selected rtData
     if( rtDataPanel.getSelectedRtData() == null ) {
-      return ValidationResult.error( STR_MSG_SELECT_DATA );
+      return ValidationResult.error( MSG_ERR_NO_DATA_SELECTED );
     }
     return ValidationResult.SUCCESS;
   }

@@ -2,7 +2,7 @@ package org.toxsoft.skf.reports.gui.utils;
 
 import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
-import static org.toxsoft.skf.reports.gui.utils.IReportsGuiResources.*;
+import static org.toxsoft.skf.reports.gui.utils.ISkResources.*;
 import static org.toxsoft.uskat.core.api.hqserv.ISkHistoryQueryServiceConstants.*;
 
 import java.text.*;

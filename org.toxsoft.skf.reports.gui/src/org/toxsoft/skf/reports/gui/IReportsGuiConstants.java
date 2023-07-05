@@ -4,7 +4,7 @@ import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.impl.DataDef.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
-import static org.toxsoft.skf.reports.gui.IReportsGuiResources.*;
+import static org.toxsoft.skf.reports.gui.ISkResources.*;
 
 import org.eclipse.e4.core.contexts.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;

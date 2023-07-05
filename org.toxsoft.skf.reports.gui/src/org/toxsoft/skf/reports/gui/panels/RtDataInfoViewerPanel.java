@@ -1,7 +1,7 @@
 package org.toxsoft.skf.reports.gui.panels;
 
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
-import static org.toxsoft.skf.reports.gui.panels.IReportsGuiResources.*;
+import static org.toxsoft.skf.reports.gui.panels.ISkResources.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
 import org.eclipse.swt.widgets.Composite;

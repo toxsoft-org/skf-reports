@@ -3,7 +3,7 @@ package org.toxsoft.skf.reports.gui.panels;
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.skf.reports.gui.IReportsGuiConstants.*;
-import static org.toxsoft.skf.reports.gui.panels.IReportsGuiResources.*;
+import static org.toxsoft.skf.reports.gui.panels.ISkResources.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
 import java.lang.reflect.*;
@@ -72,15 +72,17 @@ public class GraphTemplateEditorPanel
   IM5CollectionPanel<IVtGraphTemplate> graphTemplatesPanel;
 
   private CTabFolder tabFolder;
-  TimeInterval       initValues =
+
+  TimeInterval initValues =
       new TimeInterval( System.currentTimeMillis() - 24L * 60L * 60L * 1000L, System.currentTimeMillis() );
 
-  SimpleDateFormat                    sdf              = new SimpleDateFormat( "dd.MM.YY HH:mm:ss" ); //$NON-NLS-1$
+  SimpleDateFormat sdf = new SimpleDateFormat( "dd.MM.YY HH:mm:ss" ); //$NON-NLS-1$
+
   /**
    * лист отчета
    */
   final ITsNodeKind<IVtGraphTemplate> NK_TEMPLATE_LEAF =
-      new TsNodeKind<>( "LeafTemplate", IVtGraphTemplate.class, false, ICONID_GRAPH_TEMPLATE );       //$NON-NLS-1$
+      new TsNodeKind<>( "LeafTemplate", IVtGraphTemplate.class, false, ICONID_GRAPH_TEMPLATE ); //$NON-NLS-1$
 
   /**
    * узел пользователя

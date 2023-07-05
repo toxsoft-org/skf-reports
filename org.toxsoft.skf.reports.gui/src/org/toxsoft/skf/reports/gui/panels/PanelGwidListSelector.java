@@ -1,6 +1,6 @@
 package org.toxsoft.skf.reports.gui.panels;
 
-import static org.toxsoft.skf.reports.gui.panels.IReportsGuiResources.*;
+import static org.toxsoft.skf.reports.gui.panels.ISkResources.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
@@ -25,7 +25,7 @@ public class PanelGwidListSelector
 
   private ClassInfoViewerPanel   classesPanel;
   private ObjectCheckedListPanel skObjectCheckedListPanel;
-  private RtDataCheckedListPanel   rtDataCheckedListPanel;
+  private RtDataCheckedListPanel rtDataCheckedListPanel;
 
   /**
    * Конструктор панели, предназаначенной для вставки в диалог {@link TsDialog}.
@@ -106,12 +106,12 @@ public class PanelGwidListSelector
     // check selected objects
     IList<ISkObject> selObjList = skObjectCheckedListPanel.getSelectedObjs();
     if( selObjList == null || selObjList.isEmpty() ) {
-      return ValidationResult.error( STR_MSG_SELECT_OBJ );
+      return ValidationResult.error( MSG_ERR_NO_OBJ_SELECTED );
     }
     // check selected rtDatas
     IList<IDtoRtdataInfo> selRtDataList = rtDataCheckedListPanel.getSelectedRtDataList();
     if( selRtDataList == null || selRtDataList.isEmpty() ) {
-      return ValidationResult.error( STR_MSG_SELECT_DATA );
+      return ValidationResult.error( MSG_ERR_NO_DATA_SELECTED );
     }
     return ValidationResult.SUCCESS;
   }

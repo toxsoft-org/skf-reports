@@ -1,6 +1,6 @@
 package org.toxsoft.skf.reports.gui.utils;
 
-import static org.toxsoft.skf.reports.gui.utils.IReportsGuiResources.*;
+import static org.toxsoft.skf.reports.gui.utils.ISkResources.*;
 
 import java.util.*;
 

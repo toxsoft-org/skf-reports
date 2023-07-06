@@ -39,6 +39,8 @@ import org.toxsoft.skf.reports.gui.panels.*;
 import org.toxsoft.skf.reports.gui.panels.valed.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.objserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 
@@ -465,7 +467,51 @@ public class GraphParamM5Model
             new GraphParamPaneComponentModown( aContext, model(), aItemsProvider, aLifecycleManager );
         return new M5CollectionPanelMpcModownWrapper<>( mpc, false );
       }
+
+      protected IM5EntityPanel<IVtGraphParam> doCreateEntityEditorPanel( ITsGuiContext aContext,
+          IM5LifecycleManager<IVtGraphParam> aLifecycleManager ) {
+        ISkConnectionSupplier connSup = tsContext().get( ISkConnectionSupplier.class );
+        ISkConnection conn = connSup.defConn();
+
+        return new M5DefaultEntityControlledPanel<>( aContext, model(), aLifecycleManager, new Controller( conn ) );
+      }
     } );
+
+  }
+
+  class Controller
+      extends M5EntityPanelWithValedsController<IVtGraphParam> {
+
+    private final ISkConnection conn;
+
+    public Controller( ISkConnection aConn ) {
+      super();
+      conn = aConn;
+    }
+
+    @Override
+    public boolean doProcessEditorValueChange( IValedControl<?> aEditor, IM5FieldDef<IVtGraphParam, ?> aFieldDef,
+        boolean aEditFinished ) {
+      switch( aFieldDef.id() ) {
+        case FID_GWID:
+          // when changing the Gwid then autocomplete name and description
+          IAtomicValue av = (IAtomicValue)editors().getByKey( FID_GWID ).getValue();
+          Gwid paramGwid = av.asValobj();
+          ISkClassInfo ci = conn.coreApi().sysdescr().findClassInfo( paramGwid.classId() );
+          if( ci != null ) {
+            IDtoRtdataInfo rtDataInfo = ci.rtdata().list().findByKey( paramGwid.propId() );
+            ValedAvStringText valedTitle = getEditor( FID_TITLE, ValedAvStringText.class );
+            valedTitle.setValue( AvUtils.avStr( rtDataInfo.nmName() ) );
+            ValedAvStringText valedDescr = getEditor( FID_DESCR, ValedAvStringText.class );
+            valedDescr.setValue( AvUtils
+                .avStr( !(rtDataInfo.description().isBlank()) ? rtDataInfo.description() : rtDataInfo.nmName() ) );
+          }
+          break;
+        default:
+          break;
+      }
+      return true;
+    }
 
   }
 

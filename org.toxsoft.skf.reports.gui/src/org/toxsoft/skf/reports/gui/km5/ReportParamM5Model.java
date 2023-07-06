@@ -23,6 +23,7 @@ import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.panels.toolbar.*;
+import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.controls.av.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
@@ -34,6 +35,8 @@ import org.toxsoft.skf.reports.gui.panels.*;
 import org.toxsoft.skf.reports.gui.panels.valed.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.objserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 
@@ -317,7 +320,53 @@ public class ReportParamM5Model
             new ReportParamPaneComponentModown( aContext, model(), aItemsProvider, aLifecycleManager );
         return new M5CollectionPanelMpcModownWrapper<>( mpc, false );
       }
+
+      @Override
+      protected IM5EntityPanel<IVtReportParam> doCreateEntityEditorPanel( ITsGuiContext aContext,
+          IM5LifecycleManager<IVtReportParam> aLifecycleManager ) {
+        ISkConnectionSupplier connSup = tsContext().get( ISkConnectionSupplier.class );
+        ISkConnection conn = connSup.defConn();
+
+        return new M5DefaultEntityControlledPanel<>( aContext, model(), aLifecycleManager, new Controller( conn ) );
+      }
+
     } );
+  }
+
+  class Controller
+      extends M5EntityPanelWithValedsController<IVtReportParam> {
+
+    private final ISkConnection conn;
+
+    public Controller( ISkConnection aConn ) {
+      super();
+      conn = aConn;
+    }
+
+    @Override
+    public boolean doProcessEditorValueChange( IValedControl<?> aEditor, IM5FieldDef<IVtReportParam, ?> aFieldDef,
+        boolean aEditFinished ) {
+      switch( aFieldDef.id() ) {
+        case FID_GWID:
+          // when changing the Gwid then autocomplete name and description
+          IAtomicValue av = (IAtomicValue)editors().getByKey( FID_GWID ).getValue();
+          Gwid paramGwid = av.asValobj();
+          ISkClassInfo ci = conn.coreApi().sysdescr().findClassInfo( paramGwid.classId() );
+          if( ci != null ) {
+            IDtoRtdataInfo rtDataInfo = ci.rtdata().list().findByKey( paramGwid.propId() );
+            ValedAvStringText valedTitle = getEditor( FID_TITLE, ValedAvStringText.class );
+            valedTitle.setValue( AvUtils.avStr( rtDataInfo.nmName() ) );
+            ValedAvStringText valedDescr = getEditor( FID_DESCR, ValedAvStringText.class );
+            valedDescr.setValue( AvUtils
+                .avStr( !(rtDataInfo.description().isBlank()) ? rtDataInfo.description() : rtDataInfo.nmName() ) );
+          }
+          break;
+        default:
+          break;
+      }
+      return true;
+    }
+
   }
 
   @Override

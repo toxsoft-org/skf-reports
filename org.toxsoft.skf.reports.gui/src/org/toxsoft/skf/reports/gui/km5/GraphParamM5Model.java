@@ -498,13 +498,24 @@ public class GraphParamM5Model
           IAtomicValue av = (IAtomicValue)editors().getByKey( FID_GWID ).getValue();
           Gwid paramGwid = av.asValobj();
           ISkClassInfo ci = conn.coreApi().sysdescr().findClassInfo( paramGwid.classId() );
-          if( ci != null ) {
+          ISkObject editObj = conn.coreApi().objService().find( paramGwid.skid() );
+          if( ci != null && editObj != null ) {
             IDtoRtdataInfo rtDataInfo = ci.rtdata().list().findByKey( paramGwid.propId() );
-            ValedAvStringText valedTitle = getEditor( FID_TITLE, ValedAvStringText.class );
-            valedTitle.setValue( AvUtils.avStr( rtDataInfo.nmName() ) );
-            ValedAvStringText valedDescr = getEditor( FID_DESCR, ValedAvStringText.class );
-            valedDescr.setValue( AvUtils
-                .avStr( !(rtDataInfo.description().isBlank()) ? rtDataInfo.description() : rtDataInfo.nmName() ) );
+            // работаем только в том случае если поле пустое
+            av = (IAtomicValue)editors().getByKey( FID_TITLE ).getValue();
+            if( av.asString().isBlank() ) {
+              ValedAvStringText valedTitle = getEditor( FID_TITLE, ValedAvStringText.class );
+              // dima 27.07.23 по указанию Синько подставляем имя и описание объекта
+              // valedTitle.setValue( AvUtils.avStr( rtDataInfo.nmName() ) );
+              valedTitle.setValue( AvUtils.avStr( editObj.nmName() ) );
+            }
+            av = (IAtomicValue)editors().getByKey( FID_DESCR ).getValue();
+            if( av.asString().isBlank() ) {
+              ValedAvStringText valedDescr = getEditor( FID_DESCR, ValedAvStringText.class );
+              // valedDescr.setValue( AvUtils
+              // .avStr( !(rtDataInfo.description().isBlank()) ? rtDataInfo.description() : rtDataInfo.nmName() ) );
+              valedDescr.setValue( AvUtils.avStr( editObj.description() ) );
+            }
           }
           break;
         default:

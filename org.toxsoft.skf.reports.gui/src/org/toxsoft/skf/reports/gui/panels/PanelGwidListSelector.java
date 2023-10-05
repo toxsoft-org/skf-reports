@@ -111,7 +111,7 @@ public class PanelGwidListSelector
     // check selected rtDatas
     IList<IDtoRtdataInfo> selRtDataList = rtDataCheckedListPanel.getSelectedRtDataList();
     if( selRtDataList == null || selRtDataList.isEmpty() ) {
-      return ValidationResult.error( MSG_ERR_NO_DATA_SELECTED );
+      return ValidationResult.error( MSG_ERR_NO_PROP_SELECTED );
     }
     return ValidationResult.SUCCESS;
   }

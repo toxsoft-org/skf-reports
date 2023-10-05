@@ -2,24 +2,22 @@ package org.toxsoft.skf.reports.gui.panels;
 
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 
-import org.eclipse.swt.widgets.Composite;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
-import org.toxsoft.core.tsgui.bricks.stdevents.ITsSelectionChangeListener;
-import org.toxsoft.core.tsgui.m5.IM5Domain;
-import org.toxsoft.core.tsgui.m5.IM5Model;
-import org.toxsoft.core.tsgui.m5.gui.mpc.IMultiPaneComponentConstants;
-import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
-import org.toxsoft.core.tsgui.panels.TsPanel;
-import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
-import org.toxsoft.core.tsgui.utils.layout.EBorderLayoutPlacement;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
-import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.gui.km5.sgw.ISgwM5Constants;
+import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.bricks.stdevents.*;
+import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.gui.mpc.*;
+import org.toxsoft.core.tsgui.m5.gui.panels.*;
+import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.gui.conn.*;
+import org.toxsoft.uskat.core.gui.km5.sgw.*;
 
 /**
  * Панель просмотра списка классов ts4.<br>
@@ -37,8 +35,8 @@ public class ClassInfoViewerPanel
     if( this.skObjectCheckedListPanel != null ) {
       this.skObjectCheckedListPanel.setClass( this.selectedClass );
     }
-    if( this.rtDataPanel != null ) {
-      this.rtDataPanel.setClass( this.selectedClass );
+    if( this.propPanel != null ) {
+      this.propPanel.setClass( this.selectedClass );
     }
     if( this.rtDataCheckedListPanel != null ) {
       this.rtDataCheckedListPanel.setClass( this.selectedClass );
@@ -47,10 +45,10 @@ public class ClassInfoViewerPanel
 
   final ISkConnection                      conn;
   private IM5CollectionPanel<ISkClassInfo> classesPanel;
-  private ObjectViewerPanel              skObjectPanel            = null;
-  private RtDataInfoViewerPanel            rtDataPanel              = null;
+  private ObjectViewerPanel                skObjectPanel            = null;
+  private IClassPropPanel                  propPanel                = null;
   private ISkClassInfo                     selectedClass            = null;
-  private ObjectCheckedListPanel         skObjectCheckedListPanel = null;
+  private ObjectCheckedListPanel           skObjectCheckedListPanel = null;
   private RtDataCheckedListPanel           rtDataCheckedListPanel   = null;
 
   /**
@@ -68,10 +66,10 @@ public class ClassInfoViewerPanel
   }
 
   /**
-   * @param aRtDataPanel {@link RtDataInfoViewerPanel} panel to show list of rtDatas
+   * @param aPropPanel {@link IClassPropPanel} panel to show list of class properties
    */
-  public void setRtDataPanel( RtDataInfoViewerPanel aRtDataPanel ) {
-    rtDataPanel = aRtDataPanel;
+  public void setPropPanel( IClassPropPanel aPropPanel ) {
+    propPanel = aPropPanel;
   }
 
   /**

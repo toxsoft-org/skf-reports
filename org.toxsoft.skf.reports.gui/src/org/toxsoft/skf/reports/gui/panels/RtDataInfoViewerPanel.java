@@ -38,7 +38,7 @@ import org.toxsoft.uskat.core.gui.km5.sgw.*;
  */
 public class RtDataInfoViewerPanel
     extends TsPanel
-    implements IM5ItemsProvider<IDtoRtdataInfo> {
+    implements IM5ItemsProvider<IDtoRtdataInfo>, IClassPropPanel {
 
   private final ITsSelectionChangeListener<IDtoRtdataInfo> dataChangeListener = ( aSource, aSelectedItem ) -> {
     this.selectedRtData = aSelectedItem;
@@ -58,9 +58,9 @@ public class RtDataInfoViewerPanel
       STR_D_HIDE_ASYNC, ITsStdIconIds.ICONID_VIEW_FILTER );
 
   /**
-   * @return {#link IDtoRtdataInfo} parameter selected by user
+   * @return {#link IDtoClassPropInfoBase} prop selected by user
    */
-  public IDtoRtdataInfo getSelectedRtData() {
+  public IDtoClassPropInfoBase getSelectedProp() {
     return selectedRtData;
   }
 
@@ -145,6 +145,7 @@ public class RtDataInfoViewerPanel
   /**
    * @param aClassInfo {@link ISkClassInfo} выбранный класс объекты которого нужно отобразить
    */
+  @Override
   public void setClass( ISkClassInfo aClassInfo ) {
     currClass = aClassInfo;
     rtDataInfoPanel.refresh();
@@ -163,6 +164,7 @@ public class RtDataInfoViewerPanel
    *
    * @param aGwid выбранный параметр
    */
+  @Override
   public void select( Gwid aGwid ) {
     ISkClassInfo classInfo = conn.coreApi().sysdescr().findClassInfo( aGwid.classId() );
     IDtoRtdataInfo dataInfo = classInfo.rtdata().list().findByKey( aGwid.propId() );

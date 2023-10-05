@@ -792,7 +792,7 @@ public class ReportTemplateUtilities {
 
       @Override
       public IMappedSkids rivets() {
-        return null;
+        return IMappedSkids.EMPTY;
       }
 
       @Override

@@ -12,12 +12,15 @@ interface ISkResources {
   /**
    * {@link PanelGwidSelector}
    */
-  String DLG_GWID_SELECTOR           = Messages.getString( "DLG_GWID_SELECTOR" );           //$NON-NLS-1$
-  String DLG_GWID_SELECTOR_D         = Messages.getString( "DLG_GWID_SELECTOR_D" );         //$NON-NLS-1$
-  String MSG_ERR_NO_OBJ_SELECTED     = Messages.getString( "MSG_ERR_NO_OBJ_SELECTED" );     //$NON-NLS-1$
-  String MSG_ERR_NO_PROP_SELECTED    = Messages.getString( "MSG_ERR_NO_DATA_SELECTED" );    //$NON-NLS-1$
-  String STR_N_CLASS_PROP_KIND       = Messages.getString( "STR_N_CLASS_PROP_KIND" );       //$NON-NLS-1$
-  String STR_D_CLASS_PROP_KIND       = Messages.getString( "STR_D_CLASS_PROP_KIND" );       //$NON-NLS-1$
+  String DLG_GWID_SELECTOR        = Messages.getString( "DLG_GWID_SELECTOR" );        //$NON-NLS-1$
+  String DLG_GWID_SELECTOR_D      = Messages.getString( "DLG_GWID_SELECTOR_D" );      //$NON-NLS-1$
+  String MSG_ERR_NO_OBJ_SELECTED  = Messages.getString( "MSG_ERR_NO_OBJ_SELECTED" );  //$NON-NLS-1$
+  String MSG_ERR_NO_PROP_SELECTED = Messages.getString( "MSG_ERR_NO_DATA_SELECTED" ); //$NON-NLS-1$
+  String STR_N_CLASS_PROP_KIND    = Messages.getString( "STR_N_CLASS_PROP_KIND" );    //$NON-NLS-1$
+  String STR_D_CLASS_PROP_KIND    = Messages.getString( "STR_D_CLASS_PROP_KIND" );    //$NON-NLS-1$
+  String STR_N_CONN_ID_CHAIN      = "Id chain of ISkConnection";
+  String STR_D_CONN_ID_CHAIN      = "Id chain of ISkConnection to use in dialog";
+
   /**
    * {@link PanelGwidListSelector}
    */

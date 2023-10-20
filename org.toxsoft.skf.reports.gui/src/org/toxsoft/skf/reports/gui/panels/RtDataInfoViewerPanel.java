@@ -22,6 +22,7 @@ import org.toxsoft.core.tsgui.panels.toolbar.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.bricks.filter.*;
+import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
@@ -60,6 +61,7 @@ public class RtDataInfoViewerPanel
   /**
    * @return {#link IDtoClassPropInfoBase} prop selected by user
    */
+  @Override
   public IDtoClassPropInfoBase getSelectedProp() {
     return selectedRtData;
   }
@@ -79,7 +81,14 @@ public class RtDataInfoViewerPanel
     panelGwidSelector = aPanelGwidSelector;
     this.setLayout( new BorderLayout() );
     ISkConnectionSupplier connSup = aContext.get( ISkConnectionSupplier.class );
-    conn = connSup.defConn();
+    // проверяем в контекте наличие информации о соединении
+    if( tsContext().params().hasKey( PanelGwidSelector.OPDEF_CONN_ID_CHAIN.id() ) ) {
+      IdChain idChain = PanelGwidSelector.OPDEF_CONN_ID_CHAIN.getValue( tsContext().params() ).asValobj();
+      conn = connSup.getConn( idChain );
+    }
+    else {
+      conn = connSup.defConn();
+    }
     IM5Domain m5Domain = conn.scope().get( IM5Domain.class );
     // тут получаем KM5 модель ISkObject
     IM5Model<IDtoRtdataInfo> model = m5Domain.getModel( ISgwM5Constants.MID_SGW_RTDATA_INFO, IDtoRtdataInfo.class );

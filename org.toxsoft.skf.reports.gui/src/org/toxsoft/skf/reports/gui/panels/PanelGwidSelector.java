@@ -14,6 +14,7 @@ import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
+import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
@@ -34,6 +35,16 @@ public class PanelGwidSelector
       TSID_DESCRIPTION, STR_D_CLASS_PROP_KIND, //
       TSID_KEEPER_ID, ESkClassPropKind.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( ESkClassPropKind.RTDATA ) //
+  );
+
+  /**
+   * id of ISkConnection to use in dialog
+   */
+  public static IDataDef OPDEF_CONN_ID_CHAIN = DataDef.create( MPC_OP_ID + ".IdChain", VALOBJ, //$NON-NLS-1$
+      TSID_NAME, STR_N_CONN_ID_CHAIN, //
+      TSID_DESCRIPTION, STR_D_CONN_ID_CHAIN, //
+      TSID_KEEPER_ID, IdChain.KEEPER_ID, //
+      TSID_DEFAULT_VALUE, avValobj( IdChain.NULL ) //
   );
 
   private ClassInfoViewerPanel classesPanel;
@@ -163,12 +174,16 @@ public class PanelGwidSelector
    * @param aGwid {@link Gwid} для инициализации
    * @param aContext {@link ITsGuiContext} - контекст
    * @param aClassPropKind {@link ESkClassPropKind} - тип свойств для выбора
+   * @param aIdChain {@link IdChain} - id connection
    * @return {@link Gwid} - выбранный параметр <b>null</b> в случает отказа от редактирования
    */
-  public static final Gwid selectGwid( Gwid aGwid, ITsGuiContext aContext, ESkClassPropKind aClassPropKind ) {
+  public static final Gwid selectGwid( Gwid aGwid, ITsGuiContext aContext, ESkClassPropKind aClassPropKind,
+      IdChain aIdChain ) {
     TsNullArgumentRtException.checkNull( aContext );
     OPDEF_CLASS_PROP_KIND.setValue( aContext.params(), avValobj( aClassPropKind ) );
-
+    if( aIdChain != null ) {
+      OPDEF_CONN_ID_CHAIN.setValue( aContext.params(), avValobj( aIdChain ) );
+    }
     IDialogPanelCreator<Gwid, ITsGuiContext> creator = PanelGwidSelector::new;
     ITsDialogInfo dlgInfo = new TsDialogInfo( aContext, DLG_GWID_SELECTOR, DLG_GWID_SELECTOR_D );
     TsDialog<Gwid, ITsGuiContext> d = new TsDialog<>( dlgInfo, aGwid, aContext, creator );

@@ -75,7 +75,7 @@ public class ValedSkidEditor
   protected boolean doProcessButtonPress() {
     // create and dispaly Skid selector
     Gwid initVal = canGetValue().isOk() ? Gwid.createObj( getValue() ) : null;
-    Gwid gwid = PanelGwidSelector.selectGwid( initVal, tsContext(), ESkClassPropKind.RTDATA );
+    Gwid gwid = PanelGwidSelector.selectGwid( initVal, tsContext(), ESkClassPropKind.RTDATA, null );
     if( gwid != null ) {
       doSetUnvalidatedValue( gwid.skid() );
       return true;

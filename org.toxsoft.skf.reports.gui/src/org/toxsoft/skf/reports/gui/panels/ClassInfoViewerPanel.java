@@ -12,6 +12,7 @@ import org.toxsoft.core.tsgui.m5.gui.panels.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
@@ -85,7 +86,14 @@ public class ClassInfoViewerPanel
     super( aParent, aContext );
     this.setLayout( new BorderLayout() );
     ISkConnectionSupplier connSup = aContext.get( ISkConnectionSupplier.class );
-    conn = connSup.defConn();
+    // проверяем в контекте наличие информации о соединении
+    if( tsContext().params().hasKey( PanelGwidSelector.OPDEF_CONN_ID_CHAIN.id() ) ) {
+      IdChain idChain = PanelGwidSelector.OPDEF_CONN_ID_CHAIN.getValue( tsContext().params() ).asValobj();
+      conn = connSup.getConn( idChain );
+    }
+    else {
+      conn = connSup.defConn();
+    }
     // тут получаем KM5 модель ISkClassInfo
     IM5Domain m5 = conn.scope().get( IM5Domain.class );
     IM5Model<ISkClassInfo> model = m5.getModel( ISgwM5Constants.MID_SGW_CLASS_INFO, ISkClassInfo.class );

@@ -13,6 +13,7 @@ import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
@@ -64,7 +65,14 @@ public class EventInfoViewerPanel
     panelGwidSelector = aPanelGwidSelector;
     this.setLayout( new BorderLayout() );
     ISkConnectionSupplier connSup = aContext.get( ISkConnectionSupplier.class );
-    conn = connSup.defConn();
+    // проверяем в контекте наличие информации о соединении
+    if( tsContext().params().hasKey( PanelGwidSelector.OPDEF_CONN_ID_CHAIN.id() ) ) {
+      IdChain idChain = PanelGwidSelector.OPDEF_CONN_ID_CHAIN.getValue( tsContext().params() ).asValobj();
+      conn = connSup.getConn( idChain );
+    }
+    else {
+      conn = connSup.defConn();
+    }
     IM5Domain m5Domain = conn.scope().get( IM5Domain.class );
     // тут получаем KM5 модель IDtoEventInfo
     IM5Model<IDtoEventInfo> model = m5Domain.getModel( ISgwM5Constants.MID_SGW_EVENT_INFO, IDtoEventInfo.class );

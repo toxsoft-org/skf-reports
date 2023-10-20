@@ -73,8 +73,8 @@ public class ValedGwidEditor
   @Override
   protected boolean doProcessButtonPress() {
     // create and dispaly Gwid selector
-    Gwid gwid =
-        PanelGwidSelector.selectGwid( canGetValue().isOk() ? getValue() : null, tsContext(), ESkClassPropKind.RTDATA );
+    Gwid gwid = PanelGwidSelector.selectGwid( canGetValue().isOk() ? getValue() : null, tsContext(),
+        ESkClassPropKind.RTDATA, null );
 
     if( gwid != null ) {
       doSetUnvalidatedValue( gwid );

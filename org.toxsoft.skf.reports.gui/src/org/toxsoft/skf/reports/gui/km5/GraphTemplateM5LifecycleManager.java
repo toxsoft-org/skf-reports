@@ -26,7 +26,7 @@ import org.toxsoft.uskat.core.impl.dto.*;
 public class GraphTemplateM5LifecycleManager
     extends KM5LifecycleManagerBasic<IVtGraphTemplate, ISkConnection> {
 
-  private static SimpleStridGenaretor stridGenerator = new SimpleStridGenaretor();
+  private static SimpleStridGenerator stridGenerator = new SimpleStridGenerator();
 
   /**
    * Constructor.

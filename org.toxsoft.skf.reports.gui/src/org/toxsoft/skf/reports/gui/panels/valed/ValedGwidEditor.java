@@ -1,13 +1,17 @@
 package org.toxsoft.skf.reports.gui.panels.valed;
 
 import static org.toxsoft.core.tsgui.valed.api.IValedControlConstants.*;
+import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
+import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static org.toxsoft.skf.reports.gui.panels.valed.IReportsGuiResources.*;
 
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.controls.helpers.*;
 import org.toxsoft.core.tsgui.valed.impl.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.*;
@@ -29,6 +33,21 @@ public class ValedGwidEditor
    * The factory name.
    */
   public static final String FACTORY_NAME = VALED_EDNAME_PREFIX + ".GwidEditor"; //$NON-NLS-1$
+
+  /**
+   * Id for gwid kind option
+   */
+  public static final String OPID_GWID_KIND = "gwidKind"; //$NON-NLS-1$
+
+  /**
+   * The gwid kind will be returned.
+   */
+  public static final IDataDef OPDEF_GWID_KIND = DataDef.create( OPID_GWID_KIND, VALOBJ, //
+      TSID_NAME, STR_GWID_KIND, //
+      TSID_DESCRIPTION, STR_GWID_KIND_D, //
+      TSID_KEEPER_ID, EGwidKind.KEEPER_ID, //
+      TSID_DEFAULT_VALUE, avValobj( EGwidKind.GW_RTDATA ) //
+  );
 
   /**
    * The factory class.
@@ -67,14 +86,14 @@ public class ValedGwidEditor
     setParamIfNull( OPDEF_IS_WIDTH_FIXED, AV_FALSE );
     setParamIfNull( OPDEF_IS_HEIGHT_FIXED, AV_TRUE );
     setParamIfNull( OPDEF_VERTICAL_SPAN, AV_1 );
-
   }
 
   @Override
   protected boolean doProcessButtonPress() {
+    EGwidKind gwidKind = params().getValobj( OPDEF_GWID_KIND );
+    ESkClassPropKind propKind = ESkClassPropKind.getById( gwidKind.id() );
     // create and dispaly Gwid selector
-    Gwid gwid = PanelGwidSelector.selectGwid( canGetValue().isOk() ? getValue() : null, tsContext(),
-        ESkClassPropKind.RTDATA, null );
+    Gwid gwid = PanelGwidSelector.selectGwid( canGetValue().isOk() ? getValue() : null, tsContext(), propKind, null );
 
     if( gwid != null ) {
       doSetUnvalidatedValue( gwid );

@@ -6,54 +6,64 @@ import static org.toxsoft.skf.reports.gui.IReportsGuiConstants.*;
 import static org.toxsoft.skf.reports.gui.panels.ISkResources.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
-import java.lang.reflect.*;
-import java.text.*;
+import java.text.SimpleDateFormat;
 
-import org.eclipse.swt.*;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.toxsoft.core.tsgui.bricks.actions.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
 import org.toxsoft.core.tsgui.bricks.tsnodes.*;
-import org.toxsoft.core.tsgui.bricks.tstree.tmm.*;
-import org.toxsoft.core.tsgui.chart.api.*;
-import org.toxsoft.core.tsgui.dialogs.*;
-import org.toxsoft.core.tsgui.dialogs.datarec.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
+import org.toxsoft.core.tsgui.bricks.tstree.tmm.ITsTreeMaker;
+import org.toxsoft.core.tsgui.chart.api.IG2DataSet;
+import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
+import org.toxsoft.core.tsgui.dialogs.datarec.ITsDialogInfo;
+import org.toxsoft.core.tsgui.dialogs.datarec.TsDialogInfo;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
 import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.*;
-import org.toxsoft.core.tsgui.m5.gui.mpc.*;
-import org.toxsoft.core.tsgui.m5.gui.mpc.impl.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
-import org.toxsoft.core.tsgui.m5.model.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.panels.toolbar.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.skf.reports.chart.utils.gui.dataset.*;
-import org.toxsoft.skf.reports.chart.utils.gui.panels.*;
-import org.toxsoft.skf.reports.gui.km5.*;
-import org.toxsoft.skf.reports.gui.utils.*;
+import org.toxsoft.core.tsgui.m5.gui.M5GuiUtils;
+import org.toxsoft.core.tsgui.m5.gui.mpc.IMultiPaneComponentConstants;
+import org.toxsoft.core.tsgui.m5.gui.mpc.impl.MultiPaneComponentModown;
+import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
+import org.toxsoft.core.tsgui.m5.gui.panels.impl.M5CollectionPanelMpcModownWrapper;
+import org.toxsoft.core.tsgui.m5.model.IM5LifecycleManager;
+import org.toxsoft.core.tsgui.m5.model.impl.M5BunchEdit;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.panels.toolbar.ITsToolbar;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tsgui.utils.layout.EBorderLayoutPlacement;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.bricks.time.EQueryIntervalType;
+import org.toxsoft.core.tslib.bricks.time.ITimedList;
+import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
+import org.toxsoft.core.tslib.bricks.time.impl.TimeInterval;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMap;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMapEdit;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.skf.reports.chart.utils.gui.dataset.G2SelfUploadHistoryDataSetNew;
+import org.toxsoft.skf.reports.chart.utils.gui.dataset.IDataSetParam;
+import org.toxsoft.skf.reports.chart.utils.gui.panels.ChartPanel;
+import org.toxsoft.skf.reports.gui.km5.GraphTemplateM5LifecycleManager;
+import org.toxsoft.skf.reports.gui.utils.IntervalSelectionDialogPanel;
+import org.toxsoft.skf.reports.gui.utils.ReportTemplateUtilities;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.gui.conn.*;
-import org.toxsoft.uskat.core.gui.glib.query.*;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.gui.glib.query.SkAbstractQueryDialog;
+import org.toxsoft.uskat.core.impl.SkThreadExecutorService;
+
+import core.tslib.bricks.threadexecutor.ITsThreadExecutor;
 
 /**
  * Панель редактора шаблонов графиков ts4.<br>
@@ -321,62 +331,55 @@ public class GraphTemplateEditorPanel
     IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
     // ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
 
+    // Исполнитель запросов в одном потоке
+    ITsThreadExecutor threadExecutor = SkThreadExecutorService.getExecutor( aReportDataConnection.coreApi() );
     // Максимальное время выполнения запроса (мсек)
     long timeout = aSelTemplate.maxExecutionTime();
-    try {
-      // Создание диалога прогресса выполнения запроса
-      SkQueryDialog progressDialog = new SkQueryDialog( getShell(), STR_EXEC_QUERY_FOR_GRAPH, timeout );
-      // fork = true, cancelable = true
-      progressDialog.run( true, true, aMonitor -> {
-        // Параметры запроса
-        IOptionSetEdit options = new OptionSet( OptionSetUtils.createOpSet( //
-            ISkHistoryQueryServiceConstants.OP_SK_MAX_EXECUTION_TIME, AvUtils.avInt( timeout ) //
-        ) );
-        // Формирование запроса
-        ISkQueryProcessedData query = aReportDataConnection.coreApi().hqService().createProcessedQuery( options );
-        try {
-          // Подготовка запроса
-          query.prepare( queryParams );
-          // Настройка обработки результатов запроса
-          query.genericChangeEventer().addListener( aSource -> {
-            ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-            if( q.state() == ESkQueryState.READY ) {
-              IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( query, queryParams );
-              IList<IG2DataSet> graphData =
-                  createG2SelfUploDataSetList( aSelTemplate, requestAnswer, aReportDataConnection );
-              for( IG2DataSet ds : graphData ) {
-                if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
-                  ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> chartPanel.refresh() );
-                }
-              }
-              // создаем новую закладку
-              CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
-              tabItem.setText( aSelTemplate.nmName() );
-              chartPanel = new ChartPanel( tabFolder, tsContext() );
+    // Создание диалога прогресса выполнения запроса
+    SkAbstractQueryDialog<ISkQueryProcessedData> dialog =
+        new SkAbstractQueryDialog<>( getShell(), STR_EXEC_QUERY_REPORT, timeout, threadExecutor ) {
 
-              tabItem.setControl( chartPanel );
-              tabFolder.setSelection( tabItem );
-              // chartPanel.setReportAnswer( graphData, aSelTemplate, true );
-              ReportTemplateUtilities.setReportAnswerToChart( chartPanel, graphData, aSelTemplate, true );
-              chartPanel.requestLayout();
-            }
-            if( q.state() == ESkQueryState.FAILED ) {
-              String stateMessage = q.stateMessage();
-              TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
-            }
-          } );
-          // Интервал запроса
-          IQueryInterval interval = new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() );
-          // Выполнение запроса
-          SkQueryUtils.execQueryWithProgress( query, interval, aMonitor, progressDialog );
-        }
-        finally {
-          query.close();
-        }
-      } );
-    }
-    catch( InvocationTargetException | InterruptedException ex ) {
-      LoggerUtils.errorLogger().error( ex );
-    }
+          @Override
+          protected ISkQueryProcessedData doCreateQuery( IOptionSetEdit aOptions ) {
+            return aReportDataConnection.coreApi().hqService().createProcessedQuery( aOptions );
+          }
+
+          @Override
+          protected void doPrepareQuery( ISkQueryProcessedData aQuery ) {
+            // Подготовка запроса
+            aQuery.prepare( queryParams );
+            // Настройка обработки результатов запроса
+            aQuery.genericChangeEventer().addListener( aSource -> {
+              ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+              if( q.state() == ESkQueryState.READY ) {
+                IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( aQuery, queryParams );
+                IList<IG2DataSet> graphData =
+                    createG2SelfUploDataSetList( aSelTemplate, requestAnswer, aReportDataConnection );
+                for( IG2DataSet ds : graphData ) {
+                  if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
+                    ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> chartPanel.refresh() );
+                  }
+                }
+                // создаем новую закладку
+                CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
+                tabItem.setText( aSelTemplate.nmName() );
+                chartPanel = new ChartPanel( tabFolder, tsContext() );
+
+                tabItem.setControl( chartPanel );
+                tabFolder.setSelection( tabItem );
+                // chartPanel.setReportAnswer( graphData, aSelTemplate, true );
+                ReportTemplateUtilities.setReportAnswerToChart( chartPanel, graphData, aSelTemplate, true );
+                chartPanel.requestLayout();
+              }
+              if( q.state() == ESkQueryState.FAILED ) {
+                String stateMessage = q.stateMessage();
+                TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
+              }
+            } );
+
+          }
+        };
+    // Запуск выполнения запроса
+    dialog.executeQuery( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
   }
 }

@@ -6,52 +6,69 @@ import static org.toxsoft.skf.reports.gui.IReportsGuiConstants.*;
 import static org.toxsoft.skf.reports.gui.panels.ISkResources.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
-import java.lang.reflect.*;
-import java.text.*;
-import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import org.eclipse.swt.*;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.jasperreports.gui.main.*;
-import org.toxsoft.core.tsgui.bricks.actions.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
+import org.toxsoft.core.jasperreports.gui.main.IJasperReportConstants;
+import org.toxsoft.core.jasperreports.gui.main.JasperReportViewer;
+import org.toxsoft.core.tsgui.bricks.actions.ITsActionDef;
+import org.toxsoft.core.tsgui.bricks.actions.TsActionDef;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
 import org.toxsoft.core.tsgui.bricks.tsnodes.*;
-import org.toxsoft.core.tsgui.bricks.tstree.tmm.*;
-import org.toxsoft.core.tsgui.dialogs.*;
-import org.toxsoft.core.tsgui.dialogs.datarec.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
+import org.toxsoft.core.tsgui.bricks.tstree.tmm.ITsTreeMaker;
+import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
+import org.toxsoft.core.tsgui.dialogs.datarec.ITsDialogInfo;
+import org.toxsoft.core.tsgui.dialogs.datarec.TsDialogInfo;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tsgui.graphics.icons.ITsStdIconIds;
 import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.*;
-import org.toxsoft.core.tsgui.m5.gui.mpc.*;
-import org.toxsoft.core.tsgui.m5.gui.mpc.impl.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
-import org.toxsoft.core.tsgui.m5.model.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.panels.toolbar.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tsgui.m5.gui.M5GuiUtils;
+import org.toxsoft.core.tsgui.m5.gui.mpc.IMultiPaneComponentConstants;
+import org.toxsoft.core.tsgui.m5.gui.mpc.impl.MultiPaneComponentModown;
+import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
+import org.toxsoft.core.tsgui.m5.gui.panels.impl.M5CollectionPanelMpcModownWrapper;
+import org.toxsoft.core.tsgui.m5.model.IM5ItemsProvider;
+import org.toxsoft.core.tsgui.m5.model.IM5LifecycleManager;
+import org.toxsoft.core.tsgui.m5.model.impl.M5BunchEdit;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.panels.toolbar.ITsToolbar;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tsgui.utils.layout.EBorderLayoutPlacement;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSetUtils;
 import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.skf.reports.gui.km5.*;
+import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
+import org.toxsoft.core.tslib.bricks.time.impl.TimeInterval;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMap;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMapEdit;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
+import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
+import org.toxsoft.skf.reports.gui.km5.ReportTemplateM5LifecycleManager;
 import org.toxsoft.skf.reports.gui.utils.*;
-import org.toxsoft.skf.reports.templates.service.*;
+import org.toxsoft.skf.reports.templates.service.IVtReportTemplate;
+import org.toxsoft.skf.reports.templates.service.IVtReportTemplateService;
 import org.toxsoft.uskat.core.api.hqserv.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.gui.conn.*;
-import org.toxsoft.uskat.core.gui.glib.query.*;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.gui.glib.query.SkAbstractQueryDialog;
+import org.toxsoft.uskat.core.impl.SkThreadExecutorService;
+
+import core.tslib.bricks.threadexecutor.ITsThreadExecutor;
 
 /**
  * Панель редактора шаблонов отчетов ts4.<br>
@@ -299,96 +316,88 @@ public class ReportTemplateEditorPanel
 
     IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
 
+    // Исполнитель запросов в одном потоке
+    ITsThreadExecutor threadExecutor = SkThreadExecutorService.getExecutor( aReportDataConnection.coreApi() );
     // Максимальное время выполнения запроса (мсек)
     long timeout = aSelTemplate.maxExecutionTime();
-    try {
-      // Создание диалога прогресса выполнения запроса
-      SkQueryDialog progressDialog = new SkQueryDialog( getShell(), STR_EXEC_QUERY_REPORT, timeout );
-      // fork = true, cancelable = true
-      progressDialog.run( true, true, aMonitor -> {
-        // Параметры запроса
-        IOptionSetEdit options = new OptionSet( OptionSetUtils.createOpSet( //
-            ISkHistoryQueryServiceConstants.OP_SK_MAX_EXECUTION_TIME, AvUtils.avInt( timeout ) //
-        ) );
-        // Формирование запроса
-        ISkQueryProcessedData query = aReportDataConnection.coreApi().hqService().createProcessedQuery( options );
-        try {
-          // Подготовка запроса
-          query.prepare( queryParams );
-          // Настройка обработки результатов запроса
-          IM5Model<IStringMap<IAtomicValue>> resultModel =
-              ReportTemplateUtilities.createM5ModelForTemplate( aSelTemplate );
-          query.genericChangeEventer().addListener( aSource -> {
-            ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-            LoggerUtils.defaultLogger().info( "State %s , %s", q.toString(), q.state().nmName() ); //$NON-NLS-1$
-            if( q.state() == ESkQueryState.READY ) {
-              IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( query, queryParams );
-              IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
-                  ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
-              // if( reportV == null ) {
-              // reportV = new JasperReportViewer( rightBoard, tsContext() );
-              // }
+    // Создание диалога прогресса выполнения запроса
+    SkAbstractQueryDialog<ISkQueryProcessedData> dialog =
+        new SkAbstractQueryDialog<>( getShell(), STR_EXEC_QUERY_REPORT, timeout, threadExecutor ) {
 
-              ITsGuiContext reportContext = new TsGuiContext( tsContext() );
-              IJasperReportConstants.REPORT_TITLE_M5_ID.setValue( reportContext.params(),
-                  AvUtils.avStr( aSelTemplate.description() ) );
+          @Override
+          protected ISkQueryProcessedData doCreateQuery( IOptionSetEdit aOptions ) {
+            return aReportDataConnection.coreApi().hqService().createProcessedQuery( aOptions );
+          }
 
-              // IJasperReportConstants.HAS_NUMBER_COLUMN_M5_ID.setValue( reportContext.params(),
-              // AvUtils.avBool( false ) );
+          @Override
+          protected void doPrepareQuery( ISkQueryProcessedData aQuery ) {
+            // Подготовка запроса
+            aQuery.prepare( queryParams );
+            // Настройка обработки результатов запроса
+            IM5Model<IStringMap<IAtomicValue>> resultModel =
+                ReportTemplateUtilities.createM5ModelForTemplate( aSelTemplate );
+            aQuery.genericChangeEventer().addListener( aSource -> {
+              ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+              LoggerUtils.defaultLogger().info( "State %s , %s", q.toString(), q.state().nmName() ); //$NON-NLS-1$
+              if( q.state() == ESkQueryState.READY ) {
+                IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( aQuery, queryParams );
+                IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
+                    ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
+                // if( reportV == null ) {
+                // reportV = new JasperReportViewer( rightBoard, tsContext() );
+                // }
 
-              // Многострочный подзаголовок отчёта
-              IJasperReportConstants.SUBTITLE_STRINGS.setValue( reportContext.params(),
-                  AvUtils.avValobj( new StringArrayList( getIntervalTitle( retVal, timestampFormat ) ) ) );
+                ITsGuiContext reportContext = new TsGuiContext( tsContext() );
+                IJasperReportConstants.REPORT_TITLE_M5_ID.setValue( reportContext.params(),
+                    AvUtils.avStr( aSelTemplate.description() ) );
 
-              // веса в процентах первых колонок
-              // IJasperReportConstants.COLUMNS_WEIGTHS.setValue( reportContext.params(),
-              // AvUtils.avValobj( new IntArrayList( 10, 20, 30 ) ) );
+                // IJasperReportConstants.HAS_NUMBER_COLUMN_M5_ID.setValue( reportContext.params(),
+                // AvUtils.avBool( false ) );
 
-              // Многострочный заголовок страниц
-              // IJasperReportConstants.PAGE_HEADER_STRINGS.setValue( reportContext.params(), AvUtils.avValobj(
-              // new StringArrayList( "Заголовок страницы 1", "Заголовок страницы 2", "Заголовок страницы 3" ) ) );
+                // Многострочный подзаголовок отчёта
+                IJasperReportConstants.SUBTITLE_STRINGS.setValue( reportContext.params(),
+                    AvUtils.avValobj( new StringArrayList( getIntervalTitle( retVal, timestampFormat ) ) ) );
 
-              // выясняем текущего пользователя
-              ISkConnectionSupplier conSupp = tsContext().get( ISkConnectionSupplier.class );
-              ISkConnection connectionForUser = conSupp.defConn();
-              ISkUser user = ConnectionUtiles.getConnectedUser( connectionForUser.coreApi() );
-              String userName = user.nmName().trim().length() > 0 ? user.nmName() : user.login();
+                // веса в процентах первых колонок
+                // IJasperReportConstants.COLUMNS_WEIGTHS.setValue( reportContext.params(),
+                // AvUtils.avValobj( new IntArrayList( 10, 20, 30 ) ) );
 
-              IJasperReportConstants.LEFT_BOTTOM_STR_M5_ID.setValue( reportContext.params(),
-                  AvUtils.avStr( AUTHOR_STR + userName ) );
-              IJasperReportConstants.RIGHT_BOTTOM_STR_M5_ID.setValue( reportContext.params(),
-                  AvUtils.avStr( DATE_STR + timestampFormat.format( new Date() ) ) );
+                // Многострочный заголовок страниц
+                // IJasperReportConstants.PAGE_HEADER_STRINGS.setValue( reportContext.params(), AvUtils.avValobj(
+                // new StringArrayList( "Заголовок страницы 1", "Заголовок страницы 2", "Заголовок страницы 3" ) ) );
 
-              // reportV.setJasperReportPrint( reportContext, resultModel, resultProvider );
-              // создаем новую закладку
-              CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
-              tabItem.setText( aSelTemplate.nmName() + getIntervalTitle( retVal, timestampFormat4Tab ) );
-              reportV = new JasperReportViewer( tabFolder, tsContext() );
-              tabItem.setControl( reportV );
+                // выясняем текущего пользователя
+                ISkConnectionSupplier conSupp = tsContext().get( ISkConnectionSupplier.class );
+                ISkConnection connectionForUser = conSupp.defConn();
+                ISkUser user = ConnectionUtiles.getConnectedUser( connectionForUser.coreApi() );
+                String userName = user.nmName().trim().length() > 0 ? user.nmName() : user.login();
 
-              tabFolder.setSelection( tabItem );
-              reportV.setJasperReportPrint( reportContext, resultModel, resultProvider );
-              reportV.requestLayout();
+                IJasperReportConstants.LEFT_BOTTOM_STR_M5_ID.setValue( reportContext.params(),
+                    AvUtils.avStr( AUTHOR_STR + userName ) );
+                IJasperReportConstants.RIGHT_BOTTOM_STR_M5_ID.setValue( reportContext.params(),
+                    AvUtils.avStr( DATE_STR + timestampFormat.format( new Date() ) ) );
 
-            }
-            if( q.state() == ESkQueryState.FAILED ) {
-              String stateMessage = q.stateMessage();
-              TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
-            }
-          } );
-          // Интервал запроса
-          IQueryInterval interval = new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() );
-          // Выполнение запроса
-          SkQueryUtils.execQueryWithProgress( query, interval, aMonitor, progressDialog );
-        }
-        finally {
-          query.close();
-        }
-      } );
-    }
-    catch( InvocationTargetException | InterruptedException ex ) {
-      LoggerUtils.errorLogger().error( ex );
-    }
+                // reportV.setJasperReportPrint( reportContext, resultModel, resultProvider );
+                // создаем новую закладку
+                CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
+                tabItem.setText( aSelTemplate.nmName() + getIntervalTitle( retVal, timestampFormat4Tab ) );
+                reportV = new JasperReportViewer( tabFolder, tsContext() );
+                tabItem.setControl( reportV );
+
+                tabFolder.setSelection( tabItem );
+                reportV.setJasperReportPrint( reportContext, resultModel, resultProvider );
+                reportV.requestLayout();
+
+              }
+              if( q.state() == ESkQueryState.FAILED ) {
+                String stateMessage = q.stateMessage();
+                TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
+              }
+            } );
+          }
+        };
+    // Запуск выполнения запроса
+    dialog.executeQuery( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
   }
 
   protected void doFormReportTest( IVtReportTemplate aSelTemplate, ISkConnection aReportDataConnection ) {

@@ -24,7 +24,7 @@ import org.toxsoft.uskat.core.impl.dto.*;
  * @author dima
  */
 public class ReportTemplateM5LifecycleManager
-    extends KM5LifecycleManagerBasic<IVtReportTemplate, ISkConnection> {
+    extends KM5LifecycleManagerBasic<IVtReportTemplate> {
 
   private static String PREFIX_TEMPLATE = "template"; //$NON-NLS-1$
 

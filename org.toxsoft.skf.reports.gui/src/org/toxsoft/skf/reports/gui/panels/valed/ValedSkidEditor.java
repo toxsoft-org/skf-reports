@@ -111,7 +111,10 @@ public class ValedSkidEditor
     TsDialogInfo di = new TsDialogInfo( ctx, DLG_T_SKID_SEL, STR_MSG_SKID_SELECTION );
     ISkObject initObj = aInitSkid == null ? null : conn.coreApi().objService().get( aInitSkid );
     ISkObject selObj = M5GuiUtils.askSelectItem( di, modelSk, initObj, lmSk.itemsProvider(), lmSk );
-    return selObj.skid();
+    if( selObj != null ) {
+      return selObj.skid();
+    }
+    return Skid.NONE;
   }
 
   @Override

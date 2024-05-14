@@ -931,6 +931,16 @@ public class ReportTemplateUtilities {
       public ISkUser author() {
         return null;
       }
+
+      @Override
+      public IAtomicValue readRtdataIfOpen( String aRtdataId ) {
+        return null;
+      }
+
+      @Override
+      public void writeRtdataIfOpen( String aRtdataId, IAtomicValue aValue ) {
+        // nop
+      }
     };
     return retVal;
   }

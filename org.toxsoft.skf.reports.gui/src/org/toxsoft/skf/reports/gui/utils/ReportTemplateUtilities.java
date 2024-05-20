@@ -938,8 +938,8 @@ public class ReportTemplateUtilities {
       }
 
       @Override
-      public void writeRtdataIfOpen( String aRtdataId, IAtomicValue aValue ) {
-        // nop
+      public boolean writeRtdataIfOpen( String aRtdataId, IAtomicValue aValue ) {
+        return false;
       }
     };
     return retVal;

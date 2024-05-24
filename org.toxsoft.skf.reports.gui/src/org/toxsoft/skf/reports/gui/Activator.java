@@ -1,9 +1,9 @@
 package org.toxsoft.skf.reports.gui;
 
-import org.toxsoft.core.tsgui.mws.bases.*;
+import org.toxsoft.core.tsgui.mws.bases.MwsActivator;
 
 /**
- * Reports management gui
+ * Reports management gui.
  *
  * @author max
  */

@@ -45,6 +45,7 @@ import org.toxsoft.core.tslib.av.impl.AvUtils;
 import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
 import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
 import org.toxsoft.core.tslib.av.opset.impl.OptionSetUtils;
+import org.toxsoft.core.tslib.bricks.threadexec.ITsThreadExecutor;
 import org.toxsoft.core.tslib.bricks.time.*;
 import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
 import org.toxsoft.core.tslib.bricks.time.impl.TimeInterval;
@@ -67,8 +68,6 @@ import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 import org.toxsoft.uskat.core.gui.glib.query.SkAbstractQueryDialog;
 import org.toxsoft.uskat.core.impl.SkThreadExecutorService;
-
-import core.tslib.bricks.threadexecutor.ITsThreadExecutor;
 
 /**
  * Панель редактора шаблонов отчетов ts4.<br>

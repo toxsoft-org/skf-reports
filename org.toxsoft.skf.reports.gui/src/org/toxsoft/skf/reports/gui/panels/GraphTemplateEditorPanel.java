@@ -36,6 +36,7 @@ import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
 import org.toxsoft.core.tsgui.utils.layout.EBorderLayoutPlacement;
 import org.toxsoft.core.tslib.av.impl.AvUtils;
 import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.bricks.threadexec.ITsThreadExecutor;
 import org.toxsoft.core.tslib.bricks.time.EQueryIntervalType;
 import org.toxsoft.core.tslib.bricks.time.ITimedList;
 import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
@@ -62,8 +63,6 @@ import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 import org.toxsoft.uskat.core.gui.glib.query.SkAbstractQueryDialog;
 import org.toxsoft.uskat.core.impl.SkThreadExecutorService;
-
-import core.tslib.bricks.threadexecutor.ITsThreadExecutor;
 
 /**
  * Панель редактора шаблонов графиков ts4.<br>

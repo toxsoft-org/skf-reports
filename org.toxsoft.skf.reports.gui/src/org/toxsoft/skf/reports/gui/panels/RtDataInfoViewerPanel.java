@@ -176,7 +176,11 @@ public class RtDataInfoViewerPanel
   @Override
   public void select( Gwid aGwid ) {
     ISkClassInfo classInfo = conn.coreApi().sysdescr().findClassInfo( aGwid.classId() );
-    IDtoRtdataInfo dataInfo = classInfo.rtdata().list().findByKey( aGwid.propId() );
-    rtDataInfoPanel.setSelectedItem( dataInfo );
+    if( classInfo != null ) {
+      if( classInfo.rtdata().list().hasKey( aGwid.propId() ) ) {
+        IDtoRtdataInfo dataInfo = classInfo.rtdata().list().findByKey( aGwid.propId() );
+        rtDataInfoPanel.setSelectedItem( dataInfo );
+      }
+    }
   }
 }

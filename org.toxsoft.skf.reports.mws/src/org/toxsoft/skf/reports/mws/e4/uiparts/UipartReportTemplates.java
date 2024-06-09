@@ -20,7 +20,7 @@ public class UipartReportTemplates
 
   @Override
   protected void doCreateContent( TsComposite aParent ) {
-    ITsGuiContext ctx = new TsGuiContext( getWindowContext() );
+    ITsGuiContext ctx = new TsGuiContext( tsContext() );
     panel = new ReportTemplateEditorPanel( aParent, ctx );
     panel.setLayoutData( BorderLayout.CENTER );
   }

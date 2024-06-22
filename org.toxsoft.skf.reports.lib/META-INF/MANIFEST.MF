@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.toxsoft.skf.reports.lib
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Toxsoft
 Automatic-Module-Name: org.toxsoft.skf.reports.lib
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.toxsoft.core.tslib,
  org.toxsoft.core.tsgui,
  org.toxsoft.core.tsgui.chart,

@@ -4,19 +4,22 @@ import static org.toxsoft.skf.reports.chart.utils.gui.IChartUtilsGuiSharedResour
 import static org.toxsoft.skf.reports.chart.utils.gui.IReportsChartUtilsGuiConstants.*;
 
 import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.*;
-import org.eclipse.swt.layout.*;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.chart.api.*;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.chart.api.IPlotDef;
 import org.toxsoft.core.tsgui.dialogs.datarec.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.utils.Pair;
 
 /**
  * Dialog panel for change visibility of charts

@@ -5,8 +5,8 @@ Bundle-SymbolicName: org.toxsoft.skf.reports.gui
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.toxsoft.skf.reports.gui.Activator
 Bundle-Vendor: Toxsoft
-Require-Bundle: javax.annotation,
- javax.inject,
+Require-Bundle: jakarta.inject.jakarta.inject-api,
+ jakarta.annotation-api,
  org.eclipse.core.runtime,
  org.eclipse.ui;resolution:=optional,
  org.eclipse.rap.ui;resolution:=optional,
@@ -23,7 +23,7 @@ Require-Bundle: javax.annotation,
  org.toxsoft.uskat.core.gui,
  org.toxsoft.skf.reports.lib,
  org.toxsoft.skf.reports.chart.utils.gui
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: org.toxsoft.skf.reports.gui
 Bundle-ActivationPolicy: lazy
 Export-Package: org.toxsoft.skf.reports.gui,

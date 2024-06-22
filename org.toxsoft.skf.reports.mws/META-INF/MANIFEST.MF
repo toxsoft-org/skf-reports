@@ -8,8 +8,8 @@ Bundle-Vendor: toxsoft.ru
 Export-Package: org.toxsoft.skf.reports.mws,
  org.toxsoft.skf.reports.mws.e4.addons,
  org.toxsoft.skf.reports.mws.e4.uiparts
-Require-Bundle: javax.annotation,
- javax.inject,
+Require-Bundle: jakarta.inject.jakarta.inject-api,
+ jakarta.annotation-api,
  org.eclipse.core.runtime,
  org.eclipse.ui;resolution:=optional,
  org.eclipse.rap.ui;resolution:=optional,
@@ -30,6 +30,6 @@ Require-Bundle: javax.annotation,
  org.toxsoft.skf.dq.s5,
  org.toxsoft.skf.reports.gui,
  org.toxsoft.skf.reports.chart.utils.gui
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: org.toxsoft.skf.reports.mws
 Bundle-ActivationPolicy: lazy

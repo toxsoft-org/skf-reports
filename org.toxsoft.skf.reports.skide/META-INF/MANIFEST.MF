@@ -5,8 +5,8 @@ Bundle-SymbolicName: org.toxsoft.skf.reports.skide;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.toxsoft.skf.reports.skide.Activator
 Bundle-Vendor: Toxsoft
-Require-Bundle: 
- javax.inject,
+Require-Bundle: jakarta.inject.jakarta.inject-api,
+ jakarta.annotation-api,
  org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.e4.core.contexts,
@@ -29,9 +29,8 @@ Require-Bundle:
  org.toxsoft.skide.plugin.exconn,
  org.toxsoft.skf.reports.lib,
  org.toxsoft.skf.reports.chart.utils.gui
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: org.toxsoft.skf.reports.skide
-Import-Package: javax.annotation;version="1.2.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.toxsoft.skf.reports.skide,
  org.toxsoft.skf.reports.skide.e4.addons,

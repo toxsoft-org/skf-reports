@@ -122,7 +122,9 @@ public class ObjectViewerPanel
    * @param aGwid выбранный параметр
    */
   public void select( Gwid aGwid ) {
-    ISkObject skObj = conn.coreApi().objService().find( aGwid.skid() );
-    skObjectPanel.setSelectedItem( skObj );
+    if( aGwid != null && aGwid.skid() != null ) {
+      ISkObject skObj = conn.coreApi().objService().find( aGwid.skid() );
+      skObjectPanel.setSelectedItem( skObj );
+    }
   }
 }

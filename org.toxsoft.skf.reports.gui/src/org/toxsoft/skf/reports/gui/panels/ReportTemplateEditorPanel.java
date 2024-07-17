@@ -306,7 +306,7 @@ public class ReportTemplateEditorPanel
   protected void doFormReport( IVtReportTemplate aSelTemplate, ISkConnection aReportDataConnection ) {
     Shell shell = tsContext().get( Shell.class );
     // запросим у пользователя интервал времени
-    TimeInterval retVal = IntervalSelectionDialogPanel.getParams( shell, initValues, tsContext() );
+    TimeInterval retVal = IntervalSelectionExtandedDialogPanel.getParams( shell, initValues, tsContext() );
     if( retVal == null ) {
       return;
     }

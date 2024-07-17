@@ -26,4 +26,9 @@ interface ISkResources {
   String SUMMARY_FIELD_NAME_STR  = Messages.getString( "SUMMARY_FIELD_NAME_STR" );  //$NON-NLS-1$
   String DEFAULT_EMPTY_VALUE_STR = Messages.getString( "DEFAULT_EMPTY_VALUE_STR" ); //$NON-NLS-1$
 
+  /**
+   * {@link IntervalSelectionExtandedDialogPanel}
+   */
+  String STR_N_INTERVAL_FROM_REFBOOK               = Messages.getString( "STR_N_INTERVAL_FROM_REFBOOK" );               //$NON-NLS-1$
+  String STR_ADDITIONAL_TITLE_CORRECT_FROM_REFBOOK = Messages.getString( "STR_ADDITIONAL_TITLE_CORRECT_FROM_REFBOOK" ); //$NON-NLS-1$
 }

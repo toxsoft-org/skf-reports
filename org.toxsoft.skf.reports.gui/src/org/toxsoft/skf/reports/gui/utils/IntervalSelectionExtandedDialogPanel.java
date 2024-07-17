@@ -122,15 +122,12 @@ public class IntervalSelectionExtandedDialogPanel
   // Внутренняя реализация
   //
 
-  private static final String STR_N_INTERVAL_FROM_REFBOOK               = "Интервал из справочника";
-  private static final String STR_ADDITIONAL_TITLE_CORRECT_FROM_REFBOOK = " (коррект. из справочника)";
-
-  private static final String REFBOOK_INTERVAL_ID                     = "report.intervalw"; //$NON-NLS-1$
-  private static final String REFBOOK_INTERVAL_LENGTH_ATTR_ID         = "length";           //$NON-NLS-1$
-  private static final String REFBOOK_INTERVAL_SHIFT_ATTR_ID          = "shift";            //$NON-NLS-1$
-  private static final String REFBOOK_INTERVAL_LENGTH_UNIT_LINK_ID    = "length.unit";      //$NON-NLS-1$
-  private static final String REFBOOK_INTERVAL_SHIFT_UNIT_LINK_ID     = "shift.unit";       //$NON-NLS-1$
-  private static final String REFBOOK_INTERVAL_SHIFT_RELATIVE_LINK_ID = "shift.relative";   //$NON-NLS-1$
+  private static final String REFBOOK_INTERVAL_ID                     = "report.interval"; //$NON-NLS-1$
+  private static final String REFBOOK_INTERVAL_LENGTH_ATTR_ID         = "length";          //$NON-NLS-1$
+  private static final String REFBOOK_INTERVAL_SHIFT_ATTR_ID          = "shift";           //$NON-NLS-1$
+  private static final String REFBOOK_INTERVAL_LENGTH_UNIT_LINK_ID    = "length.unit";     //$NON-NLS-1$
+  private static final String REFBOOK_INTERVAL_SHIFT_UNIT_LINK_ID     = "shift.unit";      //$NON-NLS-1$
+  private static final String REFBOOK_INTERVAL_SHIFT_RELATIVE_LINK_ID = "shift.relative";  //$NON-NLS-1$
 
   // Контроль ввода времени начала
   private DateTime startCalendar;

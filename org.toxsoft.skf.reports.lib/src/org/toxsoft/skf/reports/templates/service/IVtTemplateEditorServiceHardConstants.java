@@ -73,6 +73,27 @@ public interface IVtTemplateEditorServiceHardConstants {
       TSID_DESCRIPTION, STR_D_HAS_SUMMARY );
 
   // ------------------------------------------------------------------------------------
+  // IVtSpecReportTemplate
+
+  /**
+   * Report template class ID.
+   */
+  String CLSID_SPEC_REPORT_TEMPLATE = ISkHardConstants.SK_ID + ".SpecReportTemplate"; //$NON-NLS-1$
+
+  /**
+   * ID of CLOB {@link #CLBID_TEMPLATE_DESIGN}.
+   */
+  String CLBID_TEMPLATE_DESIGN = "templateDesign"; //$NON-NLS-1$
+
+  /**
+   * CLOB {@link IVtSpecReportTemplate#design()}.
+   */
+  IDtoClobInfo CLBINF_TEMPLATE_DESIGN = DtoClobInfo.create2( CLBID_TEMPLATE_DESIGN, //
+      TSID_NAME, "Template Design", //
+      TSID_DESCRIPTION, "Template Design base on jrxml" //
+  );
+
+  // ------------------------------------------------------------------------------------
   // IVtGraphTemplate
 
   /**

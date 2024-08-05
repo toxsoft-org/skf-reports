@@ -105,6 +105,11 @@ public class ReportTemplateUtilities {
         Integer.valueOf( (int)aGraphTemplate.aggrStep().timeInMills() ) );
   }
 
+  public static IStringMap<IDtoQueryParam> formQueryParams( IVtSpecReportTemplate aSpecReportTemplate ) {
+    return template2Query( aSpecReportTemplate.listParams(),
+        Integer.valueOf( (int)aSpecReportTemplate.aggrStep().timeInMills() ) );
+  }
+
   /**
    * По списку параметров шаблона формирует карту параметров для запроса к сервису запросов
    *
@@ -736,19 +741,13 @@ public class ReportTemplateUtilities {
    * @return IAggrigationFunction - экземпляр аггрегатора.
    */
   public static IAggrigationFunction createAggrigationFunction( EAggregationFunc aAggrType ) {
-    switch( aAggrType ) {
-      case AVERAGE:
-        return new IAggrigationFunction.AverageAggrFunction();
-      case MAX:
-        return new IAggrigationFunction.RangeFunction( false );
-      case MIN:
-        return new IAggrigationFunction.RangeFunction( true );
-      case SUM:
-      case COUNT:
-        return new IAggrigationFunction.SumAggrFunction();
-      default:
-        return IAggrigationFunction.EMPTY_AFFR_FUNC;
-    }
+    return switch( aAggrType ) {
+      case AVERAGE -> new IAggrigationFunction.AverageAggrFunction();
+      case MAX -> new IAggrigationFunction.RangeFunction( false );
+      case MIN -> new IAggrigationFunction.RangeFunction( true );
+      case SUM, COUNT -> new IAggrigationFunction.SumAggrFunction();
+      default -> IAggrigationFunction.EMPTY_AFFR_FUNC;
+    };
   }
 
   /**

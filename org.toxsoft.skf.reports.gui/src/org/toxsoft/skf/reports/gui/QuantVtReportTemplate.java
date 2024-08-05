@@ -28,6 +28,7 @@ public class QuantVtReportTemplate
 
     SkCoreUtils.registerSkServiceCreator( VtReportTemplateService.CREATOR );
     SkCoreUtils.registerSkServiceCreator( VtGraphTemplateService.CREATOR );
+    SkCoreUtils.registerSkServiceCreator( VtSpecReportTemplateService.CREATOR );
 
     // dima 26.05.23 падает в этом месте если запускать в SkIDE вместе с другими плагинами
     // max 29.05.23 поставил

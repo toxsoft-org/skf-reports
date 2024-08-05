@@ -50,6 +50,17 @@ public class ValedGwidEditor
   );
 
   /**
+   * ID of option {@link #OPDEF_IS_EMPTY_GWID_VALID}.
+   */
+  public static final String OPID_IS_EMPTY_GWID_VALID = "IsEmptyGwidValid"; //$NON-NLS-1$
+
+  public static final IDataDef OPDEF_IS_EMPTY_GWID_VALID = DataDef.create( OPID_IS_EMPTY_GWID_VALID, BOOLEAN, //
+      TSID_NAME, "Is Empty GWID valid", //
+      TSID_DESCRIPTION, "Is Empty value of GWID valid", //
+      TSID_DEFAULT_VALUE, AV_FALSE //
+  );
+
+  /**
    * The factory class.
    *
    * @author hazard157
@@ -86,6 +97,7 @@ public class ValedGwidEditor
     setParamIfNull( OPDEF_IS_WIDTH_FIXED, AV_FALSE );
     setParamIfNull( OPDEF_IS_HEIGHT_FIXED, AV_TRUE );
     setParamIfNull( OPDEF_VERTICAL_SPAN, AV_1 );
+    setParamIfNull( OPDEF_IS_EMPTY_GWID_VALID, OPDEF_IS_EMPTY_GWID_VALID.defaultValue() );
   }
 
   @Override
@@ -104,6 +116,9 @@ public class ValedGwidEditor
 
   @Override
   public ValidationResult canGetValue() {
+    if( params().getBool( OPDEF_IS_EMPTY_GWID_VALID ) && getTextControl().getText().trim().length() == 0 ) {
+      return ValidationResult.SUCCESS;
+    }
     try {
       Gwid.of( getTextControl().getText() );
       return ValidationResult.SUCCESS;
@@ -120,6 +135,9 @@ public class ValedGwidEditor
 
   @Override
   protected Gwid doGetUnvalidatedValue() {
+    if( params().getBool( OPDEF_IS_EMPTY_GWID_VALID ) && getTextControl().getText().trim().length() == 0 ) {
+      return null;
+    }
     return Gwid.of( getTextControl().getText() );
   }
 

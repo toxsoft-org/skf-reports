@@ -95,6 +95,54 @@ class SkideUnitPanelReports
 
     panel.setLayoutData( BorderLayout.CENTER );
 
+    // spec reports tab
+    TabItem tiSpecReports = new TabItem( tabFolder, SWT.NONE );
+
+    tiSpecReports.setText( "Спец.Отчёты" );
+    tiSpecReports.setToolTipText( "Специальные Отчёты" );
+    tiSpecReports.setImage( iconManager().loadStdIcon( ICONID_GRAPH_TEMPL, tabIconSize ) );
+
+    TsPanel specReportsBack = new TsPanel( tabFolder, tsContext() );
+    specReportsBack.setLayout( new BorderLayout() );
+    tiSpecReports.setControl( specReportsBack );
+
+    TsPanel specReportsTopComposite = new TsPanel( specReportsBack, tsContext() );
+    specReportsTopComposite.setLayoutData( BorderLayout.NORTH );
+    specReportsTopComposite.setLayout( new BorderLayout() );
+
+    Button exportSpecReportsButton = new Button( specReportsTopComposite, SWT.PUSH );
+    exportSpecReportsButton.setImage( iconManager().loadStdIcon( ITsStdIconIds.ICONID_ARROW_RIGHT, tabIconSize ) );
+    exportSpecReportsButton.setToolTipText( STR_BUTTON_EXPORT_D );
+    exportSpecReportsButton.setLayoutData( BorderLayout.WEST );
+    exportSpecReportsButton.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        // Display.getDefault().asyncExec( () -> {
+        // ISkConnection destConn = selectConnection( tsContext() );
+        // if( destConn == null ) {
+        // return;
+        // }
+        // ITsGuiContext srcContext = tsContext();
+        // ReportsTemplatesMigrationUtiles.moveGraphTemplates( srcContext, destConn );
+        // } );
+      }
+    } );
+
+    TsGuiContext specReportsContext = new TsGuiContext( tsContext() );
+    // SHOW_APPLY_BUTTON.setValue( graphContext.params(), AvUtils.AV_FALSE );
+
+    SpecReportTemplateEditorPanel srPanel = new SpecReportTemplateEditorPanel( specReportsBack, specReportsContext ) {
+
+      @Override
+      protected void formReport( IVtSpecReportTemplate aSelTemplate ) {
+        ISkConnection destConn = selectConnection( tsContext() );
+        doFormReport( aSelTemplate, destConn );
+      }
+
+    };
+    srPanel.setLayoutData( BorderLayout.CENTER );
+
     // graphs tab
     TabItem tiGraphs = new TabItem( tabFolder, SWT.NONE );
 

@@ -23,7 +23,8 @@ Require-Bundle: jakarta.inject.jakarta.inject-api,
  org.toxsoft.uskat.core.gui,
  org.toxsoft.skf.reports.lib,
  org.toxsoft.skf.reports.chart.utils.gui,
- org.toxsoft.skf.refbooks.lib
+ org.toxsoft.skf.refbooks.lib,
+ org.toxsoft.extlibs.jasperreports;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: org.toxsoft.skf.reports.gui
 Bundle-ActivationPolicy: lazy

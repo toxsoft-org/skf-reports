@@ -22,11 +22,13 @@ public class KM5TemplateContributor
   public static final IKM5ContributorCreator CREATOR = KM5TemplateContributor::new;
 
   private static final IStringList CONRTIBUTED_MODEL_IDS = new StringArrayList( //
+      SpecReportParamM5Model.MODEL_ID, //
+      IVtSpecReportTemplate.CLASS_ID, //
       ReportParamM5Model.MODEL_ID, //
       IVtReportTemplate.CLASS_ID, //
       IVtTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, //
-      IVtGraphTemplate.CLASS_ID //
-  );
+      IVtGraphTemplate.CLASS_ID, //
+      JrParamModel.MODEL_ID );
 
   private final IStringListEdit myModels = new StringArrayList();
 
@@ -47,10 +49,20 @@ public class KM5TemplateContributor
     ReportTemplateM5Model m5ReportTemplateModel = new ReportTemplateM5Model( skConn() );
     myModels.add( m5ReportTemplateModel.id() );
     m5().addModel( m5ReportTemplateModel );
+
+    m5().addModel( new SpecReportParamM5Model() );
+    SpecReportTemplateM5Model m5SpecReportTemplateModel = new SpecReportTemplateM5Model( skConn() );
+    myModels.add( m5SpecReportTemplateModel.id() );
+    m5().addModel( m5SpecReportTemplateModel );
+
     m5().addModel( new GraphParamM5Model() );
     GraphTemplateM5Model m5GraphTemplateModel = new GraphTemplateM5Model( skConn() );
     myModels.add( m5GraphTemplateModel.id() );
     m5().addModel( m5GraphTemplateModel );
+
+    JrParamModel jrParamModel = new JrParamModel();
+    myModels.add( jrParamModel.id() );
+    m5().addModel( jrParamModel );
 
     return CONRTIBUTED_MODEL_IDS;
   }

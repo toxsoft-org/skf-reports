@@ -49,8 +49,8 @@ class SpecReportParamM5LifecycleManager
   @Override
   protected IVtSpecReportParam doCreate( IM5Bunch<IVtSpecReportParam> aValues ) {
     IAtomicValue gwidAv = aValues.getAsAv( SpecReportParamM5Model.FID_GWID );
-
     Gwid gwid = gwidAv.isAssigned() ? gwidAv.asValobj() : null;
+
     String title = aValues.getAsAv( SpecReportParamM5Model.FID_TITLE ).asString();
     String descr = aValues.getAsAv( SpecReportParamM5Model.FID_DESCR ).asString();
     EAggregationFunc func = aValues.getAsAv( SpecReportParamM5Model.FID_AGGR_FUNC ).asValobj();
@@ -88,7 +88,9 @@ class SpecReportParamM5LifecycleManager
    */
   @Override
   protected IVtSpecReportParam doEdit( IM5Bunch<IVtSpecReportParam> aValues ) {
-    Gwid gwid = aValues.getAsAv( SpecReportParamM5Model.FID_GWID ).asValobj();
+    IAtomicValue gwidAv = aValues.getAsAv( SpecReportParamM5Model.FID_GWID );
+    Gwid gwid = gwidAv.isAssigned() ? gwidAv.asValobj() : null;
+
     String title = aValues.getAsAv( SpecReportParamM5Model.FID_TITLE ).asString();
     String descr = aValues.getAsAv( SpecReportParamM5Model.FID_DESCR ).asString();
     EAggregationFunc func = aValues.getAsAv( SpecReportParamM5Model.FID_AGGR_FUNC ).asValobj();

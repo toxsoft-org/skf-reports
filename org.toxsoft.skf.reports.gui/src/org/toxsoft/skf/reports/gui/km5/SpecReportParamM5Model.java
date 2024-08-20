@@ -36,6 +36,7 @@ import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.skf.reports.gui.panels.*;
 import org.toxsoft.skf.reports.gui.panels.valed.*;
+import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
@@ -194,8 +195,17 @@ public class SpecReportParamM5Model
                   System.out.println( "Params size *** : " + params.length );
                   for( JRParameter p : params ) {
                     if( !p.isSystemDefined() ) {
-                      result.add( p.getName() );
+                      result.add( String.format( ReportTemplateUtilities.JR_PARAM_PARAM_FORMAT, p.getName() ) );
                     }
+                  }
+                }
+                JRField[] fields = jasperReport.getFields();
+                if( fields != null ) {
+                  System.out.println( "fields size *** : " + fields.length );
+                  for( JRField f : fields ) {
+                    // if( !f.isSystemDefined() ) {
+                    result.add( String.format( ReportTemplateUtilities.JR_PARAM_FIELD_FORMAT, f.getName() ) );
+                    // }
                   }
                 }
               }
@@ -226,8 +236,17 @@ public class SpecReportParamM5Model
                   System.out.println( "Params size *** : " + params.length );
                   for( JRParameter p : params ) {
                     if( !p.isSystemDefined() ) {
-                      result.add( p.getName() );
+                      result.add( String.format( ReportTemplateUtilities.JR_PARAM_PARAM_FORMAT, p.getName() ) );
                     }
+                  }
+                }
+                JRField[] fields = jasperReport.getFields();
+                if( fields != null ) {
+                  System.out.println( "fields size *** : " + fields.length );
+                  for( JRField f : fields ) {
+                    // if( !f.isSystemDefined() ) {
+                    result.add( String.format( ReportTemplateUtilities.JR_PARAM_FIELD_FORMAT, f.getName() ) );
+                    // }
                   }
                 }
               }

@@ -7,9 +7,11 @@ import static org.toxsoft.uskat.core.api.hqserv.ISkHistoryQueryServiceConstants.
 
 import java.text.*;
 import java.util.*;
+import java.util.List;
 
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.jasperreports.gui.main.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.chart.impl.*;
@@ -46,6 +48,8 @@ import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 
+import net.sf.jasperreports.engine.*;
+
 /**
  * Утилитный класс для работы с шаблонами
  *
@@ -53,6 +57,12 @@ import org.toxsoft.uskat.core.impl.dto.*;
  * @author dima
  */
 public class ReportTemplateUtilities {
+
+  public static String JR_PARAM_FIELD_PREFIX = "$F{";
+  public static String JR_PARAM_PARAM_PREFIX = "$P{";
+
+  public static String JR_PARAM_FIELD_FORMAT = JR_PARAM_FIELD_PREFIX + "%s}";
+  public static String JR_PARAM_PARAM_FORMAT = JR_PARAM_PARAM_PREFIX + "%s}";
 
   // по умолчанию берем данные за последние 6 час
   static TimeInterval initValues =
@@ -105,11 +115,6 @@ public class ReportTemplateUtilities {
         Integer.valueOf( (int)aGraphTemplate.aggrStep().timeInMills() ) );
   }
 
-  public static IStringMap<IDtoQueryParam> formQueryParams( IVtSpecReportTemplate aSpecReportTemplate ) {
-    return template2Query( aSpecReportTemplate.listParams(),
-        Integer.valueOf( (int)aSpecReportTemplate.aggrStep().timeInMills() ) );
-  }
-
   /**
    * По списку параметров шаблона формирует карту параметров для запроса к сервису запросов
    *
@@ -117,8 +122,8 @@ public class ReportTemplateUtilities {
    * @param aAggrStep шаг агрегации
    * @return карта параметров запроса к одноименному сервису
    */
-  private static IStringMap<IDtoQueryParam> template2Query( IList<? extends IVtTemplateParam> aTemplateParams,
-      Integer aAggrStep ) {
+  public static IStringMap<IDtoQueryParam> template2Query( String aQueryParamprefix,
+      IList<? extends IVtTemplateParam> aTemplateParams, Integer aAggrStep ) {
     IStringMapEdit<IDtoQueryParam> result = new StringMap<>();
 
     for( int i = 0; i < aTemplateParams.size(); i++ ) {
@@ -136,10 +141,21 @@ public class ReportTemplateUtilities {
 
       IDtoQueryParam qParam = DtoQueryParam.create( gwid, filter, funcId, funcArgs );
 
-      result.put( String.format( QUERY_PARAM_ID_FORMAT, Integer.valueOf( i ) ), qParam );
+      result.put( aQueryParamprefix + String.format( QUERY_PARAM_ID_FORMAT, Integer.valueOf( i ) ), qParam );
     }
-
     return result;
+  }
+
+  /**
+   * По списку параметров шаблона формирует карту параметров для запроса к сервису запросов
+   *
+   * @param aTemplateParams параметры шаблона
+   * @param aAggrStep шаг агрегации
+   * @return карта параметров запроса к одноименному сервису
+   */
+  public static IStringMap<IDtoQueryParam> template2Query( IList<? extends IVtTemplateParam> aTemplateParams,
+      Integer aAggrStep ) {
+    return template2Query( TsLibUtils.EMPTY_STRING, aTemplateParams, aAggrStep );
   }
 
   /**
@@ -237,6 +253,54 @@ public class ReportTemplateUtilities {
       }
     }
     return retVal;
+  }
+
+  public static JRDataSource createReportDetailDataSource( IList<IVtSpecReportParam> aFieldParams,
+      IList<ITimedList<?>> aFieldData, boolean aHasSummary ) {
+
+    List<Map<String, IAtomicValue>> mapList = new ArrayList<>();
+
+    if( aFieldParams.size() == 0 || aFieldData.size() == 0 ) {
+      Map<String, IAtomicValue> val = new HashMap<>();
+      val.put( "1", AvUtils.avStr( "value" ) ); //$NON-NLS-1$//$NON-NLS-2$
+      mapList.add( val );
+      // Формируем dataset с одной строкой
+      return new ReportDetailDataSource( mapList );
+    }
+
+    ReportM5ItemProvider provider =
+        new ReportM5ItemProvider( aFieldData, aHasSummary, IS_SAME_TIME_IN_EACH_COLUMN, aFieldParams );
+
+    IList<IStringMap<IAtomicValue>> items = provider.listItems();
+
+    // int number = 1;
+    for( IStringMap<IAtomicValue> item : items ) {
+      Map<String, IAtomicValue> rowValues = new HashMap<>();
+      mapList.add( rowValues );
+      for( int i = 0; i < aFieldParams.size(); i++ ) {
+        String id = String.format( MODEL_COLUMN_ID_FORMAT, Integer.valueOf( i ) );
+
+        IAtomicValue columnValue = item.getByKey( id );
+        rowValues.put( getPureJrParamIdFromTemplateJrParamId( aFieldParams.get( i ).jrParamId() ), columnValue );
+
+      }
+
+      // rowValues.put( ROW_NUMBER_FILED, AvUtils.avInt( number ) );
+      // number++;
+    }
+
+    // Формируем dataset
+    return new ReportDetailDataSource( mapList );
+  }
+
+  /**
+   * Возвращает очищенный идентификатор параметра (поля) JR шаблона из идентификатора, который используется в s5 шаблоне
+   *
+   * @param aTemplateJrParamId String - идентификатор, который используется в s5 шаблоне
+   * @return String - очищенный идентификатор параметра (поля) JR шаблона
+   */
+  public static String getPureJrParamIdFromTemplateJrParamId( String aTemplateJrParamId ) {
+    return aTemplateJrParamId.substring( 3, aTemplateJrParamId.length() - 1 );
   }
 
   /**
@@ -348,9 +412,10 @@ public class ReportTemplateUtilities {
   static class ReportM5ItemProvider
       extends M5DefaultItemsProvider<IStringMap<IAtomicValue>> {
 
-    private IVtReportTemplate    reportTemplate;
-    private IList<ITimedList<?>> reportData;
-    private boolean              isSameTimeInEachColumn;
+    private IList<ITimedList<?>>      reportData;
+    private boolean                   isSameTimeInEachColumn;
+    private boolean                   hasSummary;
+    IList<? extends IVtTemplateParam> reportParams;
 
     /**
      * Конструктор поставщика данных по шаблону и результату запроса.
@@ -363,17 +428,34 @@ public class ReportTemplateUtilities {
     public ReportM5ItemProvider( IVtReportTemplate aReportTemplate, IList<ITimedList<?>> aReportData,
         boolean aIsSameTimeInEachColumn ) {
       super();
-      reportTemplate = aReportTemplate;
       reportData = aReportData;
       isSameTimeInEachColumn = aIsSameTimeInEachColumn;
+      hasSummary = aReportTemplate.hasSummary();
+      reportParams = aReportTemplate.listParams();
+      formItems();
+    }
 
+    /**
+     * Конструктор поставщика данных по результату запроса .
+     *
+     * @param aReportData IList - результат запроса.
+     * @param aIsSameTimeInEachColumn boolean - признак того, что время всех элементов в одной строке отчёта - одно
+     *          (один столбец времени).
+     * @param aHasSummary boolean - признак наличия итоговой строки отчёта
+     * @param aFieldParams IList - параметры отчёта
+     */
+    public ReportM5ItemProvider( IList<ITimedList<?>> aReportData, boolean aIsSameTimeInEachColumn, boolean aHasSummary,
+        IList<? extends IVtTemplateParam> aFieldParams ) {
+      super();
+      reportData = aReportData;
+      isSameTimeInEachColumn = aIsSameTimeInEachColumn;
+      hasSummary = aHasSummary;
+      reportParams = aFieldParams;
       formItems();
     }
 
     private void formItems() {
       items().clear();
-
-      IList<IVtReportParam> reportParams = reportTemplate.listParams();
 
       if( reportParams.size() == 0 ) {
         return;
@@ -392,8 +474,8 @@ public class ReportTemplateUtilities {
           longestColumnIndex = i;
         }
 
-        if( reportTemplate.hasSummary() ) {
-          IVtReportParam param = reportParams.get( i );
+        if( hasSummary ) {
+          IVtTemplateParam param = reportParams.get( i );
           aggrFuncs.add( createAggrigationFunction( param.aggrFunc() ) );
         }
         else {
@@ -420,7 +502,7 @@ public class ReportTemplateUtilities {
         }
 
         for( int i = 0; i < reportParams.size(); i++ ) {
-          IVtReportParam param = reportParams.get( i );
+          IVtTemplateParam param = reportParams.get( i );
           EDisplayFormat displayFormat = param.displayFormat();
 
           ITimedList<?> timedList = reportData.get( i );
@@ -446,7 +528,7 @@ public class ReportTemplateUtilities {
         items().add( rowValues );
       }
 
-      if( reportTemplate.hasSummary() ) {
+      if( hasSummary ) {
 
         IStringMapEdit<IAtomicValue> summaryRowValues = new StringMap<>();
         if( isSameTimeInEachColumn ) {

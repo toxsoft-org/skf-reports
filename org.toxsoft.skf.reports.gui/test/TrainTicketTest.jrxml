@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.3.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ProductionUnitLabel" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="27414881-9457-4b89-bae2-c5e330913f94">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Arial_Normal" isDefault="true" fontName="Serif" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="arial.ttf" pdfEncoding="Cp1251" isPdfEmbedded="false"/>
+	<style name="Arial_Bold" fontName="Serif" fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="arialbd.ttf" pdfEncoding="Cp1251" isPdfEmbedded="false"/>
+	<style name="normal" fontName="Serif" fontSize="18" isBold="true" pdfFontName="arialbd.ttf" pdfEncoding="Cp1251"/>
+	<style name="size11" fontName="Serif" fontSize="11" isBold="true" pdfFontName="arial.ttf" pdfEncoding="Cp1251"/>
+	<style name="child" style="Arial_Bold" forecolor="#000000" fontSize="19" pdfFontName="lsans.ttf"/>
+	<style name="size09" fontName="Serif" fontSize="9" isBold="true" pdfFontName="arial.ttf" pdfEncoding="Cp1251"/>
+	<parameter name="TrainNumber2" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="parity" class="java.lang.String" isForPrompting="false"/>
+	<field name="Field_1" class="java.lang.String"/>
+	<background>
+		<band height="135" splitType="Stretch">
+			<line>
+				<reportElement key="line-18" style="Arial_Normal" x="209" y="-266" width="1" height="226" uuid="08d7d34d-4208-40f9-ade0-d467572fe28e"/>
+			</line>
+		</band>
+	</background>
+	<title>
+		<band height="186" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-56" style="size09" x="20" y="40" width="171" height="30" uuid="96ab7549-4239-42f4-b379-78681dbedbaf"/>
+				<box topPadding="3" leftPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TrainNumber2}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-53" x="0" y="176" width="209" height="1" uuid="8985f3a1-6cd8-4aff-8d10-e32f878503c9"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-26" style="size11" x="20" y="10" width="71" height="19" uuid="4d205d95-367b-4781-8da5-bd3b85199c3c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ПОЕЗД  №]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-22" x="105" y="160" width="56" height="1" uuid="251f0cfa-378a-4167-929b-4dcf0630b195"/>
+			</line>
+			<line>
+				<reportElement key="line-22" x="27" y="150" width="47" height="1" uuid="99723b91-e5d9-45d6-8a19-ed523cdacbcb"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-par" style="Arial_Normal" x="10" y="90" width="151" height="16" uuid="017b4d46-e1a3-4ca7-9b12-300d920c279f"/>
+				<box leftPadding="4">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{parity}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="30" uuid="f63dc71b-39d3-4ff2-883d-de43d3310e99"/>
+				<textFieldExpression><![CDATA[$F{Field_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

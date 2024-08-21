@@ -314,6 +314,7 @@ public class SpecReportTemplateEditorPanel
   }
 
   protected void doFormReport( IVtSpecReportTemplate aSelTemplate, ISkConnection aReportDataConnection ) {
+    boolean test = true;
     Shell shell = tsContext().get( Shell.class );
     // запросим у пользователя интервал времени
     TimeInterval retVal = IntervalSelectionExtandedDialogPanel.getParams( shell, initValues, tsContext() );
@@ -322,181 +323,6 @@ public class SpecReportTemplateEditorPanel
     }
     // запомним выбранный интервал
     initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
-
-    if( true ) {
-      testForm( aSelTemplate, initValues );
-      return;
-    }
-
-    IStringMap<IDtoQueryParam> queryParams = new StringMap<>();// ReportTemplateUtilities.formQueryParams( aSelTemplate
-                                                               // );
-
-    // Исполнитель запросов в одном потоке
-    ITsThreadExecutor threadExecutor = SkThreadExecutorService.getExecutor( aReportDataConnection.coreApi() );
-    // Максимальное время выполнения запроса (мсек)
-    long timeout = aSelTemplate.maxExecutionTime();
-    // Создание диалога прогресса выполнения запроса
-    SkAbstractQueryDialog<ISkQueryProcessedData> dialog =
-        new SkAbstractQueryDialog<>( getShell(), STR_EXEC_QUERY_REPORT, timeout, threadExecutor ) {
-
-          @Override
-          protected ISkQueryProcessedData doCreateQuery( IOptionSetEdit aOptions ) {
-            return aReportDataConnection.coreApi().hqService().createProcessedQuery( aOptions );
-          }
-
-          @Override
-          protected void doPrepareQuery( ISkQueryProcessedData aQuery ) {
-            // Подготовка запроса
-            aQuery.prepare( queryParams );
-            // Настройка обработки результатов запроса
-            aQuery.genericChangeEventer().addListener( aSource -> {
-              ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-              LoggerUtils.defaultLogger().info( "State %s , %s", q.toString(), q.state().nmName() ); //$NON-NLS-1$
-              if( q.state() == ESkQueryState.READY ) {
-                // разделить все параметры на три группы
-                // JR fields - поля - колонки таблицы - функции от времени (это классические параметры обычного отчёта)
-                // для них обязательно наличие gwid и поля $F{...}
-                IListEdit<IVtSpecReportParam> fieldParams = new ElemArrayList<>();
-
-                // JR params - параметры - вычисляемые значения - условно одно значение на отчёт
-                // для них обязательно наличие gwid и параметра $P{...}
-                IListEdit<IVtSpecReportParam> calcParams = new ElemArrayList<>();
-
-                // JR params - параметры - значение которых не вычисляется, а указывается либо на этапе создания
-                // шаблона,
-                // либо на момент формирования отчёта
-                // для них обязательно наличие только параметра $P{...}
-                // TODO подумать над указанием gwid типа атрибута или спец значений (юзер и т.д.)
-                IListEdit<IVtSpecReportParam> valParams = new ElemArrayList<>();
-
-                IList<IVtSpecReportParam> params = aSelTemplate.listParams();
-                for( IVtSpecReportParam p : params ) {
-                  if( p.jrParamId().startsWith( ReportTemplateUtilities.JR_PARAM_FIELD_PREFIX ) ) {
-                    fieldParams.add( p );
-                  }
-                  else {
-                    if( p.gwid() != null
-                        && p.gwid().canonicalString().contains( IGwHardConstants.GW_KEYWORD_RTDATA ) ) {
-                      calcParams.add( p );
-                    }
-                    else {
-                      valParams.add( p );
-                    }
-                  }
-                }
-
-                // заполнить значения по умолчанию из значений в параметрах valParams
-                IOptionSetEdit initVales = new OptionSet();
-                for( IVtSpecReportParam valP : valParams ) {
-                  if( valP.canBeOverwritten() ) {
-                    initVales.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
-                        avStr( valP.value() ) );
-                  }
-                }
-
-                // после в диалоге - задать и вставить параметры в valParams
-                IOptionSet editedValSet = new OptionSet();
-
-                if( initVales.size() > 0 ) {
-                  TsDialogInfo dlgInfo =
-                      new TsDialogInfo( tsContext(), "Задаваемые параметры отчёта", "Задайте значения параметров" );
-                  editedValSet =
-                      DialogOptionsEdit.editOpset( dlgInfo, TsGuiUtils.prepareDefaultDefs( initVales ), initVales );
-                }
-
-                // для полей - получить стандартные параметры запроса
-                IStringMap<IDtoQueryParam> fieldQueryParams = ReportTemplateUtilities.template2Query( fieldParams,
-                    Integer.valueOf( (int)aSelTemplate.aggrStep().timeInMills() ) );
-
-                // для вычисляемых параметров - два путиЖ \\
-                // - получить параметры запроса с шагом аггрегации как у всего отчёта (тогда вручную суммировать
-                // результат) \\
-                // - получить параметры запроса с шагом аггрегации равным интервалу запроса (т.е. будет запрошено одно
-                // значение на
-                // параметр)
-                IStringMap<IDtoQueryParam> calcQueryParams = ReportTemplateUtilities.template2Query( "calc", calcParams,
-                    Integer.valueOf( (int)aSelTemplate.aggrStep().timeInMills() ) );
-
-                // для параметров с задаваемыми значениями - запросов не требуется
-
-                IStringMapEdit<IDtoQueryParam> allRequestParams = new StringMap<>();
-
-                allRequestParams.putAll( calcQueryParams );
-                allRequestParams.putAll( fieldQueryParams );
-
-                // получение значний для параметров запроса
-                IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( aQuery, allRequestParams );
-
-                IListEdit<ITimedList<?>> fieldData = new ElemArrayList<>();
-                for( int i = 0; i < fieldQueryParams.size(); i++ ) {
-                  fieldData.add( reportData.get( i + fieldQueryParams.size() ) );
-                }
-
-                ITsGuiContext reportContext = new TsGuiContext( tsContext() );
-
-                // выясняем текущего пользователя
-                // ISkConnectionSupplier conSupp = tsContext().get( ISkConnectionSupplier.class );
-                // ISkConnection connectionForUser = conSupp.defConn();
-                // ISkUser user = ConnectionUtiles.getConnectedUser( connectionForUser.coreApi() );
-                // String userName = user.nmName().trim().length() > 0 ? user.nmName() : user.login();
-
-                // создаем новую закладку
-                CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
-                tabItem.setText( aSelTemplate.nmName() + ", getIntervalTitle( retVal, timestampFormat4Tab )" );
-                reportV = new JasperReportViewer( tabFolder, tsContext() );
-                tabItem.setControl( reportV );
-
-                tabFolder.setSelection( tabItem );
-
-                Map<String, Object> reportParameters = calcParametorsValues( calcParams, reportData );
-
-                for( IVtSpecReportParam valP : valParams ) {
-                  if( !valP.canBeOverwritten() ) {
-                    reportParameters.put(
-                        ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
-                        valP.value() );
-                  }
-                }
-
-                // добавляем параметры из диалога
-                for( String paramKey : editedValSet.keys() ) {
-                  reportParameters.put( paramKey, editedValSet.getStr( paramKey ) );
-                }
-
-                JRDataSource dataSource = ReportTemplateUtilities.createReportDetailDataSource( fieldParams, fieldData,
-                    aSelTemplate.hasSummary() );
-
-                String design = aSelTemplate.design();
-
-                if( design.length() > 0 ) {
-                  try( InputStream stream = new ByteArrayInputStream( design.getBytes() ) ) {
-                    JasperReport jasperReport = JasperCompileManager.compileReport( stream );
-
-                    JasperPrint jasperPrint =
-                        JasperFillManager.fillReport( jasperReport, reportParameters, dataSource );
-
-                    reportV.displeyJasperReportPrint( reportContext, jasperPrint );
-
-                    reportV.requestLayout();
-                  }
-                  catch( Exception ee ) {
-                    ee.printStackTrace();
-                  }
-                }
-
-              }
-              if( q.state() == ESkQueryState.FAILED ) {
-                String stateMessage = q.stateMessage();
-                TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
-              }
-            } );
-          }
-        };
-    // Запуск выполнения запроса
-    dialog.executeQuery( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
-  }
-
-  private void testForm( IVtSpecReportTemplate aSelTemplate, TimeInterval aInterval ) {
 
     // разделить все параметры на три группы
     // JR fields - поля - колонки таблицы - функции от времени (это классические параметры обычного отчёта)
@@ -507,7 +333,8 @@ public class SpecReportTemplateEditorPanel
     // для них обязательно наличие gwid и параметра $P{...}
     IListEdit<IVtSpecReportParam> calcParams = new ElemArrayList<>();
 
-    // JR params - параметры - значение которых не вычисляется, а указывается либо на этапе создания шаблона,
+    // JR params - параметры - значение которых не вычисляется, а указывается либо на этапе создания
+    // шаблона,
     // либо на момент формирования отчёта
     // для них обязательно наличие только параметра $P{...}
     // TODO подумать над указанием gwid типа атрибута или спец значений (юзер и т.д.)
@@ -528,31 +355,15 @@ public class SpecReportTemplateEditorPanel
       }
     }
 
-    // заполнить значения по умолчанию из значений в параметрах valParams
-    IOptionSetEdit initVales = new OptionSet();
-    for( IVtSpecReportParam valP : valParams ) {
-      if( valP.canBeOverwritten() ) {
-        initVales.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
-            avStr( valP.value() ) );
-      }
-    }
-
-    // после в диалоге - задать и вставить параметры в valParams
-    IOptionSet editedValSet = new OptionSet();
-
-    if( initVales.size() > 0 ) {
-      TsDialogInfo dlgInfo =
-          new TsDialogInfo( tsContext(), "Задаваемые параметры отчёта", "Задайте значения параметров" );
-      editedValSet = DialogOptionsEdit.editOpset( dlgInfo, TsGuiUtils.prepareDefaultDefs( initVales ), initVales );
-    }
-
     // для полей - получить стандартные параметры запроса
     IStringMap<IDtoQueryParam> fieldQueryParams = ReportTemplateUtilities.template2Query( fieldParams,
         Integer.valueOf( (int)aSelTemplate.aggrStep().timeInMills() ) );
 
-    // для вычисляемых параметров - два путиЖ \\
-    // - получить параметры запроса с шагом аггрегации как у всего отчёта (тогда вручную суммировать результат) \\
-    // - получить параметры запроса с шагом аггрегации равным интервалу запроса (т.е. будет запрошено одно значение на
+    // для вычисляемых параметров - два пути: \\
+    // - получить параметры запроса с шагом аггрегации как у всего отчёта (тогда вручную суммировать
+    // результат) \\
+    // - получить параметры запроса с шагом аггрегации равным интервалу запроса (т.е. будет запрошено одно
+    // значение на
     // параметр)
     IStringMap<IDtoQueryParam> calcQueryParams = ReportTemplateUtilities.template2Query( "calc", calcParams,
         Integer.valueOf( (int)aSelTemplate.aggrStep().timeInMills() ) );
@@ -564,12 +375,82 @@ public class SpecReportTemplateEditorPanel
     allRequestParams.putAll( calcQueryParams );
     allRequestParams.putAll( fieldQueryParams );
 
+    // заполнить значения по умолчанию из значений в параметрах valParams
+    IOptionSetEdit presetVals = new OptionSet();
+    for( IVtSpecReportParam valP : valParams ) {
+      if( valP.canBeOverwritten() ) {
+        presetVals.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
+            avStr( valP.value() ) );
+      }
+    }
+
+    // после в диалоге - задать и вставить параметры в valParams
+    if( presetVals.size() > 0 ) {
+      TsDialogInfo dlgInfo =
+          new TsDialogInfo( tsContext(), "Задаваемые параметры отчёта", "Задайте значения параметров" );
+      presetVals
+          .putAll( DialogOptionsEdit.editOpset( dlgInfo, TsGuiUtils.prepareDefaultDefs( presetVals ), presetVals ) );
+    }
+
+    for( IVtSpecReportParam valP : valParams ) {
+      if( !valP.canBeOverwritten() ) {
+        presetVals.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
+            avStr( valP.value() ) );
+      }
+    }
+
+    if( test ) {
+      formView( aSelTemplate, null, allRequestParams, fieldParams, calcParams, presetVals, retVal );
+      return;
+    }
+
+    // Исполнитель запросов в одном потоке
+    ITsThreadExecutor threadExecutor = SkThreadExecutorService.getExecutor( aReportDataConnection.coreApi() );
+    // Максимальное время выполнения запроса (мсек)
+    long timeout = aSelTemplate.maxExecutionTime();
+    // Создание диалога прогресса выполнения запроса
+    SkAbstractQueryDialog<ISkQueryProcessedData> dialog =
+        new SkAbstractQueryDialog<>( getShell(), STR_EXEC_QUERY_REPORT, timeout, threadExecutor ) {
+
+          @Override
+          protected ISkQueryProcessedData doCreateQuery( IOptionSetEdit aOptions ) {
+            return aReportDataConnection.coreApi().hqService().createProcessedQuery( aOptions );
+          }
+
+          @Override
+          protected void doPrepareQuery( ISkQueryProcessedData aQuery ) {
+            // Подготовка запроса
+            aQuery.prepare( allRequestParams );
+            // Настройка обработки результатов запроса
+            aQuery.genericChangeEventer().addListener( aSource -> {
+              ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+              LoggerUtils.defaultLogger().info( "State %s , %s", q.toString(), q.state().nmName() ); //$NON-NLS-1$
+              if( q.state() == ESkQueryState.READY ) {
+
+                formView( aSelTemplate, aQuery, allRequestParams, fieldParams, calcParams, presetVals, retVal );
+
+              }
+              if( q.state() == ESkQueryState.FAILED ) {
+                String stateMessage = q.stateMessage();
+                TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
+              }
+            } );
+          }
+        };
+    // Запуск выполнения запроса
+    dialog.executeQuery( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
+  }
+
+  private void formView( IVtSpecReportTemplate aSelTemplate, ISkQueryProcessedData aQuery,
+      IStringMap<IDtoQueryParam> aAllRequestParams, IList<IVtSpecReportParam> aFieldParams,
+      IListEdit<IVtSpecReportParam> aCalcParams, IOptionSet aPresetVals, TimeInterval aInterval ) {
     // получение значний для параметров запроса
-    IList<ITimedList<?>> reportData = ReportTemplateUtilities.createTestResult( allRequestParams );
+    IList<ITimedList<?>> reportData = aQuery != null ? ReportTemplateUtilities.createResult( aQuery, aAllRequestParams )
+        : ReportTemplateUtilities.createTestResult( aAllRequestParams );
 
     IListEdit<ITimedList<?>> fieldData = new ElemArrayList<>();
-    for( int i = 0; i < fieldQueryParams.size(); i++ ) {
-      fieldData.add( reportData.get( i + fieldQueryParams.size() ) );
+    for( int i = 0; i < aFieldParams.size(); i++ ) {
+      fieldData.add( reportData.get( i + aCalcParams.size() ) );
     }
 
     ITsGuiContext reportContext = new TsGuiContext( tsContext() );
@@ -588,22 +469,15 @@ public class SpecReportTemplateEditorPanel
 
     tabFolder.setSelection( tabItem );
 
-    Map<String, Object> reportParameters = calcParametorsValues( calcParams, reportData );
-
-    for( IVtSpecReportParam valP : valParams ) {
-      if( !valP.canBeOverwritten() ) {
-        reportParameters.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
-            valP.value() );
-      }
-    }
+    Map<String, Object> reportParameters = calcParametorsValues( aCalcParams, reportData );
 
     // добавляем параметры из диалога
-    for( String paramKey : editedValSet.keys() ) {
-      reportParameters.put( paramKey, editedValSet.getStr( paramKey ) );
+    for( String paramKey : aPresetVals.keys() ) {
+      reportParameters.put( paramKey, aPresetVals.getStr( paramKey ) );
     }
 
     JRDataSource dataSource =
-        ReportTemplateUtilities.createReportDetailDataSource( fieldParams, fieldData, aSelTemplate.hasSummary() );
+        ReportTemplateUtilities.createReportDetailDataSource( aFieldParams, fieldData, aSelTemplate.hasSummary() );
 
     String design = aSelTemplate.design();
 
@@ -621,7 +495,6 @@ public class SpecReportTemplateEditorPanel
         ee.printStackTrace();
       }
     }
-
   }
 
   @SuppressWarnings( { "nls", "boxing" } )

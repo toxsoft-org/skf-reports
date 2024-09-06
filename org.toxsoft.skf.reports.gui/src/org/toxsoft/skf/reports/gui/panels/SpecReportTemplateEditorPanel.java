@@ -50,6 +50,7 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.skf.reports.gui.*;
 import org.toxsoft.skf.reports.gui.km5.*;
 import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
@@ -83,17 +84,26 @@ public class SpecReportTemplateEditorPanel
     @Override
     protected IVtSpecReportTemplate doAddItem() {
 
-      // tsContext().put( "jr.test", "TestJrXml" );
+      // tsContext().put( IReportsGuiConstants.JR_TEMPLATE, "TestJrXml" );
 
       return super.doAddItem();
     }
 
     @Override
     protected IVtSpecReportTemplate doEditItem( IVtSpecReportTemplate aItem ) {
+      String design = aItem.design();
+      if( design != null && design.length() > 0 ) {
+        try( InputStream stream = new ByteArrayInputStream( design.getBytes() ) ) {
+          JasperReport jasperReport = JasperCompileManager.compileReport( stream );
+          tsContext().put( IReportsGuiConstants.JR_TEMPLATE, jasperReport );
+          return super.doEditItem( aItem );
+        }
+        catch( Exception ee ) {
+          LoggerUtils.errorLogger().error( ee );
+        }
+      }
 
-      tsContext().put( "jr.test", aItem.design() );
-
-      return super.doEditItem( aItem );
+      return aItem;
     }
 
     @Override
@@ -314,7 +324,7 @@ public class SpecReportTemplateEditorPanel
   }
 
   protected void doFormReport( IVtSpecReportTemplate aSelTemplate, ISkConnection aReportDataConnection ) {
-    boolean test = true;
+    boolean test = false;
     Shell shell = tsContext().get( Shell.class );
     // запросим у пользователя интервал времени
     TimeInterval retVal = IntervalSelectionExtandedDialogPanel.getParams( shell, initValues, tsContext() );
@@ -386,8 +396,7 @@ public class SpecReportTemplateEditorPanel
 
     // после в диалоге - задать и вставить параметры в valParams
     if( presetVals.size() > 0 ) {
-      TsDialogInfo dlgInfo =
-          new TsDialogInfo( tsContext(), "Задаваемые параметры отчёта", "Задайте значения параметров" );
+      TsDialogInfo dlgInfo = new TsDialogInfo( tsContext(), DLG_T_PARAMS_VAL_SET, DLG_MES_PARAMS_VAL_SET );
       presetVals
           .putAll( DialogOptionsEdit.editOpset( dlgInfo, TsGuiUtils.prepareDefaultDefs( presetVals ), presetVals ) );
     }
@@ -492,7 +501,7 @@ public class SpecReportTemplateEditorPanel
         reportV.requestLayout();
       }
       catch( Exception ee ) {
-        ee.printStackTrace();
+        LoggerUtils.errorLogger().error( ee );
       }
     }
   }

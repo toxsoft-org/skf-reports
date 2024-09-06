@@ -9,8 +9,6 @@ import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static org.toxsoft.skf.reports.gui.km5.ISkResources.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
-import java.io.*;
-
 import org.toxsoft.core.tsgui.bricks.actions.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.stdevents.*;
@@ -34,13 +32,13 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.skf.reports.gui.*;
 import org.toxsoft.skf.reports.gui.panels.*;
 import org.toxsoft.skf.reports.gui.panels.valed.*;
 import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
-import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 
@@ -178,84 +176,20 @@ public class SpecReportParamM5Model
       }
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     protected IVtSpecReportParam doAddItem() {
       ((M5SingleLookupFieldDef<IVtSpecReportParam, String>)model().fieldDefs().findByKey( FID_JR_PARAM ))
-          .setLookupProvider( () -> {
-            ITsGuiContext ctx = tsContext();
-            String design = (String)ctx.find( "jr.test" );
-
-            IListEdit<String> result = new ElemArrayList<>();
-            if( design.length() > 0 ) {
-              try( InputStream stream = new ByteArrayInputStream( design.getBytes() ) ) {
-
-                JasperReport jasperReport = JasperCompileManager.compileReport( stream );
-                JRParameter[] params = jasperReport.getParameters();
-                if( params != null ) {
-                  System.out.println( "Params size *** : " + params.length );
-                  for( JRParameter p : params ) {
-                    if( !p.isSystemDefined() ) {
-                      result.add( String.format( ReportTemplateUtilities.JR_PARAM_PARAM_FORMAT, p.getName() ) );
-                    }
-                  }
-                }
-                JRField[] fields = jasperReport.getFields();
-                if( fields != null ) {
-                  System.out.println( "fields size *** : " + fields.length );
-                  for( JRField f : fields ) {
-                    // if( !f.isSystemDefined() ) {
-                    result.add( String.format( ReportTemplateUtilities.JR_PARAM_FIELD_FORMAT, f.getName() ) );
-                    // }
-                  }
-                }
-              }
-              catch( Exception ee ) {
-
-              }
-            }
-            return result;
-          } );
+          .setLookupProvider( new JrParamIdsM5LookupProvider( tsContext() ) );
 
       return super.doAddItem();
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     protected IVtSpecReportParam doEditItem( IVtSpecReportParam aItem ) {
       ((M5SingleLookupFieldDef<IVtSpecReportParam, String>)model().fieldDefs().findByKey( FID_JR_PARAM ))
-          .setLookupProvider( () -> {
-            ITsGuiContext ctx = tsContext();
-            String design = (String)ctx.find( "jr.test" );
-
-            IListEdit<String> result = new ElemArrayList<>();
-            if( design.length() > 0 ) {
-              try( InputStream stream = new ByteArrayInputStream( design.getBytes() ) ) {
-
-                JasperReport jasperReport = JasperCompileManager.compileReport( stream );
-                JRParameter[] params = jasperReport.getParameters();
-                if( params != null ) {
-                  System.out.println( "Params size *** : " + params.length );
-                  for( JRParameter p : params ) {
-                    if( !p.isSystemDefined() ) {
-                      result.add( String.format( ReportTemplateUtilities.JR_PARAM_PARAM_FORMAT, p.getName() ) );
-                    }
-                  }
-                }
-                JRField[] fields = jasperReport.getFields();
-                if( fields != null ) {
-                  System.out.println( "fields size *** : " + fields.length );
-                  for( JRField f : fields ) {
-                    // if( !f.isSystemDefined() ) {
-                    result.add( String.format( ReportTemplateUtilities.JR_PARAM_FIELD_FORMAT, f.getName() ) );
-                    // }
-                  }
-                }
-              }
-              catch( Exception ee ) {
-                System.out.println( ee.getMessage() );
-              }
-            }
-            return result;
-          } );
+          .setLookupProvider( new JrParamIdsM5LookupProvider( tsContext() ) );
 
       return super.doEditItem( aItem );
     }
@@ -411,8 +345,8 @@ public class SpecReportParamM5Model
    */
   public M5AttributeFieldDef<IVtSpecReportParam> PRESET_VALUE =
       new M5AttributeFieldDef<>( FID_PRESET_VALUE, EAtomicType.STRING, //
-          TSID_NAME, "значение", //
-          TSID_DESCRIPTION, "значение параметра (предустановленние или задаваемое в момент формирования отчёта)", //
+          TSID_NAME, STR_N_PARAM_JR_PARAM_VALUE, //
+          TSID_DESCRIPTION, STR_D_PARAM_JR_PARAM_VALUE, //
           OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME //
       ) {
 
@@ -435,10 +369,8 @@ public class SpecReportParamM5Model
 
         @Override
         protected void doInit() {
-          setNameAndDescription( "Параметр JR", "Параметр из шаблона JasperReport" );
+          setNameAndDescription( STR_N_PARAM_JR_PARAM, STR_D_PARAM_JR_PARAM );
           setFlags( M5FF_COLUMN );
-
-          // setLookupProvider( () -> new ElemArrayList<>( "a", "b", "c" ) );
         }
 
         protected String doGetFieldValue( IVtSpecReportParam aEntity ) {
@@ -452,8 +384,8 @@ public class SpecReportParamM5Model
    */
   public M5AttributeFieldDef<IVtSpecReportParam> FLAG_OVERRIDE_VALUE =
       new M5AttributeFieldDef<>( FID_FLAG_OVERRIDE_VALUE, EAtomicType.BOOLEAN, //
-          TSID_NAME, "Переназначить значение", //
-          TSID_DESCRIPTION, "Переназначить значение во время формирования отчёта" //
+          TSID_NAME, STR_N_PARAM_JR_PARAM_RESET, //
+          TSID_DESCRIPTION, STR_D_PARAM_JR_PARAM_RESET //
       ) {
 
         @Override
@@ -521,7 +453,7 @@ public class SpecReportParamM5Model
           ISkClassInfo ci = conn.coreApi().sysdescr().findClassInfo( paramGwid.classId() );
           ISkObject editObj = conn.coreApi().objService().find( paramGwid.skid() );
           if( ci != null && editObj != null ) {
-            IDtoRtdataInfo rtDataInfo = ci.rtdata().list().findByKey( paramGwid.propId() );
+            // IDtoRtdataInfo rtDataInfo = ci.rtdata().list().findByKey( paramGwid.propId() );
             // работаем только в том случае если поле пустое
             av = (IAtomicValue)editors().getByKey( FID_TITLE ).getValue();
             if( av.asString().isBlank() ) {
@@ -558,6 +490,51 @@ public class SpecReportParamM5Model
   @Override
   protected IM5LifecycleManager<IVtSpecReportParam> doCreateLifecycleManager( Object aMaster ) {
     return new SpecReportParamM5LifecycleManager( this, ISkConnection.class.cast( aMaster ) );
+  }
+
+  /**
+   * Provider of jr params and fields identifiers
+   *
+   * @author max
+   */
+  private static class JrParamIdsM5LookupProvider
+      implements IM5LookupProvider<String> {
+
+    private ITsGuiContext context;
+
+    /**
+     * Constructor by context
+     *
+     * @param aContext - context
+     */
+    JrParamIdsM5LookupProvider( ITsGuiContext aContext ) {
+      context = aContext;
+    }
+
+    @Override
+    public IList<String> listItems() {
+      JasperReport jasperReport = (JasperReport)context.find( IReportsGuiConstants.JR_TEMPLATE );
+
+      IListEdit<String> result = new ElemArrayList<>();
+      if( jasperReport != null ) {
+        JRParameter[] params = jasperReport.getParameters();
+        if( params != null ) {
+          for( JRParameter p : params ) {
+            if( !p.isSystemDefined() ) {
+              result.add( String.format( ReportTemplateUtilities.JR_PARAM_PARAM_FORMAT, p.getName() ) );
+            }
+          }
+        }
+        JRField[] fields = jasperReport.getFields();
+        if( fields != null ) {
+          for( JRField f : fields ) {
+            result.add( String.format( ReportTemplateUtilities.JR_PARAM_FIELD_FORMAT, f.getName() ) );
+          }
+        }
+      }
+      return result;
+    }
+
   }
 
 }

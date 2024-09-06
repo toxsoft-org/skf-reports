@@ -54,4 +54,9 @@ interface ISkResources {
   String AUTHOR_STR            = Messages.getString( "AUTHOR_STR" );            //$NON-NLS-1$
   String DATE_STR              = Messages.getString( "DATE_STR" );              //$NON-NLS-1$
 
+  /**
+   * {@link SpecReportTemplateEditorPanel}
+   */
+  String DLG_MES_PARAMS_VAL_SET = Messages.getString( "DLG_MES_PARAMS_VAL_SET" ); //$NON-NLS-1$
+  String DLG_T_PARAMS_VAL_SET   = Messages.getString( "DLG_T_PARAMS_VAL_SET" );   //$NON-NLS-1$
 }

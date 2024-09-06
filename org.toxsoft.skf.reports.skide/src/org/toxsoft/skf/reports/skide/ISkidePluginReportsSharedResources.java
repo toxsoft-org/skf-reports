@@ -20,11 +20,13 @@ public interface ISkidePluginReportsSharedResources {
   /**
    * {@link SkideUnitPanelReports}
    */
-  String STR_TAB_REPORTS     = Messages.getString( "STR_TAB_REPORTS" );
-  String STR_TAB_REPORTS_D   = Messages.getString( "STR_TAB_REPORTS_D" );
-  String STR_TAB_GRAPHS      = Messages.getString( "STR_TAB_GRAPHS" );
-  String STR_TAB_GRAPHS_D    = Messages.getString( "STR_TAB_GRAPHS_D" );
-  String STR_BUTTON_EXPORT_D = Messages.getString( "STR_BUTTON_EXPORT_D" );
+  String STR_TAB_REPORTS        = Messages.getString( "STR_TAB_REPORTS" );
+  String STR_TAB_REPORTS_D      = Messages.getString( "STR_TAB_REPORTS_D" );
+  String STR_TAB_GRAPHS         = Messages.getString( "STR_TAB_GRAPHS" );
+  String STR_TAB_GRAPHS_D       = Messages.getString( "STR_TAB_GRAPHS_D" );
+  String STR_BUTTON_EXPORT_D    = Messages.getString( "STR_BUTTON_EXPORT_D" );
+  String STR_TAB_SPEC_REPORTS_D = Messages.getString( "STR_TAB_SPEC_REPORTS_D" );
+  String STR_TAB_SPEC_REPORTS   = Messages.getString( "STR_TAB_SPEC_REPORTS" );
 
   /**
    * {@link ReportsTemplatesMigrationUtiles}

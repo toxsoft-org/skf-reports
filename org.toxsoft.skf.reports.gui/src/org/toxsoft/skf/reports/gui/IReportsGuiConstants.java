@@ -43,6 +43,11 @@ public interface IReportsGuiConstants {
   );
 
   /**
+   * Параметр, указывающий на шаблон отчёта
+   */
+  String JR_TEMPLATE = "jr.template"; //$NON-NLS-1$
+
+  /**
    * Constants registration.
    *
    * @param aWinContext {@link IEclipseContext} - windows level context

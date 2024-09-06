@@ -17,6 +17,8 @@ import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.skf.reports.gui.*;
 import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.skf.reports.templates.service.impl.*;
@@ -25,6 +27,8 @@ import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 import org.toxsoft.uskat.core.impl.dto.*;
+
+import net.sf.jasperreports.engine.*;
 
 /**
  * Lifecycle manager for {@link SpecReportTemplateM5Model}.
@@ -69,7 +73,7 @@ public class SpecReportTemplateM5LifecycleManager
 
   @Override
   protected ValidationResult doBeforeCreate( IM5Bunch<IVtSpecReportTemplate> aValues ) {
-    IDtoFullObject dtoReportTemplate = makeReportTemplateDto( aValues, conn );
+    // IDtoFullObject dtoReportTemplate = makeReportTemplateDto( aValues, conn );
     return ValidationResult.SUCCESS;// reportTemplateService().svs().validator().canCreateReportTemplate(
                                     // dtoReportTemplate );
   }
@@ -79,16 +83,22 @@ public class SpecReportTemplateM5LifecycleManager
     FileDialog d = new FileDialog( master().get( Shell.class ), SWT.OPEN );
 
     String file = d.open();
-    try {
-      FileInputStream fr = new FileInputStream( file );
+    try( FileInputStream fr = new FileInputStream( file ) ) {
       byte[] result = fr.readAllBytes();
+      String design = new String( result );
+      aValues.set( CLBID_TEMPLATE_DESIGN, AvUtils.avStr( design ) );
 
-      aValues.set( CLBID_TEMPLATE_DESIGN, AvUtils.avStr( new String( result ) ) );
+      try( InputStream stream = new ByteArrayInputStream( result ) ) {
+        JasperReport jasperReport = JasperCompileManager.compileReport( stream );
+        master().put( IReportsGuiConstants.JR_TEMPLATE, jasperReport );
+      }
+      catch( Exception ee ) {
+        LoggerUtils.errorLogger().error( ee );
+      }
 
-      master().put( "jr.test", new String( result ) );
     }
     catch( IOException e ) {
-      e.printStackTrace();
+      LoggerUtils.errorLogger().error( e );
     }
   }
 
@@ -100,7 +110,7 @@ public class SpecReportTemplateM5LifecycleManager
 
   @Override
   protected ValidationResult doBeforeEdit( IM5Bunch<IVtSpecReportTemplate> aValues ) {
-    IDtoFullObject dtoReportTemplate = makeReportTemplateDto( aValues, conn );
+    // IDtoFullObject dtoReportTemplate = makeReportTemplateDto( aValues, conn );
     return ValidationResult.SUCCESS;// reportTemplateService().svs().validator().canEditReportTemplate(
                                     // dtoReportTemplate,
     // aValues.originalEntity() );
@@ -147,9 +157,6 @@ public class SpecReportTemplateM5LifecycleManager
     dtoReportTemplate.clobs().put( CLBID_TEMPLATE_PARAMS, paramsStr );
 
     String designStr = aValues.getAsAv( CLBID_TEMPLATE_DESIGN ).asString();
-
-    System.out.println( "Template after edit: " + designStr );
-
     String design64 = Base64.getEncoder().encodeToString( designStr.getBytes() );
 
     dtoReportTemplate.clobs().put( CLBID_TEMPLATE_DESIGN, design64 );

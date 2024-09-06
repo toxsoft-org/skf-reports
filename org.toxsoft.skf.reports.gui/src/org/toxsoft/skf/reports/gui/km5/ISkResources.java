@@ -59,4 +59,24 @@ interface ISkResources {
   String STR_PARAM_AGGR_STEP    = Messages.getString( "STR_PARAM_AGGR_STEP" );    //$NON-NLS-1$
   String STR_PARAM_AGGR_STEP_D  = Messages.getString( "STR_PARAM_AGGR_STEP_D" );  //$NON-NLS-1$
 
+  /**
+   * {@link JrParamModel}
+   */
+  String STR_N_PARAM_JR_PARAM_ID = Messages.getString( "STR_N_PARAM_JR_PARAM_ID" ); //$NON-NLS-1$
+
+  /**
+   * {@link SpecReportParamM5Model}
+   */
+  String STR_D_PARAM_JR_PARAM_RESET = Messages.getString( "STR_D_PARAM_JR_PARAM_RESET" ); //$NON-NLS-1$
+  String STR_N_PARAM_JR_PARAM_RESET = Messages.getString( "STR_N_PARAM_JR_PARAM_RESET" ); //$NON-NLS-1$
+  String STR_D_PARAM_JR_PARAM       = Messages.getString( "STR_D_PARAM_JR_PARAM" );       //$NON-NLS-1$
+  String STR_N_PARAM_JR_PARAM       = Messages.getString( "STR_N_PARAM_JR_PARAM" );       //$NON-NLS-1$
+  String STR_D_PARAM_JR_PARAM_VALUE = Messages.getString( "STR_D_PARAM_JR_PARAM_VALUE" ); //$NON-NLS-1$
+  String STR_N_PARAM_JR_PARAM_VALUE = Messages.getString( "STR_N_PARAM_JR_PARAM_VALUE" ); //$NON-NLS-1$
+
+  /**
+   * {@link SpecReportTemplateM5Model}
+   */
+  String STR_D_PARAM_DESIGN = Messages.getString( "STR_D_PARAM_DESIGN" ); //$NON-NLS-1$
+  String STR_N_PARAM_DESIGN = Messages.getString( "STR_N_PARAM_DESIGN" ); //$NON-NLS-1$
 }

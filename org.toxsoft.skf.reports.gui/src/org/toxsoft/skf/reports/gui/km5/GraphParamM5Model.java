@@ -40,7 +40,6 @@ import org.toxsoft.skf.reports.gui.panels.valed.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
-import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 
@@ -500,7 +499,7 @@ public class GraphParamM5Model
           ISkClassInfo ci = conn.coreApi().sysdescr().findClassInfo( paramGwid.classId() );
           ISkObject editObj = conn.coreApi().objService().find( paramGwid.skid() );
           if( ci != null && editObj != null ) {
-            IDtoRtdataInfo rtDataInfo = ci.rtdata().list().findByKey( paramGwid.propId() );
+            // IDtoRtdataInfo rtDataInfo = ci.rtdata().list().findByKey( paramGwid.propId() );
             // работаем только в том случае если поле пустое
             av = (IAtomicValue)editors().getByKey( FID_TITLE ).getValue();
             if( av.asString().isBlank() ) {

@@ -9,9 +9,6 @@ import static org.toxsoft.skf.reports.templates.service.IVtTemplateEditorService
 
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.chart.api.*;
-import org.toxsoft.core.tsgui.m5.gui.mpc.impl.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.valed.api.*;
@@ -53,9 +50,12 @@ public class SpecReportTemplateM5Model
 
       };
 
+  /**
+   * Строковое представление (jrxml) шаблона JR
+   */
   public final M5AttributeFieldDef<IVtSpecReportTemplate> REPORT_DESIGN =
       new M5AttributeFieldDef<>( CLBID_TEMPLATE_DESIGN, EAtomicType.STRING, //
-          TSID_NAME, "Дизайн", TSID_DESCRIPTION, "Дизайн отчёта jrxml" ) {
+          TSID_NAME, STR_N_PARAM_DESIGN, TSID_DESCRIPTION, STR_D_PARAM_DESIGN ) {
 
         @Override
         protected void doInit() {
@@ -148,33 +148,6 @@ public class SpecReportTemplateM5Model
 
     // add fields
     addFieldDefs( NAME, DESCRIPTION, AGGR_STEP, MAX_EXECUTION_TIME, HAS_SUMMARY, REPORT_PARAMS, REPORT_DESIGN );
-
-    setPanelCreator( new M5DefaultPanelCreator<>() {
-
-      protected IM5CollectionPanel<IVtSpecReportTemplate> doCreateCollEditPanel( ITsGuiContext aContext,
-          IM5ItemsProvider<IVtSpecReportTemplate> aItemsProvider,
-          IM5LifecycleManager<IVtSpecReportTemplate> aLifecycleManager ) {
-        MultiPaneComponentModown<IVtSpecReportTemplate> mpc =
-            new MultiPaneComponentModown<>( aContext, model(), aItemsProvider, aLifecycleManager ) {
-
-              @Override
-              protected IVtSpecReportTemplate doAddItem() {
-
-                return super.doAddItem();
-              }
-
-              @Override
-              protected IVtSpecReportTemplate doEditItem( IVtSpecReportTemplate aItem ) {
-
-                aContext.put( "jr.test", aItem.design() );
-
-                return super.doEditItem( aItem );
-              }
-            };
-        return new M5CollectionPanelMpcModownWrapper<>( mpc, false );
-      }
-
-    } );
   }
 
   @Override

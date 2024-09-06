@@ -10,8 +10,12 @@ import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.core.tsgui.panels.misc.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tslib.bricks.strid.more.*;
+import org.toxsoft.core.tslib.bricks.validator.*;
+import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.core.tslib.utils.login.*;
 import org.toxsoft.skf.reports.gui.panels.*;
 import org.toxsoft.skf.reports.skide.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
@@ -98,8 +102,8 @@ class SkideUnitPanelReports
     // spec reports tab
     TabItem tiSpecReports = new TabItem( tabFolder, SWT.NONE );
 
-    tiSpecReports.setText( "Спец.Отчёты" );
-    tiSpecReports.setToolTipText( "Специальные Отчёты" );
+    tiSpecReports.setText( STR_TAB_SPEC_REPORTS );
+    tiSpecReports.setToolTipText( STR_TAB_SPEC_REPORTS_D );
     tiSpecReports.setImage( iconManager().loadStdIcon( ICONID_GRAPH_TEMPL, tabIconSize ) );
 
     TsPanel specReportsBack = new TsPanel( tabFolder, tsContext() );
@@ -197,7 +201,16 @@ class SkideUnitPanelReports
   ISkConnection selectConnection( ITsGuiContext aContext ) {
     ISkideExternalConnectionsService connService =
         aContext.eclipseContext().get( ISkideExternalConnectionsService.class );
-    IdChain idChain = connService.selectConfigAndOpenConnection( aContext );
+    IdChain idChain = null;
+    String cfgId = connService.selectConfig( aContext );
+    if( cfgId != null ) {
+      ILoginInfo loginInfo = new LoginInfo( "root", "1", TsLibUtils.EMPTY_STRING ); //$NON-NLS-1$ //$NON-NLS-2$
+      loginInfo = PanelLoginInfo.edit( tsContext(), loginInfo, ITsValidator.PASS );
+
+      if( loginInfo != null ) {
+        idChain = connService.openConnection( cfgId, aContext, loginInfo );
+      }
+    }
     if( idChain == null ) {
       return null;
     }

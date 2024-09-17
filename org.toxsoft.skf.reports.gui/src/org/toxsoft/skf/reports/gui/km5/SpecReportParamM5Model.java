@@ -191,6 +191,7 @@ public class SpecReportParamM5Model
       ((M5SingleLookupFieldDef<IVtSpecReportParam, String>)model().fieldDefs().findByKey( FID_JR_PARAM ))
           .setLookupProvider( new JrParamIdsM5LookupProvider( tsContext() ) );
 
+      ValedGwidEditor.OPDEF_GWID_KIND.setValue( tsContext().params(), AvUtils.avValobj( aItem.gwid().kind() ) );
       return super.doEditItem( aItem );
     }
 
@@ -200,6 +201,10 @@ public class SpecReportParamM5Model
    * model id
    */
   public static final String MODEL_ID                = "sk.SpecReportParam"; //$NON-NLS-1$
+  /**
+   * id field of Gwid kind
+   */
+  public static final String FID_GWID_KIND           = "gwidKind";           //$NON-NLS-1$
   /**
    * id field of Gwid
    */
@@ -242,6 +247,46 @@ public class SpecReportParamM5Model
 
   final static TsActionDef ACDEF_COPY_PARAM =
       TsActionDef.ofPush2( ACTID_COPY_PARAM, STR_N_COPY_PARAM, STR_D_COPY_PARAM, ITsStdIconIds.ICONID_EDIT_COPY );
+
+  /**
+   * Attribute {@link Gwid#kind()} of {@link IVtSpecReportParam#gwid() }
+   */
+
+  public M5SingleLookupFieldDef<IVtSpecReportParam, EGwidKind> GWID_KIND =
+      new M5SingleLookupFieldDef<>( FID_GWID_KIND, SpecGwidKindM5Model.MODEL_ID ) {
+
+        @Override
+        protected void doInit() {
+          setNameAndDescription( "Тип GWID", "Тип содержимого GWID" );
+          setDefaultValue( EGwidKind.GW_RTDATA );
+          setLookupProvider( new IM5LookupProvider<EGwidKind>() {
+
+            @Override
+            public String getName( EGwidKind aEntity ) {
+              return switch( aEntity ) {
+                case GW_ATTR -> "Атрибуты";
+                case GW_RTDATA -> "Данные";
+                case GW_CMD, GW_CMD_ARG, GW_EVENT, GW_EVENT_PARAM, GW_LINK, GW_RIVET, GW_CLASS, GW_CLOB -> aEntity
+                    .name();
+                default -> aEntity.name();
+              };
+            }
+
+            @Override
+            public IList<EGwidKind> listItems() {
+              IListEdit<EGwidKind> result = new ElemArrayList<>();
+              result.add( EGwidKind.GW_ATTR );
+              result.add( EGwidKind.GW_RTDATA );
+              return result;
+            }
+          } );
+        }
+
+        protected EGwidKind doGetFieldValue( IVtSpecReportParam aEntity ) {
+          return aEntity.gwid().kind();
+        }
+
+      };
 
   /**
    * Attribute {@link IVtSpecReportParam#gwid() } Green world ID
@@ -405,7 +450,7 @@ public class SpecReportParamM5Model
   public SpecReportParamM5Model() {
     super( MODEL_ID, IVtSpecReportParam.class );
 
-    addFieldDefs( GWID, TITLE, DESCR, AGGR_FUNC, DISPL_FORMAT, JR_PARAM, PRESET_VALUE, FLAG_OVERRIDE_VALUE );
+    addFieldDefs( GWID_KIND, GWID, TITLE, DESCR, AGGR_FUNC, DISPL_FORMAT, JR_PARAM, PRESET_VALUE, FLAG_OVERRIDE_VALUE );
     // panels creator
     setPanelCreator( new M5DefaultPanelCreator<>() {
 
@@ -443,6 +488,13 @@ public class SpecReportParamM5Model
     public boolean doProcessEditorValueChange( IValedControl<?> aEditor, IM5FieldDef<IVtSpecReportParam, ?> aFieldDef,
         boolean aEditFinished ) {
       switch( aFieldDef.id() ) {
+        case FID_GWID_KIND:
+          // when changing the Gwid Kind then autochange gwid select dialog context
+          EGwidKind avv = (EGwidKind)editors().getByKey( FID_GWID_KIND ).getValue();
+
+          ValedGwidEditor.OPDEF_GWID_KIND.setValue( tsContext().params(), AvUtils.avValobj( avv ) );
+
+          break;
         case FID_GWID:
           // when changing the Gwid then autocomplete name and description
           IAtomicValue av = (IAtomicValue)editors().getByKey( FID_GWID ).getValue();

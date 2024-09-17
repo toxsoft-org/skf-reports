@@ -47,7 +47,7 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.gw.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.skf.reports.gui.*;
@@ -55,6 +55,7 @@ import org.toxsoft.skf.reports.gui.km5.*;
 import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
+import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
@@ -356,7 +357,7 @@ public class SpecReportTemplateEditorPanel
         fieldParams.add( p );
       }
       else {
-        if( p.gwid() != null && p.gwid().canonicalString().contains( IGwHardConstants.GW_KEYWORD_RTDATA ) ) {
+        if( p.gwid() != null && p.gwid().kind() == EGwidKind.GW_RTDATA ) {
           calcParams.add( p );
         }
         else {
@@ -403,8 +404,16 @@ public class SpecReportTemplateEditorPanel
 
     for( IVtSpecReportParam valP : valParams ) {
       if( !valP.canBeOverwritten() ) {
-        presetVals.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
-            avStr( valP.value() ) );
+        if( valP.gwid() != null && valP.gwid().kind() == EGwidKind.GW_ATTR && aReportDataConnection != null ) {
+          ISkObject obj = aReportDataConnection.coreApi().objService().find( valP.gwid().skid() );
+          presetVals.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
+              obj.attrs().findByKey( valP.gwid().propId() ) );
+        }
+        else {
+          presetVals.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
+              avStr( valP.value() ) );
+        }
+
       }
     }
 

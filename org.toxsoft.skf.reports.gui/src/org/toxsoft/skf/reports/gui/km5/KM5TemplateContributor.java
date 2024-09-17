@@ -28,7 +28,8 @@ public class KM5TemplateContributor
       IVtReportTemplate.CLASS_ID, //
       IVtTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, //
       IVtGraphTemplate.CLASS_ID, //
-      JrParamModel.MODEL_ID );
+      JrParamModel.MODEL_ID, //
+      SpecGwidKindM5Model.MODEL_ID );
 
   private final IStringListEdit myModels = new StringArrayList();
 
@@ -63,6 +64,10 @@ public class KM5TemplateContributor
     JrParamModel jrParamModel = new JrParamModel();
     myModels.add( jrParamModel.id() );
     m5().addModel( jrParamModel );
+
+    SpecGwidKindM5Model specGwidKindModel = new SpecGwidKindM5Model();
+    myModels.add( specGwidKindModel.id() );
+    m5().addModel( specGwidKindModel );
 
     return CONRTIBUTED_MODEL_IDS;
   }

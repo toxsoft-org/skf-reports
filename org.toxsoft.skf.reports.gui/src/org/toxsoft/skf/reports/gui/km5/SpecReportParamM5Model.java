@@ -257,15 +257,15 @@ public class SpecReportParamM5Model
 
         @Override
         protected void doInit() {
-          setNameAndDescription( "Тип GWID", "Тип содержимого GWID" );
+          setNameAndDescription( STR_N_PARAM_GWID_TYPE, STR_D_PARAM_GWID_TYPE );
           setDefaultValue( EGwidKind.GW_RTDATA );
           setLookupProvider( new IM5LookupProvider<EGwidKind>() {
 
             @Override
             public String getName( EGwidKind aEntity ) {
               return switch( aEntity ) {
-                case GW_ATTR -> "Атрибуты";
-                case GW_RTDATA -> "Данные";
+                case GW_ATTR -> STR_ATTRIBUTES;
+                case GW_RTDATA -> STR_DATA;
                 case GW_CMD, GW_CMD_ARG, GW_EVENT, GW_EVENT_PARAM, GW_LINK, GW_RIVET, GW_CLASS, GW_CLOB -> aEntity
                     .name();
                 default -> aEntity.name();

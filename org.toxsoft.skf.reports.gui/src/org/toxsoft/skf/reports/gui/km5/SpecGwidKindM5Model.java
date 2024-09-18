@@ -1,6 +1,5 @@
 package org.toxsoft.skf.reports.gui.km5;
 
-import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 
 import org.toxsoft.core.tsgui.m5.model.impl.*;
@@ -34,8 +33,6 @@ public class SpecGwidKindM5Model
       new M5AttributeFieldDef<>( FID_GWID_KIND_NAME, EAtomicType.STRING, //
           TSID_NAME, TsLibUtils.EMPTY_STRING, //
           TSID_DESCRIPTION, TsLibUtils.EMPTY_STRING ) {
-
-        
 
         @Override
         protected IAtomicValue doGetFieldValue( EGwidKind aEntity ) {

@@ -73,6 +73,10 @@ interface ISkResources {
   String STR_N_PARAM_JR_PARAM       = Messages.getString( "STR_N_PARAM_JR_PARAM" );       //$NON-NLS-1$
   String STR_D_PARAM_JR_PARAM_VALUE = Messages.getString( "STR_D_PARAM_JR_PARAM_VALUE" ); //$NON-NLS-1$
   String STR_N_PARAM_JR_PARAM_VALUE = Messages.getString( "STR_N_PARAM_JR_PARAM_VALUE" ); //$NON-NLS-1$
+  String STR_D_PARAM_GWID_TYPE      = Messages.getString( "STR_D_PARAM_GWID_TYPE" );      //$NON-NLS-1$
+  String STR_N_PARAM_GWID_TYPE      = Messages.getString( "STR_N_PARAM_GWID_TYPE" );      //$NON-NLS-1$
+  String STR_DATA                   = Messages.getString( "STR_DATA" );                   //$NON-NLS-1$
+  String STR_ATTRIBUTES             = Messages.getString( "STR_ATTRIBUTES" );             //$NON-NLS-1$
 
   /**
    * {@link SpecReportTemplateM5Model}

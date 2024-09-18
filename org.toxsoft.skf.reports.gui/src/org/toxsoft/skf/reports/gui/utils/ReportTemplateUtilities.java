@@ -58,11 +58,25 @@ import net.sf.jasperreports.engine.*;
  */
 public class ReportTemplateUtilities {
 
-  public static String JR_PARAM_FIELD_PREFIX = "$F{";
-  public static String JR_PARAM_PARAM_PREFIX = "$P{";
+  /**
+   * Префик идентификатора поля JR (используется внутри программы для отличия поля от параметра)
+   */
+  public static String JR_PARAM_FIELD_PREFIX = "$F{"; //$NON-NLS-1$
 
-  public static String JR_PARAM_FIELD_FORMAT = JR_PARAM_FIELD_PREFIX + "%s}";
-  public static String JR_PARAM_PARAM_FORMAT = JR_PARAM_PARAM_PREFIX + "%s}";
+  /**
+   * Префик идентификатора параметра JR (используется внутри программы для отличия поля от параметра)
+   */
+  public static String JR_PARAM_PARAM_PREFIX = "$P{"; //$NON-NLS-1$
+
+  /**
+   * Формат идентификатора поля JR (используется внутри программы для отличия поля от параметра)
+   */
+  public static String JR_PARAM_FIELD_FORMAT = JR_PARAM_FIELD_PREFIX + "%s}"; //$NON-NLS-1$
+
+  /**
+   * Формат идентификатора параметра JR (используется внутри программы для отличия поля от параметра)
+   */
+  public static String JR_PARAM_PARAM_FORMAT = JR_PARAM_PARAM_PREFIX + "%s}"; //$NON-NLS-1$
 
   // по умолчанию берем данные за последние 6 час
   static TimeInterval initValues =
@@ -118,11 +132,12 @@ public class ReportTemplateUtilities {
   /**
    * По списку параметров шаблона формирует карту параметров для запроса к сервису запросов
    *
+   * @param aQueryParamPrefix String - префикс параметров запроса
    * @param aTemplateParams параметры шаблона
    * @param aAggrStep шаг агрегации
    * @return карта параметров запроса к одноименному сервису
    */
-  public static IStringMap<IDtoQueryParam> template2Query( String aQueryParamprefix,
+  public static IStringMap<IDtoQueryParam> template2Query( String aQueryParamPrefix,
       IList<? extends IVtTemplateParam> aTemplateParams, Integer aAggrStep ) {
     IStringMapEdit<IDtoQueryParam> result = new StringMap<>();
 
@@ -141,7 +156,7 @@ public class ReportTemplateUtilities {
 
       IDtoQueryParam qParam = DtoQueryParam.create( gwid, filter, funcId, funcArgs );
 
-      result.put( aQueryParamprefix + String.format( QUERY_PARAM_ID_FORMAT, Integer.valueOf( i ) ), qParam );
+      result.put( aQueryParamPrefix + String.format( QUERY_PARAM_ID_FORMAT, Integer.valueOf( i ) ), qParam );
     }
     return result;
   }
@@ -255,6 +270,14 @@ public class ReportTemplateUtilities {
     return retVal;
   }
 
+  /**
+   * Формирует источник данных JR для специфических запросов (отличается от стандартного формирователя по модели M5)
+   *
+   * @param aFieldParams IList - список параметров, соответствующих полям JR
+   * @param aFieldData IList - список масивов данных для полей
+   * @param aHasSummary boolean - признак наличия поля ИТОГО
+   * @return JRDataSource - источник данных JR
+   */
   public static JRDataSource createReportDetailDataSource( IList<IVtSpecReportParam> aFieldParams,
       IList<ITimedList<?>> aFieldData, boolean aHasSummary ) {
 

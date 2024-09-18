@@ -72,6 +72,11 @@ import net.sf.jasperreports.engine.*;
 public class SpecReportTemplateEditorPanel
     extends TsPanel {
 
+  /**
+   * Prefix to id of calculated params
+   */
+  private static final String CALCULATED_PARAM_ID_PREFIX = "calc"; //$NON-NLS-1$
+
   private class SpecReportTemplatePaneComponentModown
       extends MultiPaneComponentModown<IVtSpecReportTemplate> {
 
@@ -376,8 +381,8 @@ public class SpecReportTemplateEditorPanel
     // - получить параметры запроса с шагом аггрегации равным интервалу запроса (т.е. будет запрошено одно
     // значение на
     // параметр)
-    IStringMap<IDtoQueryParam> calcQueryParams = ReportTemplateUtilities.template2Query( "calc", calcParams,
-        Integer.valueOf( (int)aSelTemplate.aggrStep().timeInMills() ) );
+    IStringMap<IDtoQueryParam> calcQueryParams = ReportTemplateUtilities.template2Query( CALCULATED_PARAM_ID_PREFIX,
+        calcParams, Integer.valueOf( (int)aSelTemplate.aggrStep().timeInMills() ) );
 
     // для параметров с задаваемыми значениями - запросов не требуется
 

@@ -37,6 +37,8 @@ public class QuantVtReportTemplate
     TsValobjUtils.registerKeeperIfNone( ETimeUnit.KEEPER_ID, ETimeUnit.KEEPER );
     TsValobjUtils.registerKeeperIfNone( VtGraphParamsList.KEEPER_ID, VtGraphParamsList.KEEPER );
 
+    TsValobjUtils.registerKeeperIfNone( EJrParamSourceType.KEEPER_ID, EJrParamSourceType.KEEPER );
+
     KM5Utils.registerContributorCreator( KM5TemplateContributor.CREATOR );
   }
 
@@ -86,6 +88,9 @@ public class QuantVtReportTemplate
     vcReg.registerFactory( ValedAvValobjGwidEditor.FACTORY );
     vcReg.registerFactory( ValedSkidEditor.FACTORY );
     vcReg.registerFactory( ValedAvValobjSkidEditor.FACTORY );
+
+    vcReg.registerFactory( SpecValedAvValobjGwidEditor.FACTORY );
+    vcReg.registerFactory( SpecValedGwidEditor.FACTORY );
   }
 
 }

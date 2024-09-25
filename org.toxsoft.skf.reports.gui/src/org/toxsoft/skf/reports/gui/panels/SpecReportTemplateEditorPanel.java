@@ -1,7 +1,10 @@
 package org.toxsoft.skf.reports.gui.panels;
 
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
+import static org.toxsoft.core.tsgui.valed.api.IValedControlConstants.*;
+import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
+import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static org.toxsoft.skf.reports.gui.IReportsGuiConstants.*;
 import static org.toxsoft.skf.reports.gui.panels.ISkResources.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
@@ -36,10 +39,15 @@ import org.toxsoft.core.tsgui.panels.opsedit.*;
 import org.toxsoft.core.tsgui.panels.toolbar.*;
 import org.toxsoft.core.tsgui.utils.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tsgui.valed.controls.basic.*;
+import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.av.temporal.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.threadexec.*;
 import org.toxsoft.core.tslib.bricks.time.*;
 import org.toxsoft.core.tslib.bricks.time.impl.*;
@@ -48,12 +56,14 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.skf.reports.gui.*;
 import org.toxsoft.skf.reports.gui.km5.*;
 import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
+import org.toxsoft.skf.rri.lib.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.users.*;
@@ -71,6 +81,12 @@ import net.sf.jasperreports.engine.*;
  */
 public class SpecReportTemplateEditorPanel
     extends TsPanel {
+
+  private static IDataDef rriSectionDef = DataDef.create( "rri.section", VALOBJ, //
+      TSID_NAME, "НСИ секция", //
+      TSID_DESCRIPTION, "НСИ секция", //
+      OPID_EDITOR_FACTORY_NAME, ValedComboSelector.FACTORY_NAME //
+  );
 
   /**
    * Prefix to id of calculated params
@@ -407,17 +423,31 @@ public class SpecReportTemplateEditorPanel
           .putAll( DialogOptionsEdit.editOpset( dlgInfo, TsGuiUtils.prepareDefaultDefs( presetVals ), presetVals ) );
     }
 
+    ISkRriSection rriSection = null;
+    if( hasRriSourceParams( valParams ) ) {
+      rriSection = getRriSection( tsContext(), aReportDataConnection );
+    }
+
     for( IVtSpecReportParam valP : valParams ) {
       if( !valP.canBeOverwritten() ) {
-        if( valP.gwid() != null && valP.gwid().kind() == EGwidKind.GW_ATTR && aReportDataConnection != null ) {
-          ISkObject obj = aReportDataConnection.coreApi().objService().find( valP.gwid().skid() );
-          presetVals.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
-              obj.attrs().findByKey( valP.gwid().propId() ) );
+        if( valP.gwid() != null && valP.jrParamSourceType() == EJrParamSourceType.RRI_ATTRIBUTES
+            && rriSection != null ) {
+          IAtomicValue rriAttrVal = rriSection.getAttrParamValue( valP.gwid().skid(), valP.gwid().propId() );
+          if( rriAttrVal != null && rriAttrVal.isAssigned() ) {
+            presetVals.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
+                AvUtils.avStr( rriAttrVal.asString() ) );
+          }
         }
-        else {
-          presetVals.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
-              avStr( valP.value() ) );
-        }
+        else
+          if( valP.gwid() != null && valP.gwid().kind() == EGwidKind.GW_ATTR && aReportDataConnection != null ) {
+            ISkObject obj = aReportDataConnection.coreApi().objService().find( valP.gwid().skid() );
+            presetVals.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
+                obj.attrs().findByKey( valP.gwid().propId() ) );
+          }
+          else {
+            presetVals.put( ReportTemplateUtilities.getPureJrParamIdFromTemplateJrParamId( valP.jrParamId() ),
+                avStr( valP.value() ) );
+          }
 
       }
     }
@@ -550,4 +580,58 @@ public class SpecReportTemplateEditorPanel
     return result;
   }
 
+  private static boolean hasRriSourceParams( IList<IVtSpecReportParam> aValParams ) {
+    for( IVtSpecReportParam valP : aValParams ) {
+      if( !valP.canBeOverwritten() ) {
+        if( valP.gwid() != null && valP.jrParamSourceType() == EJrParamSourceType.RRI_ATTRIBUTES ) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private static ISkRriSection getRriSection( ITsGuiContext aaContext, ISkConnection aReportDataConnection ) {
+    if( aReportDataConnection == null ) {
+      return null;
+    }
+
+    ISkRegRefInfoService rriServ = aReportDataConnection.coreApi().getService( ISkRegRefInfoService.SERVICE_ID );
+    IStridablesList<ISkRriSection> rriSections = rriServ.listSections();
+
+    if( rriSections.size() == 0 ) {
+      return null;
+    }
+
+    // if(rriSections.size() == 1) {
+    // return rriSections.get( 0 );
+    // }
+
+    IOptionSetEdit rriSectionValOptSet = new OptionSet();
+
+    rriSectionDef.setValue( rriSectionValOptSet, AvUtils.avValobj( rriSections.get( 0 ) ) );
+
+    TsGuiContext dialogContext = new TsGuiContext( aaContext );
+
+    ValedComboSelector.REFDEF_ITEMS_PROVIDER.setRef( dialogContext, (ITsItemsProvider<IAtomicValue>)() -> {
+      IListEdit<IAtomicValue> result = new ElemArrayList<>();
+
+      for( ISkRriSection rriSec : rriSections ) {
+        result.add( AvUtils.avValobj( rriSec ) );
+      }
+      return result;
+
+    } );
+    REFDEF_VALUE_VISUALS_PROVIDER.setRef( dialogContext,
+        (ITsVisualsProvider<IAtomicValue>)aItem -> ((ISkRriSection)aItem.asValobj()).nmName() );
+
+    TsDialogInfo dlgInfo1 = new TsDialogInfo( dialogContext, "Выбор НСИ секции", "НСИ секция" );
+    IOptionSet rriSectionValOptSetResult =
+        DialogOptionsEdit.editOpset( dlgInfo1, new StridablesList<>( rriSectionDef ), rriSectionValOptSet );
+
+    if( rriSectionValOptSetResult == null ) {
+      return null;
+    }
+    return rriSectionDef.getValue( rriSectionValOptSetResult ).asValobj();
+  }
 }

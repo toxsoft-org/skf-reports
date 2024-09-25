@@ -48,6 +48,7 @@ class SpecReportParamM5LifecycleManager
    */
   @Override
   protected IVtSpecReportParam doCreate( IM5Bunch<IVtSpecReportParam> aValues ) {
+    EJrParamSourceType gwidKind = aValues.getAsAv( SpecReportParamM5Model.FID_GWID_KIND ).asValobj();
     IAtomicValue gwidAv = aValues.getAsAv( SpecReportParamM5Model.FID_GWID );
     Gwid gwid = gwidAv.isAssigned() ? gwidAv.asValobj() : null;
 
@@ -60,7 +61,7 @@ class SpecReportParamM5LifecycleManager
     String value = aValues.getAsAv( SpecReportParamM5Model.FID_PRESET_VALUE ).asString();
     boolean canBeOverwritten = aValues.getAsAv( SpecReportParamM5Model.FID_FLAG_OVERRIDE_VALUE ).asBool();
 
-    return new VtSpecReportParam( gwid, title, descr, func, format, jrParam, value, canBeOverwritten );
+    return new VtSpecReportParam( gwidKind, gwid, title, descr, func, format, jrParam, value, canBeOverwritten );
   }
 
   /**
@@ -88,6 +89,7 @@ class SpecReportParamM5LifecycleManager
    */
   @Override
   protected IVtSpecReportParam doEdit( IM5Bunch<IVtSpecReportParam> aValues ) {
+    EJrParamSourceType gwidKind = aValues.getAsAv( SpecReportParamM5Model.FID_GWID_KIND ).asValobj();
     IAtomicValue gwidAv = aValues.getAsAv( SpecReportParamM5Model.FID_GWID );
     Gwid gwid = gwidAv.isAssigned() ? gwidAv.asValobj() : null;
 
@@ -100,7 +102,7 @@ class SpecReportParamM5LifecycleManager
     String value = aValues.getAsAv( SpecReportParamM5Model.FID_PRESET_VALUE ).asString();
     boolean canBeOverwritten = aValues.getAsAv( SpecReportParamM5Model.FID_FLAG_OVERRIDE_VALUE ).asBool();
 
-    return new VtSpecReportParam( gwid, title, descr, func, format, jrParam, value, canBeOverwritten );
+    return new VtSpecReportParam( gwidKind, gwid, title, descr, func, format, jrParam, value, canBeOverwritten );
   }
 
   /**

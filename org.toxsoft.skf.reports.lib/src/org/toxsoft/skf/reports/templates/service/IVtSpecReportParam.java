@@ -29,4 +29,11 @@ public interface IVtSpecReportParam
    * @return true - can be overwritten
    */
   boolean canBeOverwritten();
+
+  /**
+   * Returns data source type of param from JR design
+   *
+   * @return EJrParamSourceType - data source type of param from JR design;
+   */
+  EJrParamSourceType jrParamSourceType();
 }

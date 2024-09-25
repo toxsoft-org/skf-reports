@@ -17,6 +17,8 @@ import org.toxsoft.skf.reports.templates.service.*;
 public class VtSpecReportParam
     implements IVtSpecReportParam {
 
+  private static final String STR_NULL_GWID = "Null"; //$NON-NLS-1$
+
   /**
    * Value-object keeper identifier.
    */
@@ -30,8 +32,11 @@ public class VtSpecReportParam
 
         @Override
         protected void doWrite( IStrioWriter aSw, IVtSpecReportParam aEntity ) {
+          // тип gwid
+          aSw.writeAsIs( aEntity.jrParamSourceType().id() );
+          aSw.writeChar( CHAR_ITEM_SEPARATOR );
           // пишем Gwid
-          aSw.writeQuotedString( aEntity.gwid() != null ? aEntity.gwid().canonicalString() : "Null" );
+          aSw.writeQuotedString( aEntity.gwid() != null ? aEntity.gwid().canonicalString() : STR_NULL_GWID );
           aSw.writeChar( CHAR_ITEM_SEPARATOR );
           // name
           aSw.writeQuotedString( aEntity.title() );
@@ -58,8 +63,11 @@ public class VtSpecReportParam
 
         @Override
         protected IVtSpecReportParam doRead( IStrioReader aSr ) {
+          // тип gwid
+          EJrParamSourceType gwidType = EJrParamSourceType.getById( aSr.readIdName() );
+          aSr.ensureChar( CHAR_ITEM_SEPARATOR );
           String gwidStr = aSr.readQuotedString();
-          Gwid gwid = gwidStr.equals( "Null" ) ? null : Gwid.of( gwidStr );
+          Gwid gwid = gwidStr.equals( STR_NULL_GWID ) ? null : Gwid.of( gwidStr );
           aSr.ensureChar( CHAR_ITEM_SEPARATOR );
           String title = aSr.readQuotedString();
           aSr.ensureChar( CHAR_ITEM_SEPARATOR );
@@ -76,22 +84,25 @@ public class VtSpecReportParam
           aSr.ensureChar( CHAR_ITEM_SEPARATOR );
           boolean canBeOverwritten = aSr.readBoolean();
 
-          return new VtSpecReportParam( gwid, title, descr, aggrFunc, dispFormat, jrParamId, value, canBeOverwritten );
+          return new VtSpecReportParam( gwidType, gwid, title, descr, aggrFunc, dispFormat, jrParamId, value,
+              canBeOverwritten );
         }
       };
 
-  protected final Gwid             gwid;
-  protected final String           title;
-  protected final String           description;
-  protected final EAggregationFunc aggrFunc;
-  protected final EDisplayFormat   dispFormat;
-  protected final String           jrParamId;
-  protected final String           value;
-  protected final boolean          canBeOverwritten;
+  protected final Gwid               gwid;
+  protected final String             title;
+  protected final String             description;
+  protected final EAggregationFunc   aggrFunc;
+  protected final EDisplayFormat     dispFormat;
+  protected final String             jrParamId;
+  protected final String             value;
+  protected final boolean            canBeOverwritten;
+  protected final EJrParamSourceType jrParamSourceType;
 
   /**
    * Constructor.
    *
+   * @param aJrParamSourceType EJrParamSourceType - type of gwid
    * @param aGwid {@link Gwid} green world id of that parameter
    * @param aTitle name of parameter
    * @param aDescr description of parameter
@@ -101,8 +112,10 @@ public class VtSpecReportParam
    * @param aValue String - preset value of param
    * @param aCanBeOverwritten boolean - flag indicating posibility of overwritten
    */
-  public VtSpecReportParam( Gwid aGwid, String aTitle, String aDescr, EAggregationFunc aAggrFunc,
-      EDisplayFormat aDispFormat, String aJrParamId, String aValue, boolean aCanBeOverwritten ) {
+  public VtSpecReportParam( EJrParamSourceType aJrParamSourceType, Gwid aGwid, String aTitle, String aDescr,
+      EAggregationFunc aAggrFunc, EDisplayFormat aDispFormat, String aJrParamId, String aValue,
+      boolean aCanBeOverwritten ) {
+    jrParamSourceType = aJrParamSourceType;
     gwid = aGwid;
     title = aTitle;
     description = aDescr;
@@ -155,6 +168,11 @@ public class VtSpecReportParam
   @Override
   public boolean canBeOverwritten() {
     return canBeOverwritten;
+  }
+
+  @Override
+  public EJrParamSourceType jrParamSourceType() {
+    return jrParamSourceType;
   }
 
 }

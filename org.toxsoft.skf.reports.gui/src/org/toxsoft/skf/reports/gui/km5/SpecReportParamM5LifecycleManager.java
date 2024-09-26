@@ -102,6 +102,10 @@ class SpecReportParamM5LifecycleManager
     String value = aValues.getAsAv( SpecReportParamM5Model.FID_PRESET_VALUE ).asString();
     boolean canBeOverwritten = aValues.getAsAv( SpecReportParamM5Model.FID_FLAG_OVERRIDE_VALUE ).asBool();
 
+    if( aValues.originalEntity().gwid().equals( gwid ) ) {
+      gwidKind = aValues.originalEntity().jrParamSourceType();
+    }
+
     return new VtSpecReportParam( gwidKind, gwid, title, descr, func, format, jrParam, value, canBeOverwritten );
   }
 

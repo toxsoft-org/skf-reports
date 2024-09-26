@@ -52,4 +52,11 @@ public interface IVtResources {
   String STR_N_MAX_EXECUTION_TIME  = Messages.getString( "STR_N_MAX_EXECUTION_TIME" );
   String STR_D_MAX_EXECUTION_TIME  = Messages.getString( "STR_D_MAX_EXECUTION_TIME" );
 
+  /**
+   * {@link EJrParamSourceType}
+   */
+  String STR_N_DATA           = Messages.getString( "STR_N_DATA" );
+  String STR_N_ATTRIBUTES     = Messages.getString( "STR_N_ATTRIBUTES" );
+  String STR_N_RRI_ATTRIBUTES = Messages.getString( "STR_N_RRI_ATTRIBUTES" );
+
 }

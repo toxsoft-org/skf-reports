@@ -57,6 +57,10 @@ interface ISkResources {
   /**
    * {@link SpecReportTemplateEditorPanel}
    */
-  String DLG_MES_PARAMS_VAL_SET = Messages.getString( "DLG_MES_PARAMS_VAL_SET" ); //$NON-NLS-1$
-  String DLG_T_PARAMS_VAL_SET   = Messages.getString( "DLG_T_PARAMS_VAL_SET" );   //$NON-NLS-1$
+  String DLG_MES_PARAMS_VAL_SET       = Messages.getString( "DLG_MES_PARAMS_VAL_SET" );       //$NON-NLS-1$
+  String DLG_T_PARAMS_VAL_SET         = Messages.getString( "DLG_T_PARAMS_VAL_SET" );         //$NON-NLS-1$
+  String STR_N_RRI_SECTION            = Messages.getString( "STR_N_RRI_SECTION" );            //$NON-NLS-1$
+  String STR_D_RRI_SECTION            = Messages.getString( "STR_D_RRI_SECTION" );            //$NON-NLS-1$
+  String DLG_TITLE_CHOOSE_RRI_SECTION = Messages.getString( "DLG_TITLE_CHOOSE_RRI_SECTION" ); //$NON-NLS-1$
+  String DLG_CAP_CHOOSE_RRI_SECTION   = Messages.getString( "DLG_CAP_CHOOSE_RRI_SECTION" );   //$NON-NLS-1$
 }

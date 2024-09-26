@@ -1,5 +1,7 @@
 package org.toxsoft.skf.reports.templates.service;
 
+import static org.toxsoft.skf.reports.templates.service.IVtResources.*;
+
 import org.toxsoft.core.tslib.bricks.keeper.*;
 import org.toxsoft.core.tslib.bricks.keeper.std.*;
 import org.toxsoft.core.tslib.bricks.strid.*;
@@ -18,17 +20,17 @@ public enum EJrParamSourceType
   /**
    * History of rt data
    */
-  RTDATA( "rtdata", "данные" ),
+  RTDATA( "rtdata", STR_N_DATA ), //$NON-NLS-1$
 
   /**
    * Value of attribure of object
    */
-  ATTRIBURES( "attributes", "атрибуты" ),
+  ATTRIBURES( "attributes", STR_N_ATTRIBUTES ), //$NON-NLS-1$
 
   /**
    * Value of rri attributte of object
    */
-  RRI_ATTRIBUTES( "rri_attributes", "атрибуты НСИ" );
+  RRI_ATTRIBUTES( "rri_attributes", STR_N_RRI_ATTRIBUTES ); //$NON-NLS-1$
 
   /**
    * The keeper ID.

@@ -82,9 +82,11 @@ import net.sf.jasperreports.engine.*;
 public class SpecReportTemplateEditorPanel
     extends TsPanel {
 
-  private static IDataDef rriSectionDef = DataDef.create( "rri.section", VALOBJ, //
-      TSID_NAME, "НСИ секция", //
-      TSID_DESCRIPTION, "НСИ секция", //
+  private static final String PARID_RRI_SECTION = "rri.section"; //$NON-NLS-1$
+
+  private static IDataDef PARDEF_RRI_SECTION = DataDef.create( PARID_RRI_SECTION, VALOBJ, //
+      TSID_NAME, STR_N_RRI_SECTION, //
+      TSID_DESCRIPTION, STR_D_RRI_SECTION, //
       OPID_EDITOR_FACTORY_NAME, ValedComboSelector.FACTORY_NAME //
   );
 
@@ -609,7 +611,7 @@ public class SpecReportTemplateEditorPanel
 
     IOptionSetEdit rriSectionValOptSet = new OptionSet();
 
-    rriSectionDef.setValue( rriSectionValOptSet, AvUtils.avValobj( rriSections.get( 0 ) ) );
+    PARDEF_RRI_SECTION.setValue( rriSectionValOptSet, AvUtils.avValobj( rriSections.get( 0 ) ) );
 
     TsGuiContext dialogContext = new TsGuiContext( aaContext );
 
@@ -625,13 +627,13 @@ public class SpecReportTemplateEditorPanel
     REFDEF_VALUE_VISUALS_PROVIDER.setRef( dialogContext,
         (ITsVisualsProvider<IAtomicValue>)aItem -> ((ISkRriSection)aItem.asValobj()).nmName() );
 
-    TsDialogInfo dlgInfo1 = new TsDialogInfo( dialogContext, "Выбор НСИ секции", "НСИ секция" );
+    TsDialogInfo dlgInfo1 = new TsDialogInfo( dialogContext, DLG_CAP_CHOOSE_RRI_SECTION, DLG_TITLE_CHOOSE_RRI_SECTION );
     IOptionSet rriSectionValOptSetResult =
-        DialogOptionsEdit.editOpset( dlgInfo1, new StridablesList<>( rriSectionDef ), rriSectionValOptSet );
+        DialogOptionsEdit.editOpset( dlgInfo1, new StridablesList<>( PARDEF_RRI_SECTION ), rriSectionValOptSet );
 
     if( rriSectionValOptSetResult == null ) {
       return null;
     }
-    return rriSectionDef.getValue( rriSectionValOptSetResult ).asValobj();
+    return PARDEF_RRI_SECTION.getValue( rriSectionValOptSetResult ).asValobj();
   }
 }

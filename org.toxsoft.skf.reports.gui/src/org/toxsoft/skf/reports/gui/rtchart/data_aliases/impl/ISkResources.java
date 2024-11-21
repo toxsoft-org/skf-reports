@@ -1,0 +1,19 @@
+package org.toxsoft.skf.reports.gui.rtchart.data_aliases.impl;
+
+/**
+ * Localizable resources.
+ *
+ * @author dima
+ */
+interface ISkResources {
+
+  String STR_N_PARAM_GWID        = "параметр";
+  String STR_D_PARAM_GWID        = "идентификатор параметра";
+  String STR_N_PARAM_TITLE       = "название";
+  String STR_D_PARAM_TITLE       = "название параметра";
+  String STR_N_PARAM_DESCRIPTION = "описание";
+  String STR_D_PARAM_DESCRIPTION = "описание параметра";
+  String STR_N_DATA_ALIAS        = "псевдонимы";
+  String STR_D_DATA_ALIAS        = "псевдонимы данных системы";
+
+}

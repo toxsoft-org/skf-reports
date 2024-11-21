@@ -25,7 +25,8 @@ Require-Bundle: jakarta.inject.jakarta.inject-api,
  org.toxsoft.skf.reports.chart.utils.gui,
  org.toxsoft.skf.refbooks.lib,
  org.toxsoft.extlibs.jasperreports;bundle-version="1.0.0",
- org.toxsoft.skf.rri.lib
+ org.toxsoft.skf.rri.lib,
+ org.toxsoft.skf.ggprefs.lib;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: org.toxsoft.skf.reports.gui
 Bundle-ActivationPolicy: lazy
@@ -33,4 +34,5 @@ Export-Package: org.toxsoft.skf.reports.gui,
  org.toxsoft.skf.reports.gui.km5,
  org.toxsoft.skf.reports.gui.panels,
  org.toxsoft.skf.reports.gui.panels.valed,
+ org.toxsoft.skf.reports.gui.rtchart.data_aliases,
  org.toxsoft.skf.reports.gui.utils

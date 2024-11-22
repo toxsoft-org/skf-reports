@@ -34,5 +34,6 @@ Export-Package: org.toxsoft.skf.reports.gui,
  org.toxsoft.skf.reports.gui.km5,
  org.toxsoft.skf.reports.gui.panels,
  org.toxsoft.skf.reports.gui.panels.valed,
+ org.toxsoft.skf.reports.gui.rtchart,
  org.toxsoft.skf.reports.gui.rtchart.data_aliases,
  org.toxsoft.skf.reports.gui.utils

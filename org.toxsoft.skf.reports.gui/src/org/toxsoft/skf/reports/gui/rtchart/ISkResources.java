@@ -18,4 +18,8 @@ interface ISkResources {
   String DLC_T_PREFS_EDIT           = "Отредактируйте настройки";
   String STR_T_OPEN_TEMPLATE        = "Открыть шаблон";
   String STR_D_OPEN_TEMPLATE        = "Открыть готовый шаблон графика";
+  String STR_D_ADD_TEMPLATE         = "Создать новый шаблон графика";
+  String STR_D_EDIT_TEMPLATE        = "Редактировать шаблон графика";
+  String STR_D_REMOVE_TEMPLATE      = "Удалить текущий шаблон графика";
+
 }

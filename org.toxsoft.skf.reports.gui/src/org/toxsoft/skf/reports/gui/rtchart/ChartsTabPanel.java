@@ -7,6 +7,8 @@ import static org.toxsoft.skf.reports.gui.rtchart.ISkResources.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.actions.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
@@ -17,7 +19,6 @@ import org.toxsoft.core.tsgui.m5.gui.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.panels.toolbar.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
@@ -46,9 +47,9 @@ public class ChartsTabPanel
   /**
    * признак того что панель сверху
    */
-  private final boolean   top;
-  private final TsToolbar toolbar;
-  private CTabFolder      tabFolder;
+  private final boolean top;
+  // private final TsToolbar toolbar;
+  private CTabFolder tabFolder;
 
   private IGuiGwPrefsSection prefSection;
 
@@ -84,36 +85,83 @@ public class ChartsTabPanel
     masteObjectSkid = aMasteObjectSkid;
     masteObjectGwid = Gwid.createClass( masteObjectSkid.classId() );
 
-    // toolbar
-    toolbar = new TsToolbar( tsContext() );
-    // toolbar.setNameLabelText( RTCHARTS_TOOLBAR_TITLE );
-    toolbar.addActionDefs( //
-        ACDEF_OPEN_TEMPLATE, ACDEF_ADD, ACDEF_EDIT, ACDEF_REMOVE //
-    );
-    toolbar.setIconSize( EIconSize.IS_16X16 );
-    toolbar.createControl( this );
-    toolbar.getControl().setLayoutData( BorderLayout.NORTH );
-    toolbar.addListener( aActionId -> {
-      if( aActionId.equals( ACDEF_OPEN_TEMPLATE.id() ) ) {
-        IVtGraphTemplate newRtGraphTemplate = doSelectTemplate();
-        addRtChartTemplate( newRtGraphTemplate );
+    // инициализируем панель быстрых кнопок
+    initToolBar();
+    // инициализируем настройки панели
+    initPanelPrefs();
+    // восстанавливаем внешний вид панели
+    restoreUserSettings();
+  }
+
+  private void initToolBar() {
+    tabFolder = new CTabFolder( this, SWT.BORDER );
+    tabFolder.setLayout( new BorderLayout() );
+    tabFolder.setLayoutData( BorderLayout.CENTER );
+    ToolBar toolBar = new ToolBar( tabFolder, SWT.FLAT );
+    tabFolder.setTopRight( toolBar, SWT.RIGHT );
+    // open graph template
+    ToolItem openTemplate = new ToolItem( toolBar, SWT.PUSH );
+    Image tbImage = iconManager().loadStdIcon( ITsStdIconIds.ICONID_DOCUMENT_OPEN, EIconSize.IS_16X16 );
+    openTemplate.setImage( tbImage );
+    openTemplate.setToolTipText( STR_D_OPEN_TEMPLATE );
+    openTemplate.addSelectionListener( new SelectionListener() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        extracted();
       }
-      if( aActionId.equals( ACDEF_ADD.id() ) ) {
+
+      @Override
+      public void widgetDefaultSelected( SelectionEvent aE ) {
+        extracted();
+      }
+
+      private void extracted() {
+        IVtGraphTemplate selectedTemplate = doSelectTemplate();
+        addRtChartTemplate( selectedTemplate );
+      }
+
+    } );
+    // add new graph template
+    ToolItem addNewTemplate = new ToolItem( toolBar, SWT.PUSH );
+    tbImage = iconManager().loadStdIcon( ITsStdIconIds.ICONID_LIST_ADD, EIconSize.IS_16X16 );
+    addNewTemplate.setImage( tbImage );
+    addNewTemplate.setToolTipText( STR_D_ADD_TEMPLATE );
+    addNewTemplate.addSelectionListener( new SelectionListener() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        extracted();
+      }
+
+      @Override
+      public void widgetDefaultSelected( SelectionEvent aE ) {
+        extracted();
+      }
+
+      private void extracted() {
         IVtGraphTemplate newRtGraphTemplate = doAddTemplate();
         addRtChartTemplate( newRtGraphTemplate );
       }
-      if( aActionId.equals( ACDEF_REMOVE.id() ) ) {
-        // получаем текущий график
-        CTabItem selTab = tabFolder.getSelection();
-        IVtGraphTemplate selGraphTemplate = (IVtGraphTemplate)selTab.getData();
-        rtChartSkids.remove( selGraphTemplate.skid() );
-        // гасим RtChart
-        RtChartPanel chartPanel = (RtChartPanel)selTab.getControl();
-        chartPanel.dispose();
-        selTab.dispose();
-        saveUserSettings();
+    } );
+    // edit graph template
+    ToolItem editTemplate = new ToolItem( toolBar, SWT.PUSH );
+    tbImage = iconManager().loadStdIcon( ITsStdIconIds.ICONID_DOCUMENT_EDIT, EIconSize.IS_16X16 );
+    editTemplate.setImage( tbImage );
+    editTemplate.setToolTipText( STR_D_EDIT_TEMPLATE );
+    editTemplate.addSelectionListener( new SelectionListener() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        extracted();
       }
-      if( aActionId.equals( ACDEF_EDIT.id() ) ) {
+
+      @Override
+      public void widgetDefaultSelected( SelectionEvent aE ) {
+        extracted();
+      }
+
+      private void extracted() {
         // получаем текущий график
         CTabItem selTab = tabFolder.getSelection();
         IVtGraphTemplate selGraphTemplate = (IVtGraphTemplate)selTab.getData();
@@ -128,14 +176,38 @@ public class ChartsTabPanel
         }
       }
     } );
+    // remove graph template
+    ToolItem removeTemplate = new ToolItem( toolBar, SWT.PUSH );
+    tbImage = iconManager().loadStdIcon( ITsStdIconIds.ICONID_LIST_REMOVE, EIconSize.IS_16X16 );
+    removeTemplate.setImage( tbImage );
+    removeTemplate.setToolTipText( STR_D_REMOVE_TEMPLATE );
+    removeTemplate.addSelectionListener( new SelectionListener() {
 
-    tabFolder = new CTabFolder( this, SWT.BORDER );
-    tabFolder.setLayout( new BorderLayout() );
-    tabFolder.setLayoutData( BorderLayout.CENTER );
-    // инициализируем настройки панели
-    initPanelPrefs();
-    // восстанавливаем внешний вид панели
-    restoreUserSettings();
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        extracted();
+      }
+
+      @Override
+      public void widgetDefaultSelected( SelectionEvent aE ) {
+        extracted();
+      }
+
+      private void extracted() {
+        // получаем текущий график
+        CTabItem selTab = tabFolder.getSelection();
+        IVtGraphTemplate selGraphTemplate = (IVtGraphTemplate)selTab.getData();
+        rtChartSkids.remove( selGraphTemplate.skid() );
+        // гасим RtChart
+        RtChartPanel chartPanel = (RtChartPanel)selTab.getControl();
+        chartPanel.dispose();
+        selTab.dispose();
+        saveUserSettings();
+      }
+    } );
+    // !!!!
+    // Need to set height of tab to show toolbar
+    tabFolder.setTabHeight( Math.max( toolBar.computeSize( SWT.DEFAULT, SWT.DEFAULT ).y, tabFolder.getTabHeight() ) );
   }
 
   private IVtGraphTemplate doEditTemplate( IVtGraphTemplate aSelGraphTemplate ) {

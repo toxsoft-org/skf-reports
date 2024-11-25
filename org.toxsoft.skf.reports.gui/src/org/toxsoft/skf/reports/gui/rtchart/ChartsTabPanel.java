@@ -12,6 +12,7 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.actions.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.m5.*;
@@ -122,9 +123,12 @@ public class ChartsTabPanel
       }
 
     } );
+
     // add new graph template
     ToolItem addNewTemplate = new ToolItem( toolBar, SWT.PUSH );
-    tbImage = iconManager().loadStdIcon( ITsStdIconIds.ICONID_LIST_ADD, EIconSize.IS_16X16 );
+    tbImage =
+
+        iconManager().loadStdIcon( ITsStdIconIds.ICONID_LIST_ADD, EIconSize.IS_16X16 );
     addNewTemplate.setImage( tbImage );
     addNewTemplate.setToolTipText( STR_D_ADD_TEMPLATE );
     addNewTemplate.addSelectionListener( new SelectionListener() {
@@ -176,35 +180,30 @@ public class ChartsTabPanel
         }
       }
     } );
-    // remove graph template
-    ToolItem removeTemplate = new ToolItem( toolBar, SWT.PUSH );
-    tbImage = iconManager().loadStdIcon( ITsStdIconIds.ICONID_LIST_REMOVE, EIconSize.IS_16X16 );
-    removeTemplate.setImage( tbImage );
-    removeTemplate.setToolTipText( STR_D_REMOVE_TEMPLATE );
-    removeTemplate.addSelectionListener( new SelectionListener() {
+    // listen close tab event
+    tabFolder.addCTabFolder2Listener( new CTabFolder2Adapter() {
 
       @Override
-      public void widgetSelected( SelectionEvent aE ) {
-        extracted();
-      }
-
-      @Override
-      public void widgetDefaultSelected( SelectionEvent aE ) {
-        extracted();
-      }
-
-      private void extracted() {
-        // получаем текущий график
-        CTabItem selTab = tabFolder.getSelection();
-        IVtGraphTemplate selGraphTemplate = (IVtGraphTemplate)selTab.getData();
-        rtChartSkids.remove( selGraphTemplate.skid() );
-        // гасим RtChart
-        RtChartPanel chartPanel = (RtChartPanel)selTab.getControl();
-        chartPanel.dispose();
-        selTab.dispose();
-        saveUserSettings();
+      public void close( CTabFolderEvent event ) {
+        // ask user to continue
+        if( TsDialogUtils.askYesNoCancel( getShell(), STR_CONFIRM_REMOVE_TEMPLATE ) == ETsDialogCode.YES ) {
+          // получаем текущий график
+          CTabItem selTab = (CTabItem)event.widget;
+          IVtGraphTemplate selGraphTemplate = (IVtGraphTemplate)selTab.getData();
+          rtChartSkids.remove( selGraphTemplate.skid() );
+          // гасим RtChart
+          RtChartPanel chartPanel = (RtChartPanel)selTab.getControl();
+          chartPanel.dispose();
+          selTab.dispose();
+          saveUserSettings();
+          event.doit = true; // allow close
+        }
+        else {
+          event.doit = false; // disallow close
+        }
       }
     } );
+
     // !!!!
     // Need to set height of tab to show toolbar
     tabFolder.setTabHeight( Math.max( toolBar.computeSize( SWT.DEFAULT, SWT.DEFAULT ).y, tabFolder.getTabHeight() ) );
@@ -227,7 +226,7 @@ public class ChartsTabPanel
 
   private void addRtChartTemplateToTabPanel( IVtGraphTemplate aRtGraphTemplate ) {
     // создаем новую закладку
-    CTabItem tabItem = new CTabItem( tabFolder, SWT.NONE );
+    CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
     // закладке дадим имя параметра
     tabItem.setText( aRtGraphTemplate.nmName() );
     RtChartPanel chartPanel = new RtChartPanel( tabFolder, tsContext(), aRtGraphTemplate, conn );

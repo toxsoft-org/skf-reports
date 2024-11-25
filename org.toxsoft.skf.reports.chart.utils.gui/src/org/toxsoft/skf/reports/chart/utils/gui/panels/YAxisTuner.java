@@ -58,9 +58,9 @@ public class YAxisTuner {
   public IYAxisDef createAxisDef( String aId, String aDescription, String aName ) {
 
     String annoRendererClass = IStdG2AxisAnnotationRendererOptions.CONSUMER_NAME;
+    String bkgRendererClass = IGradientBackgroundRendererOptions.CONSUMER_NAME;
     // dima 22.11.24 переходим на системный фон
-    // String bkgRendererClass = IGradientBackgroundRendererOptions.CONSUMER_NAME;
-    String bkgRendererClass = SystemBackgroundRenderer.class.getName();
+    // String bkgRendererClass = SystemBackgroundRenderer.class.getName();
 
     IStdG2AxisAnnotationRendererOptions.ANNOTATION_FORMAT.setValue( annoOps, AvUtils.avStr( formatStr ) );
     IStdG2AxisAnnotationRendererOptions.TITLE.setValue( annoOps, AvUtils.avStr( title ) );

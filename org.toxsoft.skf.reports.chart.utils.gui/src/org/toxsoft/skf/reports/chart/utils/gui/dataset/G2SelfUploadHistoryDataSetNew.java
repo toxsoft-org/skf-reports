@@ -248,4 +248,9 @@ public class G2SelfUploadHistoryDataSetNew
     eventer.resetPendingEvents();
   }
 
+  @Override
+  public void resumeFiringWithCounterReset( boolean aFireDelayed ) {
+    // TODO Auto-generated method stub
+  }
+
 }

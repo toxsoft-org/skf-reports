@@ -35,6 +35,7 @@ import org.toxsoft.skf.ggprefs.lib.*;
 import org.toxsoft.skf.ggprefs.lib.impl.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
 
 /**
@@ -55,9 +56,15 @@ public class ChartsTabPanel
   private IGuiGwPrefsSection prefSection;
 
   private final ISkConnection conn;
-  private final Skid          masteObjectSkid;
-  private final Gwid          masteObjectGwid;
-  SkidList                    rtChartSkids = new SkidList();
+  /*
+   * Skid пользователя настройки которого используются в данном сеансе
+   */
+  private final Skid userSkid4GwPrefs;
+  /*
+   * Gwid пользователя настройки которого используются в данном сеансе
+   */
+  private final Gwid userGwid4GwPrefs;
+  SkidList           rtChartSkids = new SkidList();
 
   /**
    * Action: open template.
@@ -73,18 +80,18 @@ public class ChartsTabPanel
    * @param aParent {@link Composite} - родительская панель
    * @param aConnection {@link ISkConnection} - соединение с сервером
    * @param aContext {@link ITsGuiContext} - контекст панели
-   * @param aMasteObjectSkid {@link Skid } - мастер объект панели
+   * @param aCurrUser {@link ISkUser } - текущий пользователь настрйки которого актуализируются
    * @param isTop признак того что панель сверху
    * @throws TsNullArgumentRtException любой аргумент = null
    */
-  public ChartsTabPanel( Composite aParent, ISkConnection aConnection, ITsGuiContext aContext, Skid aMasteObjectSkid,
+  public ChartsTabPanel( Composite aParent, ISkConnection aConnection, ITsGuiContext aContext, ISkUser aCurrUser,
       boolean isTop ) {
     super( aParent, aContext );
     this.setLayout( new BorderLayout() );
     conn = aConnection;
     top = isTop;
-    masteObjectSkid = aMasteObjectSkid;
-    masteObjectGwid = Gwid.createClass( masteObjectSkid.classId() );
+    userSkid4GwPrefs = aCurrUser.skid();
+    userGwid4GwPrefs = Gwid.createObj( userSkid4GwPrefs );
 
     // инициализируем панель быстрых кнопок
     initToolBar();
@@ -250,7 +257,7 @@ public class ChartsTabPanel
   private void saveUserSettings() {
     IOptionSetEdit userPrefs = new OptionSet( getUserPrefs() );
     RtChartPanelOptions.RTCHART_SKIDS.setValue( userPrefs, AvUtils.avValobj( rtChartSkids ) );
-    prefSection.setOptions( masteObjectSkid, userPrefs );
+    prefSection.setOptions( userSkid4GwPrefs, userPrefs );
   }
 
   private void initPanelPrefs() {
@@ -266,7 +273,7 @@ public class ChartsTabPanel
     IStridablesListEdit<IDataDef> panelPrefs = new StridablesList<>();
     panelPrefs.addAll( RtChartPanelOptions.allOptions() );
 
-    IList<IDataDef> currOpDefs = prefSection.listOptionDefs( masteObjectSkid );
+    IList<IDataDef> currOpDefs = prefSection.listOptionDefs( userSkid4GwPrefs );
     IStridablesListEdit<IDataDef> newPrefDefs = new StridablesList<>();
     // перебираем все устанавливаемые опции и добавляем только новые
     for( IDataDef addingOptDef : RtChartPanelOptions.allOptions() ) {
@@ -274,11 +281,11 @@ public class ChartsTabPanel
         newPrefDefs.add( addingOptDef );
       }
     }
-    prefSection.bindOptions( masteObjectGwid, newPrefDefs );
+    prefSection.bindOptions( userGwid4GwPrefs, newPrefDefs );
   }
 
   private IOptionSet getUserPrefs() {
-    return prefSection.getOptions( masteObjectSkid );
+    return prefSection.getOptions( userSkid4GwPrefs );
   }
 
   protected IVtGraphTemplate doAddTemplate() {

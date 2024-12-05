@@ -1,0 +1,3 @@
+не вынесены константы:
+    org.toxsoft.skf.reports.chart.utils.gui.IReportsChartUtilsGuiConstants
+    

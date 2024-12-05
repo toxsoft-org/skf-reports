@@ -2,3 +2,11 @@
 --- org.toxsoft.skf.reports.gui.rtchart
 --- org.toxsoft.skf.reports.gui.rtchart.data_aliases
 --- org.toxsoft.skf.reports.gui.rtchart.data_aliases.impl
+
+не вынесены константы:
+    org.toxsoft.skf.reports.gui.panels.PanelGwidSelector
+    org.toxsoft.skf.reports.gui.panels.ReportTemplateEditorPanel
+    org.toxsoft.skf.reports.gui.panels.SpecReportTemplateEditorPanel
+    org.toxsoft.skf.reports.gui.panels.valed.ValedGwidEditor
+    org.toxsoft.skf.reports.gui.rtchart.RtChartPanel
+    

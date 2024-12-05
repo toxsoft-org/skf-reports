@@ -1,0 +1,2 @@
+не вынесены константы:
+    org.toxsoft.skf.reports.templates.service.IVtTemplateEditorServiceHardConstants

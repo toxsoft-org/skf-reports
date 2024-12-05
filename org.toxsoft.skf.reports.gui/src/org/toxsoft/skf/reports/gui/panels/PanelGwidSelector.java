@@ -41,8 +41,8 @@ public class PanelGwidSelector
    * id of ISkConnection to use in dialog
    */
   public static IDataDef OPDEF_CONN_ID_CHAIN = DataDef.create( MPC_OP_ID + ".IdChain", VALOBJ, //$NON-NLS-1$
-      TSID_NAME, STR_N_CONN_ID_CHAIN, //
-      TSID_DESCRIPTION, STR_D_CONN_ID_CHAIN, //
+      TSID_NAME, STR_CONN_ID_CHAIN, //
+      TSID_DESCRIPTION, STR_CONN_ID_CHAIN_D, //
       TSID_KEEPER_ID, IdChain.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( IdChain.NULL ) //
   );

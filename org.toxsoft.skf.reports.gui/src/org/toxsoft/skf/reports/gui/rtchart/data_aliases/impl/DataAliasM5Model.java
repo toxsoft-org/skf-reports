@@ -46,8 +46,8 @@ public class DataAliasM5Model
    * Attribute {@link IDataNameAlias#gwid() } Green world ID
    */
   public M5AttributeFieldDef<IDataNameAlias> GWID = new M5AttributeFieldDef<>( FID_GWID, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_GWID, //
-      TSID_DESCRIPTION, STR_D_PARAM_GWID, //
+      TSID_NAME, STR_PARAM_GWID, //
+      TSID_DESCRIPTION, STR_PARAM_GWID_D, //
       TSID_KEEPER_ID, Gwid.KEEPER_ID, //
       OPID_EDITOR_FACTORY_NAME, ValedAvValobjConcreteGwidEditor.FACTORY_NAME //
   ) {
@@ -67,8 +67,8 @@ public class DataAliasM5Model
    * Attribute {@link IDataNameAlias#title() } title of parameter
    */
   public M5AttributeFieldDef<IDataNameAlias> TITLE = new M5AttributeFieldDef<>( FID_TITLE, EAtomicType.STRING, //
-      TSID_NAME, STR_N_PARAM_TITLE, //
-      TSID_DESCRIPTION, STR_D_PARAM_TITLE, //
+      TSID_NAME, STR_PARAM_TITLE, //
+      TSID_DESCRIPTION, STR_PARAM_TITLE_D, //
       OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME //
   ) {
 
@@ -87,8 +87,8 @@ public class DataAliasM5Model
    * Attribute {@link IDataNameAlias#description() } description of parameter
    */
   public M5AttributeFieldDef<IDataNameAlias> DESCR = new M5AttributeFieldDef<>( FID_DESCR, EAtomicType.STRING, //
-      TSID_NAME, STR_N_PARAM_DESCRIPTION, //
-      TSID_DESCRIPTION, STR_D_PARAM_DESCRIPTION, //
+      TSID_NAME, STR_PARAM_DESCRIPTION, //
+      TSID_DESCRIPTION, STR_PARAM_DESCRIPTION_D, //
       OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME //
   ) {
 

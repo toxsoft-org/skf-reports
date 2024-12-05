@@ -42,8 +42,8 @@ public class CiSystemOptions {
    * описание группы
    */
   public static IDataDef GROUP_OPTION_DEF = create( CI_SYSTEM_OPT_GROUP_ID, EAtomicType.STRING, //
-      TSID_NAME, STR_N_CI_SYSTEM_OPTIONS_GROUP, //
-      TSID_DESCRIPTION, STR_D_CI_SYSTEM_OPTIONS_GROUP, //
+      TSID_NAME, STR_CI_SYSTEM_OPTIONS_GROUP, //
+      TSID_DESCRIPTION, STR_CI_SYSTEM_OPTIONS_GROUP_D, //
       OPID_TREE_PATH1, CI_SYSTEM_OPT_GROUP_PATH, //
       TSID_DEFAULT_VALUE, avStr( TREE_PATH1_ROOT ) ); // путь к группе
 
@@ -55,8 +55,8 @@ public class CiSystemOptions {
    * Data name aliases list <br>
    */
   public static final IDataDef DATA_NAME_ALIASES = DataDef.create( createId( "dataNameAliases" ), EAtomicType.VALOBJ, // //$NON-NLS-1$
-      TSID_DESCRIPTION, STR_D_DATA_NAME_ALIASES, //
-      TSID_NAME, STR_N_DATA_NAME_ALIASES, //
+      TSID_DESCRIPTION, STR_DATA_NAME_ALIASES_D, //
+      TSID_NAME, STR_DATA_NAME_ALIASES, //
       TSID_KEEPER_ID, DataNameAliasesList.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( new DataNameAliasesList() ), //
       OPID_TREE_PATH1, CI_SYSTEM_OPT_GROUP_PATH );

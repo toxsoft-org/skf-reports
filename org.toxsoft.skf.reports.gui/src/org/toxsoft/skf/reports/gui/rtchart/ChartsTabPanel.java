@@ -70,7 +70,7 @@ public class ChartsTabPanel
    * Action: open template.
    */
   ITsActionDef ACDEF_OPEN_TEMPLATE = ofPush2( ACTID_OPEN, //
-      STR_T_OPEN_TEMPLATE, STR_D_OPEN_TEMPLATE, ICONID_DOCUMENT_OPEN );
+      STR_T_OPEN_TEMPLATE, STR_OPEN_TEMPLATE_D, ICONID_DOCUMENT_OPEN );
 
   /**
    * Конструктор панели.
@@ -111,7 +111,7 @@ public class ChartsTabPanel
     ToolItem openTemplate = new ToolItem( toolBar, SWT.PUSH );
     Image tbImage = iconManager().loadStdIcon( ITsStdIconIds.ICONID_DOCUMENT_OPEN, EIconSize.IS_16X16 );
     openTemplate.setImage( tbImage );
-    openTemplate.setToolTipText( STR_D_OPEN_TEMPLATE );
+    openTemplate.setToolTipText( STR_OPEN_TEMPLATE_D );
     openTemplate.addSelectionListener( new SelectionListener() {
 
       @Override
@@ -137,7 +137,7 @@ public class ChartsTabPanel
 
         iconManager().loadStdIcon( ITsStdIconIds.ICONID_LIST_ADD, EIconSize.IS_16X16 );
     addNewTemplate.setImage( tbImage );
-    addNewTemplate.setToolTipText( STR_D_ADD_TEMPLATE );
+    addNewTemplate.setToolTipText( STR_ADD_TEMPLATE_D );
     addNewTemplate.addSelectionListener( new SelectionListener() {
 
       @Override
@@ -159,7 +159,7 @@ public class ChartsTabPanel
     ToolItem editTemplate = new ToolItem( toolBar, SWT.PUSH );
     tbImage = iconManager().loadStdIcon( ITsStdIconIds.ICONID_DOCUMENT_EDIT, EIconSize.IS_16X16 );
     editTemplate.setImage( tbImage );
-    editTemplate.setToolTipText( STR_D_EDIT_TEMPLATE );
+    editTemplate.setToolTipText( STR_EDIT_TEMPLATE_D );
     editTemplate.addSelectionListener( new SelectionListener() {
 
       @Override

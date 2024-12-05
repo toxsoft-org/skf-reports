@@ -7,9 +7,9 @@ package org.toxsoft.skf.reports.gui.rtchart.data_aliases;
  */
 interface ISkResources {
 
-  String STR_N_CI_SYSTEM_OPTIONS_GROUP = "Настройки АРМа";               //$NON-NLS-1$
-  String STR_D_CI_SYSTEM_OPTIONS_GROUP = "Настройки внешнего вида АРМа"; //$NON-NLS-1$ \
-  String STR_N_DATA_NAME_ALIASES        = "псевдонимы";                   //$NON-NLS-1$
-  String STR_D_DATA_NAME_ALIASES        = "псевдонимы названий данных";   //$NON-NLS-1$ \
+  String STR_CI_SYSTEM_OPTIONS_GROUP   = Messages.getString( "STR_CI_SYSTEM_OPTIONS_GROUP" );   //$NON-NLS-1$
+  String STR_CI_SYSTEM_OPTIONS_GROUP_D = Messages.getString( "STR_CI_SYSTEM_OPTIONS_GROUP_D" ); //$NON-NLS-1$
+  String STR_DATA_NAME_ALIASES         = Messages.getString( "STR_DATA_NAME_ALIASES" );         //$NON-NLS-1$
+  String STR_DATA_NAME_ALIASES_D       = Messages.getString( "STR_DATA_NAME_ALIASES_D" );       //$NON-NLS-1$
 
 }

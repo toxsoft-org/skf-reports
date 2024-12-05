@@ -42,8 +42,8 @@ public class RtChartPanelOptions {
    * описание группы
    */
   public static IDataDef GROUP_OPTION_DEF = create( RTCHARTS_PANEL_GROUP_ID, EAtomicType.STRING, //
-      TSID_NAME, STR_N_RTCHARTS_PANEL_GROUP, //
-      TSID_DESCRIPTION, STR_D_RTCHARTS_PANEL_GROUP, //
+      TSID_NAME, STR_RTCHARTS_PANEL_GROUP, //
+      TSID_DESCRIPTION, STR_RTCHARTS_PANEL_GROUP_D, //
       OPID_TREE_PATH1, RTCHARTS_PANEL_GROUP_PATH, //
       TSID_DEFAULT_VALUE, avStr( TREE_PATH1_ROOT ) ); // путь к группе
 
@@ -55,8 +55,8 @@ public class RtChartPanelOptions {
    * Список отображаемых графиков <br>
    */
   public static final IDataDef RTCHART_SKIDS = DataDef.create( createId( "rtChartSkids" ), EAtomicType.VALOBJ, // //$NON-NLS-1$
-      TSID_DESCRIPTION, STR_D_RTCHARTS, //
-      TSID_NAME, STR_N_RTCHARTS, //
+      TSID_DESCRIPTION, STR_RTCHARTS_D, //
+      TSID_NAME, STR_RTCHARTS, //
       TSID_KEEPER_ID, SkidListKeeper.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( new SkidList() ), //
       OPID_TREE_PATH1, RTCHARTS_PANEL_GROUP_PATH );

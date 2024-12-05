@@ -1,0 +1,4 @@
+--- org.toxsoft.skf.reports.gui.panels (основная масса локализуемыех объектов находится в другой папке, в корне проекта)
+--- org.toxsoft.skf.reports.gui.rtchart
+--- org.toxsoft.skf.reports.gui.rtchart.data_aliases
+--- org.toxsoft.skf.reports.gui.rtchart.data_aliases.impl

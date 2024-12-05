@@ -1,7 +1,5 @@
 package org.toxsoft.skf.reports.gui.panels;
 
-import org.toxsoft.skf.reports.gui.*;
-
 /**
  * Localizable resources.
  *
@@ -18,8 +16,8 @@ interface ISkResources {
   String MSG_ERR_NO_PROP_SELECTED = Messages.getString( "MSG_ERR_NO_DATA_SELECTED" ); //$NON-NLS-1$
   String STR_N_CLASS_PROP_KIND    = Messages.getString( "STR_N_CLASS_PROP_KIND" );    //$NON-NLS-1$
   String STR_D_CLASS_PROP_KIND    = Messages.getString( "STR_D_CLASS_PROP_KIND" );    //$NON-NLS-1$
-  String STR_N_CONN_ID_CHAIN      = "Id chain of ISkConnection";
-  String STR_D_CONN_ID_CHAIN      = "Id chain of ISkConnection to use in dialog";
+  String STR_CONN_ID_CHAIN        = Messages.getString( "STR_CONN_ID_CHAIN" );        //$NON-NLS-1$
+  String STR_CONN_ID_CHAIN_D      = Messages.getString( "STR_CONN_ID_CHAIN_D" );      //$NON-NLS-1$
 
   /**
    * {@link PanelGwidListSelector}

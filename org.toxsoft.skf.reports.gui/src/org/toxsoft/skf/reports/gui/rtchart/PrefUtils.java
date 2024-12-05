@@ -57,8 +57,8 @@ public class PrefUtils {
     ISkGuiGwPrefsService prefServ = aConn.coreApi().getService( ISkGuiGwPrefsService.SERVICE_ID );
     if( !prefServ.listSections().hasKey( aSectionId ) ) {
       IDpuGuiGwPrefsSectionDef sd;
-      String name = STR_N_RTCHARTS_PREFS_SECT;
-      String descr = STR_D_RTCHARTS_PREFS_SECT;
+      String name = STR_RTCHARTS_PREFS_SECT;
+      String descr = STR_RTCHARTS_PREFS_SECT_D;
       sd = new DpuGuiGwPrefsSectionDef( aSectionId, name, descr, IOptionSet.NULL );
       prefServ.defineSection( sd );
     }

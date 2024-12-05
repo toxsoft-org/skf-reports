@@ -66,7 +66,7 @@ public class GuiDataAliasesPrefsEditModel
 
           @Override
           protected void doInit() {
-            setNameAndDescription( STR_N_DATA_ALIAS, STR_D_DATA_ALIAS );
+            setNameAndDescription( STR_DATA_ALIAS, STR_DATA_ALIAS_D );
           }
 
           @Override

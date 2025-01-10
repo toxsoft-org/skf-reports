@@ -227,6 +227,9 @@ public class VtReportTemplateService
     objServ().svs().addValidator( claimingValidator );
     linkService().svs().addValidator( claimingValidator );
     clobService().svs().addValidator( claimingValidator );
+    // register builtin abilities
+    userService().abilityManager().defineKind( ABKIND_TEMPLATES );
+    userService().abilityManager().defineAbility( ABILITY_EDIT_TEMPLATES );
   }
 
   @Override

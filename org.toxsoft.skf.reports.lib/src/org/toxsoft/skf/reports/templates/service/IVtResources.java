@@ -7,7 +7,7 @@ import org.toxsoft.skf.reports.templates.service.impl.*;
  *
  * @author dima
  */
-@SuppressWarnings( value = { "nls", "javadoc" } )
+@SuppressWarnings( value = { "javadoc" } )
 public interface IVtResources {
 
   /**
@@ -51,6 +51,11 @@ public interface IVtResources {
   String STR_D_TEMPLATE_AUTHOR     = Messages.getString( "STR_D_TEMPLATE_AUTHOR" );     //$NON-NLS-1$
   String STR_N_MAX_EXECUTION_TIME  = Messages.getString( "STR_N_MAX_EXECUTION_TIME" );  //$NON-NLS-1$
   String STR_D_MAX_EXECUTION_TIME  = Messages.getString( "STR_D_MAX_EXECUTION_TIME" );  //$NON-NLS-1$
+
+  String STR_ABKIND_TEMPLATES         = Messages.getString( "STR_ABKIND_TEMPLATES" );         //$NON-NLS-1$
+  String STR_ABKIND_TEMPLATES_D       = Messages.getString( "STR_ABKIND_TEMPLATES_D" );       //$NON-NLS-1$
+  String STR_ABILITY_EDIT_TEMPLATES   = Messages.getString( "STR_ABILITY_EDIT_TEMPLATES" );   //$NON-NLS-1$
+  String STR_ABILITY_EDIT_TEMPLATES_D = Messages.getString( "STR_ABILITY_EDIT_TEMPLATES_D" ); //$NON-NLS-1$
 
   /**
    * {@link EJrParamSourceType}

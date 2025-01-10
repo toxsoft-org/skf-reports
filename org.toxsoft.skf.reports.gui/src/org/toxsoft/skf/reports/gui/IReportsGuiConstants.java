@@ -9,6 +9,9 @@ import static org.toxsoft.skf.reports.gui.ISkResources.*;
 import org.eclipse.e4.core.contexts.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
+import org.toxsoft.skf.reports.templates.service.*;
+import org.toxsoft.uskat.core.api.users.ability.*;
+import org.toxsoft.uskat.core.impl.dto.*;
 
 /**
  * Plugin constants.
@@ -46,6 +49,18 @@ public interface IReportsGuiConstants {
    * Параметр, указывающий на шаблон отчёта
    */
   String JR_TEMPLATE = "jr.template"; //$NON-NLS-1$
+
+  /**
+   * Create id ability to access template editor
+   */
+  String ABILITYID_TEMPLATE_EDITOR_PERSP = IVtGraphTemplateService.SERVICE_ID + ".ability.templates.editor"; //$NON-NLS-1$
+
+  /**
+   * Create ability to access template editor
+   */
+  IDtoSkAbility ABILITY_ACCESS_TEMPLATE_EDITOR =
+      DtoSkAbility.create( ABILITYID_TEMPLATE_EDITOR_PERSP, IVtTemplateEditorServiceHardConstants.ABKINDID_TEMPLATES,
+          STR_ABILITY_ACCESS_TEMPLATE_EDITOR, STR_ABILITY_ACCESS_TEMPLATE_EDITOR_D );
 
   /**
    * Constants registration.

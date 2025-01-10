@@ -9,6 +9,8 @@ import org.toxsoft.skf.reports.gui.km5.*;
 import org.toxsoft.skf.reports.gui.panels.valed.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.skf.reports.templates.service.impl.*;
+import org.toxsoft.uskat.core.api.*;
+import org.toxsoft.uskat.core.devapi.*;
 import org.toxsoft.uskat.core.gui.km5.*;
 import org.toxsoft.uskat.core.impl.*;
 
@@ -18,7 +20,8 @@ import org.toxsoft.uskat.core.impl.*;
  * @author hazard157
  */
 public class QuantVtReportTemplate
-    extends AbstractQuant {
+    extends AbstractQuant
+    implements ISkCoreExternalHandler {
 
   /**
    * Constructor.
@@ -40,6 +43,8 @@ public class QuantVtReportTemplate
     TsValobjUtils.registerKeeperIfNone( EJrParamSourceType.KEEPER_ID, EJrParamSourceType.KEEPER );
 
     KM5Utils.registerContributorCreator( KM5TemplateContributor.CREATOR );
+    // register as initialize listener
+    SkCoreUtils.registerCoreApiHandler( this );
   }
 
   @Override
@@ -91,6 +96,12 @@ public class QuantVtReportTemplate
 
     vcReg.registerFactory( SpecValedAvValobjGwidEditor.FACTORY );
     vcReg.registerFactory( SpecValedGwidEditor.FACTORY );
+  }
+
+  @Override
+  public void processSkCoreInitialization( IDevCoreApi aCoreApi ) {
+    // register abilities
+    aCoreApi.userService().abilityManager().defineAbility( IReportsGuiConstants.ABILITY_ACCESS_TEMPLATE_EDITOR );
   }
 
 }

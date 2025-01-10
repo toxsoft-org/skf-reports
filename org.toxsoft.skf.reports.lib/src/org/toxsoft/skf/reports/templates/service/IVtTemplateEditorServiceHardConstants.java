@@ -10,6 +10,7 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.api.users.ability.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 
 /**
@@ -141,4 +142,25 @@ public interface IVtTemplateEditorServiceHardConstants {
    */
   String GRAPH_PARAM_MODEL_ID = "sk.GraphParam"; //$NON-NLS-1$
 
+  /**
+   * id тип возможности «Редактор шаблонов графиков и отчетов»
+   */
+  String ABKINDID_TEMPLATES = IVtGraphTemplateService.SERVICE_ID + ".abkind.templates"; //$NON-NLS-1$
+
+  /**
+   * id возможности редактирования
+   */
+  String ABILITYID_EDIT_TEMPLATES = IVtGraphTemplateService.SERVICE_ID + ".ability.edit_templates"; // //$NON-NLS-1$
+
+  /**
+   * создание «своего» типа
+   */
+  IDtoSkAbilityKind ABKIND_TEMPLATES =
+      DtoSkAbilityKind.create( ABKINDID_TEMPLATES, STR_ABKIND_TEMPLATES, STR_ABKIND_TEMPLATES_D );
+
+  /**
+   * создание возможности редактирования содержимого
+   */
+  IDtoSkAbility ABILITY_EDIT_TEMPLATES = DtoSkAbility.create( ABILITYID_EDIT_TEMPLATES, ABKINDID_TEMPLATES,
+      STR_ABILITY_EDIT_TEMPLATES, STR_ABILITY_EDIT_TEMPLATES_D );
 }

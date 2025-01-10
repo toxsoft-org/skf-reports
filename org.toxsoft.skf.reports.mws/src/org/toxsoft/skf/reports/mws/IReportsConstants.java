@@ -13,8 +13,9 @@ public interface IReportsConstants {
 
   // ------------------------------------------------------------------------------------
   // E4
-
-  String PERSPID_REPORTS = "org.toxsoft.skf.reports.mws.perps.reports"; //$NON-NLS-1$
+  String E4_VISUAL_ELEM_ID_PERSP_REPORTS     = "org.toxsoft.skf.reports.mws.perps";           //$NON-NLS-1$
+  String E4_VISUAL_ELEM_ID_MENU_ITEM_REPORTS = "org.toxsoft.skf.reports.mws.handledmenuitem"; //$NON-NLS-1$
+  String E4_VISUAL_ELEM_ID_TOOL_ITEM_REPORTS = "org.toxsoft.skf.reports.mws.handledtoolitem"; //$NON-NLS-1$
 
   // ------------------------------------------------------------------------------------
   // Icons

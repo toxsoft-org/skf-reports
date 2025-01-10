@@ -4,65 +4,57 @@ import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.skf.reports.gui.IReportsGuiConstants.*;
 import static org.toxsoft.skf.reports.gui.panels.ISkResources.*;
+import static org.toxsoft.skf.reports.templates.service.IVtTemplateEditorServiceHardConstants.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
-import java.text.SimpleDateFormat;
+import java.text.*;
 
-import org.eclipse.swt.SWT;
+import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.actions.*;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.bricks.tsnodes.*;
-import org.toxsoft.core.tsgui.bricks.tstree.tmm.ITsTreeMaker;
-import org.toxsoft.core.tsgui.chart.api.IG2DataSet;
-import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
-import org.toxsoft.core.tsgui.dialogs.datarec.ITsDialogInfo;
-import org.toxsoft.core.tsgui.dialogs.datarec.TsDialogInfo;
-import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tsgui.bricks.tstree.tmm.*;
+import org.toxsoft.core.tsgui.chart.api.*;
+import org.toxsoft.core.tsgui.dialogs.*;
+import org.toxsoft.core.tsgui.dialogs.datarec.*;
+import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.M5GuiUtils;
-import org.toxsoft.core.tsgui.m5.gui.mpc.IMultiPaneComponentConstants;
-import org.toxsoft.core.tsgui.m5.gui.mpc.impl.MultiPaneComponentModown;
-import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
-import org.toxsoft.core.tsgui.m5.gui.panels.impl.M5CollectionPanelMpcModownWrapper;
-import org.toxsoft.core.tsgui.m5.model.IM5LifecycleManager;
-import org.toxsoft.core.tsgui.m5.model.impl.M5BunchEdit;
-import org.toxsoft.core.tsgui.panels.TsPanel;
-import org.toxsoft.core.tsgui.panels.toolbar.ITsToolbar;
-import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
-import org.toxsoft.core.tsgui.utils.layout.EBorderLayoutPlacement;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
-import org.toxsoft.core.tslib.bricks.threadexec.ITsThreadExecutor;
-import org.toxsoft.core.tslib.bricks.time.EQueryIntervalType;
-import org.toxsoft.core.tslib.bricks.time.ITimedList;
-import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
-import org.toxsoft.core.tslib.bricks.time.impl.TimeInterval;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.coll.IListEdit;
-import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
-import org.toxsoft.core.tslib.coll.primtypes.IStringMap;
-import org.toxsoft.core.tslib.coll.primtypes.IStringMapEdit;
-import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
-import org.toxsoft.skf.reports.chart.utils.gui.dataset.G2SelfUploadHistoryDataSetNew;
-import org.toxsoft.skf.reports.chart.utils.gui.dataset.IDataSetParam;
-import org.toxsoft.skf.reports.chart.utils.gui.panels.ChartPanel;
-import org.toxsoft.skf.reports.gui.km5.GraphTemplateM5LifecycleManager;
-import org.toxsoft.skf.reports.gui.utils.IntervalSelectionDialogPanel;
-import org.toxsoft.skf.reports.gui.utils.ReportTemplateUtilities;
+import org.toxsoft.core.tsgui.m5.gui.*;
+import org.toxsoft.core.tsgui.m5.gui.mpc.*;
+import org.toxsoft.core.tsgui.m5.gui.mpc.impl.*;
+import org.toxsoft.core.tsgui.m5.gui.panels.*;
+import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
+import org.toxsoft.core.tsgui.m5.model.*;
+import org.toxsoft.core.tsgui.m5.model.impl.*;
+import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.core.tsgui.panels.toolbar.*;
+import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.bricks.threadexec.*;
+import org.toxsoft.core.tslib.bricks.time.*;
+import org.toxsoft.core.tslib.bricks.time.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.skf.reports.chart.utils.gui.dataset.*;
+import org.toxsoft.skf.reports.chart.utils.gui.panels.*;
+import org.toxsoft.skf.reports.gui.km5.*;
+import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
-import org.toxsoft.uskat.core.api.users.ISkUser;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.gui.glib.query.SkAbstractQueryDialog;
-import org.toxsoft.uskat.core.impl.SkThreadExecutorService;
+import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.api.users.ability.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.gui.conn.*;
+import org.toxsoft.uskat.core.gui.glib.query.*;
+import org.toxsoft.uskat.core.impl.*;
 
 /**
  * Панель редактора шаблонов графиков ts4.<br>
@@ -255,7 +247,13 @@ public class GraphTemplateEditorPanel
       componentModown.toolbar().setActionEnabled( ACTID_FORM_GRAPH, aSelectedItem != null );
     } );
 
-    graphTemplatesPanel = new M5CollectionPanelMpcModownWrapper<>( componentModown, false );
+    // check ability to edit and tune M5 panels accordingly
+    ISkAbility canEdit = conn.coreApi().userService().abilityManager().findAbility( ABILITY_EDIT_TEMPLATES.id() );
+    boolean isViewer = false;
+    if( !conn.coreApi().userService().abilityManager().isAbilityAllowed( canEdit.id() ) ) {
+      isViewer = true;
+    }
+    graphTemplatesPanel = new M5CollectionPanelMpcModownWrapper<>( componentModown, isViewer );
 
     graphTemplatesPanel.createControl( sf );
 

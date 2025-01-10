@@ -7,6 +7,7 @@ import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static org.toxsoft.skf.reports.gui.IReportsGuiConstants.*;
 import static org.toxsoft.skf.reports.gui.panels.ISkResources.*;
+import static org.toxsoft.skf.reports.templates.service.IVtTemplateEditorServiceHardConstants.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
 import java.io.*;
@@ -67,6 +68,7 @@ import org.toxsoft.skf.rri.lib.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.api.users.ability.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.gui.conn.*;
 import org.toxsoft.uskat.core.gui.glib.query.*;
@@ -330,7 +332,13 @@ public class SpecReportTemplateEditorPanel
     // IReportsGuiResources.STR_N_BY_USERS, IReportsGuiResources.STR_D_BY_USERS, null, treeMaker ) );
     // componentModown.treeModeManager().setCurrentMode( TMIID_GROUP_BY_USER );
 
-    reportTemplatesPanel = new M5CollectionPanelMpcModownWrapper<>( componentModown, false );
+    // check ability to edit and tune M5 panels accordingly
+    ISkAbility canEdit = conn.coreApi().userService().abilityManager().findAbility( ABILITY_EDIT_TEMPLATES.id() );
+    boolean isViewer = false;
+    if( !conn.coreApi().userService().abilityManager().isAbilityAllowed( canEdit.id() ) ) {
+      isViewer = true;
+    }
+    reportTemplatesPanel = new M5CollectionPanelMpcModownWrapper<>( componentModown, isViewer );
 
     reportTemplatesPanel.createControl( sf );
 

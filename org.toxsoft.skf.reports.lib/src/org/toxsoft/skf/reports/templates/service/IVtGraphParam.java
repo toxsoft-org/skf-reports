@@ -4,7 +4,7 @@ import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 
 /**
- * Interface to specify one parameter for template of graph report. <br>
+ * Interface to specify one parameter for template of graph report.<br>
  * TODO это шаблон для описания одного параметра отображаемого на графике в виде линии, а еще может быть график
  * состояния (например, АВТ/РУЧ) и график событий (подача анода вверх)
  *

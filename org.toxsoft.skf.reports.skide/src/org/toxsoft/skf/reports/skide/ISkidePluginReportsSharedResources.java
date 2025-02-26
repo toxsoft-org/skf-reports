@@ -8,7 +8,7 @@ import org.toxsoft.skf.reports.skide.utils.*;
  *
  * @author Max
  */
-@SuppressWarnings( value = { "nls", "javadoc" } )
+@SuppressWarnings( value = { "javadoc" } )
 public interface ISkidePluginReportsSharedResources {
 
   /**

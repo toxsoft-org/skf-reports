@@ -195,7 +195,7 @@ public class ChartsTabPanel
         // ask user to continue
         if( TsDialogUtils.askYesNoCancel( getShell(), STR_CONFIRM_REMOVE_TEMPLATE ) == ETsDialogCode.YES ) {
           // получаем текущий график
-          CTabItem selTab = (CTabItem)event.widget;
+          CTabItem selTab = (CTabItem)event.item;
           IVtGraphTemplate selGraphTemplate = (IVtGraphTemplate)selTab.getData();
           rtChartSkids.remove( selGraphTemplate.skid() );
           // гасим RtChart

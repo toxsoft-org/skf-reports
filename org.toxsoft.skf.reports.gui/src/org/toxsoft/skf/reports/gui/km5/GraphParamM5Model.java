@@ -484,7 +484,6 @@ public class GraphParamM5Model
     private final ISkConnection conn;
 
     public Controller( ISkConnection aConn ) {
-      super();
       conn = aConn;
     }
 
@@ -535,7 +534,10 @@ public class GraphParamM5Model
 
   @Override
   protected IM5LifecycleManager<IVtGraphParam> doCreateLifecycleManager( Object aMaster ) {
-    return new GraphParamM5LifecycleManager( this, ISkConnection.class.cast( aMaster ) );
+    ISkConnectionSupplier cs = tsContext().get( ISkConnectionSupplier.class );
+    // TODO which connection to use?
+    ISkConnection conn = cs.defConn();
+    return new GraphParamM5LifecycleManager( this, conn );
   }
 
 }

@@ -338,7 +338,6 @@ public class ReportParamM5Model
     private final ISkConnection conn;
 
     public Controller( ISkConnection aConn ) {
-      super();
       conn = aConn;
     }
 
@@ -382,14 +381,15 @@ public class ReportParamM5Model
   @Override
   protected IM5LifecycleManager<IVtReportParam> doCreateDefaultLifecycleManager() {
     ISkConnectionSupplier cs = tsContext().get( ISkConnectionSupplier.class );
-    // TODO which connection to use?
     ISkConnection conn = cs.defConn();
     return new ReportParamM5LifecycleManager( this, conn );
   }
 
   @Override
   protected IM5LifecycleManager<IVtReportParam> doCreateLifecycleManager( Object aMaster ) {
-    return new ReportParamM5LifecycleManager( this, ISkConnection.class.cast( aMaster ) );
+    ISkConnectionSupplier cs = tsContext().get( ISkConnectionSupplier.class );
+    ISkConnection conn = cs.defConn();
+    return new ReportParamM5LifecycleManager( this, conn );
   }
 
 }

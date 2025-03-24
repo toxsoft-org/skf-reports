@@ -13,6 +13,7 @@ import org.toxsoft.core.tsgui.m5.gui.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.skf.reports.gui.km5.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -36,9 +37,10 @@ public class ReportsTemplatesMigrationUtiles {
    *
    * @param aSrcContext ITsGuiContext - контекст исходного соединения.
    * @param aDestConnection ISkConnection - целевое соединение.
+   * @return trasferred reports qtty
    */
-  public static void moveReportTemplates( ITsGuiContext aSrcContext, ISkConnection aDestConnection ) {
-
+  public static int moveReportTemplates( ITsGuiContext aSrcContext, ISkConnection aDestConnection ) {
+    int retVal = 0;
     ITsGuiContext srcCtx = new TsGuiContext( aSrcContext );
 
     ISkConnectionSupplier connSup = srcCtx.get( ISkConnectionSupplier.class );
@@ -59,7 +61,7 @@ public class ReportsTemplatesMigrationUtiles {
         M5GuiUtils.askSelectItemsList( di, model, new ElemArrayList<IVtReportTemplate>(), lm.itemsProvider() );
 
     if( selectedTemplates == null ) {
-      return;
+      return retVal;
     }
 
     try {
@@ -69,12 +71,54 @@ public class ReportsTemplatesMigrationUtiles {
         IVtReportTemplateService reportTemplateService =
             aDestConnection.coreApi().getService( IVtReportTemplateService.SERVICE_ID );
         reportTemplateService.createReportTemplate( objDto );
+        retVal++;
       }
       TsDialogUtils.info( aSrcContext.get( Shell.class ), STR_EXPORT_COMPLETE_DIALOG );
     }
     catch( Exception e ) {
       TsDialogUtils.error( aSrcContext.get( Shell.class ), e );
     }
+    return retVal;
+  }
+
+  /**
+   * Перемещает объекты шаблонов отчётов (со всеми потрохами) из одного соединения в другое
+   *
+   * @param aSrcConnection {@link ISkConnection} - исходного соединения.
+   * @param aDestConnection {@link ISkConnection} - целевое соединение.
+   * @return trasferred reports qtty
+   */
+  public static int moveReportTemplates( ISkConnection aSrcConnection, ISkConnection aDestConnection ) {
+    int retVal = 0;
+
+    IM5Domain m5 = aSrcConnection.scope().get( IM5Domain.class );
+
+    KM5ModelBasic<IVtReportTemplate> model =
+        new KM5ModelBasic<>( REPORTS_TEMPORARY_MODEL_ID, IVtReportTemplate.class, aSrcConnection );
+    model.setNameAndDescription( STR_MODEL_REPORT, STR_MODEL_REPORT_D );
+    model.addFieldDefs( model.NAME, model.DESCRIPTION );
+    m5.initTemporaryModel( model );
+
+    IM5LifecycleManager<IVtReportTemplate> lm = new ReportTemplateM5LifecycleManager( model, aSrcConnection );
+
+    IVtReportTemplateService reportTemplateSrcService =
+        aSrcConnection.coreApi().getService( IVtReportTemplateService.SERVICE_ID );
+    IList<IVtReportTemplate> selectedTemplates = reportTemplateSrcService.listReportTemplates();
+
+    try {
+      for( IVtReportTemplate template : selectedTemplates ) {
+        DtoFullObject objDto = DtoFullObject.createDtoFullObject( template.skid(), aSrcConnection.coreApi() );
+
+        IVtReportTemplateService reportTemplateService =
+            aDestConnection.coreApi().getService( IVtReportTemplateService.SERVICE_ID );
+        reportTemplateService.createReportTemplate( objDto );
+        retVal++;
+      }
+    }
+    catch( Exception ex ) {
+      LoggerUtils.errorLogger().error( ex );
+    }
+    return retVal;
   }
 
   /**
@@ -82,9 +126,10 @@ public class ReportsTemplatesMigrationUtiles {
    *
    * @param aSrcContext ITsGuiContext - контекст исходного соединения.
    * @param aDestConnection ISkConnection - целевое соединение.
+   * @return trasferred reports qtty
    */
-  public static void moveGraphTemplates( ITsGuiContext aSrcContext, ISkConnection aDestConnection ) {
-
+  public static int moveGraphTemplates( ITsGuiContext aSrcContext, ISkConnection aDestConnection ) {
+    int retVal = 0;
     ITsGuiContext srcCtx = new TsGuiContext( aSrcContext );
 
     ISkConnectionSupplier connSup = srcCtx.get( ISkConnectionSupplier.class );
@@ -105,7 +150,7 @@ public class ReportsTemplatesMigrationUtiles {
         M5GuiUtils.askSelectItemsList( di, model, new ElemArrayList<IVtGraphTemplate>(), lm.itemsProvider() );
 
     if( selectedTemplates == null ) {
-      return;
+      return retVal;
     }
 
     try {
@@ -115,11 +160,52 @@ public class ReportsTemplatesMigrationUtiles {
         IVtGraphTemplateService reportTemplateService =
             aDestConnection.coreApi().getService( IVtGraphTemplateService.SERVICE_ID );
         reportTemplateService.createGraphTemplate( objDto );
+        retVal++;
       }
       TsDialogUtils.info( aSrcContext.get( Shell.class ), STR_EXPORT_COMPLETE_DIALOG );
     }
     catch( Exception e ) {
       TsDialogUtils.error( aSrcContext.get( Shell.class ), e );
     }
+    return retVal;
+  }
+
+  /**
+   * Перемещает объекты шаблонов графиков (со всеми потрохами) из одного соединения в другое
+   *
+   * @param aSrcConnection {@link ISkConnection} - исходного соединения.
+   * @param aDestConnection {@link ISkConnection} - целевое соединение.
+   * @return trasferred charts qtty
+   */
+  public static int moveGraphTemplates( ISkConnection aSrcConnection, ISkConnection aDestConnection ) {
+    int retVal = 0;
+
+    IM5Domain m5 = aSrcConnection.scope().get( IM5Domain.class );
+
+    KM5ModelBasic<IVtGraphTemplate> model =
+        new KM5ModelBasic<>( GRAPHS_TEMPORARY_MODEL_ID, IVtGraphTemplate.class, aSrcConnection );
+    model.setNameAndDescription( STR_MODEL_GRAPH, STR_MODEL_GRAPH_D );
+    model.addFieldDefs( model.NAME, model.DESCRIPTION );
+    m5.initTemporaryModel( model );
+
+    IVtGraphTemplateService reportTemplateSrcService =
+        aDestConnection.coreApi().getService( IVtGraphTemplateService.SERVICE_ID );
+
+    IList<IVtGraphTemplate> selectedTemplates = reportTemplateSrcService.listGraphTemplates();
+
+    try {
+      for( IVtGraphTemplate template : selectedTemplates ) {
+        DtoFullObject objDto = DtoFullObject.createDtoFullObject( template.skid(), aSrcConnection.coreApi() );
+
+        IVtGraphTemplateService reportTemplateService =
+            aDestConnection.coreApi().getService( IVtGraphTemplateService.SERVICE_ID );
+        reportTemplateService.createGraphTemplate( objDto );
+        retVal++;
+      }
+    }
+    catch( Exception ex ) {
+      LoggerUtils.errorLogger().error( ex );
+    }
+    return retVal;
   }
 }

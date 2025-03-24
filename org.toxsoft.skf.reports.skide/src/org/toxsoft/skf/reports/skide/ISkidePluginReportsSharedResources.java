@@ -38,4 +38,15 @@ public interface ISkidePluginReportsSharedResources {
   String STR_EXPORT_TEMPLATE_DIALOG   = Messages.getString( "STR_EXPORT_TEMPLATE_DIALOG" );   //$NON-NLS-1$
   String STR_EXPORT_TEMPLATE_DIALOG_D = Messages.getString( "STR_EXPORT_TEMPLATE_DIALOG_D" ); //$NON-NLS-1$
   String STR_EXPORT_COMPLETE_DIALOG   = Messages.getString( "STR_EXPORT_COMPLETE_DIALOG" );   //$NON-NLS-1$
+
+  /**
+   * {@link TaskTemplatesUpload}
+   */
+  String STR_TEMPLATES_DOWNLOAD   = "выгрузка шаблонов";
+  String STR_TEMPLATES_DOWNLOAD_D = "Загрузка/выгрузка шаблонов отчетов и графиков";
+  String MSG_TEMPLATES_DOWNLOAD   = "Идет выгрузка шаблонов с удаленного сервера";
+  String MSG_TEMPLATES_UPLOAD     = "Идет загрузка шаблонов на удаленный сервер";
+  String FMT_TEMPLATES_DOWNLOADED = "Выгружено с удаленного сервера %d шаблонов отчетов и %d шаблонов графиков";
+  String FMT_TEMPLATES_UPLOADED   = "Загружено на удаленный сервер %d шаблонов отчетов и %d шаблонов графиков";
+
 }

@@ -99,8 +99,6 @@ public class ReportsTemplatesMigrationUtiles {
     model.addFieldDefs( model.NAME, model.DESCRIPTION );
     m5.initTemporaryModel( model );
 
-    IM5LifecycleManager<IVtReportTemplate> lm = new ReportTemplateM5LifecycleManager( model, aSrcConnection );
-
     IVtReportTemplateService reportTemplateSrcService =
         aSrcConnection.coreApi().getService( IVtReportTemplateService.SERVICE_ID );
     IList<IVtReportTemplate> selectedTemplates = reportTemplateSrcService.listReportTemplates();
@@ -189,7 +187,7 @@ public class ReportsTemplatesMigrationUtiles {
     m5.initTemporaryModel( model );
 
     IVtGraphTemplateService reportTemplateSrcService =
-        aDestConnection.coreApi().getService( IVtGraphTemplateService.SERVICE_ID );
+        aSrcConnection.coreApi().getService( IVtGraphTemplateService.SERVICE_ID );
 
     IList<IVtGraphTemplate> selectedTemplates = reportTemplateSrcService.listGraphTemplates();
 

@@ -49,53 +49,32 @@ public class QuantVtReportTemplate
 
   @Override
   protected void doInitApp( IEclipseContext aWinContext ) {
-    // IVtWsCoreConstants.init( aWinContext );
-
-    // SkCoreUtils.registerSkServiceCreator( VtReportTemplateService.CREATOR );
-    // SkCoreUtils.registerSkServiceCreator( VtGraphTemplateService.CREATOR );
-
-    // ISkConnectionSupplier connSup = aWinContext.get( ISkConnectionSupplier.class );
-    // ISkConnection conn = connSup.defConn();
-    //
-    // // регистрируем свои m5 модели
-    // IM5Domain m5 = aWinContext.get( IM5Domain.class );
-    // m5.addModel( new VtReportParamM5Model() );
-    // m5.addModel( new VtReportTemplateM5Model( conn ) );
-    // m5.addModel( new VtGraphParamM5Model() );
-    // m5.addModel( new VtGraphTemplateM5Model( conn ) );
-
-    // ValedControlFactoriesRegistry vcReg = aWinContext.get( ValedControlFactoriesRegistry.class );
-    // vcReg.registerFactory( ValedGwidEditor.FACTORY );
-    // vcReg.registerFactory( ValedAvValobjGwidEditor.FACTORY );
-    // vcReg.registerFactory( ValedSkidEditor.FACTORY );
-    // vcReg.registerFactory( ValedAvValobjSkidEditor.FACTORY );
+    // nop
   }
 
   @Override
   protected void doInitWin( IEclipseContext aWinContext ) {
     IReportsGuiConstants.init( aWinContext );
 
-    // SkCoreUtils.registerSkServiceCreator( VtReportTemplateService.CREATOR );
-    // SkCoreUtils.registerSkServiceCreator( VtGraphTemplateService.CREATOR );
-
-    // ISkConnectionSupplier connSup = aWinContext.get( ISkConnectionSupplier.class );
-    // ISkConnection conn = connSup.defConn();
-    //
-    // // регистрируем свои m5 модели
-    // IM5Domain m5 = aWinContext.get( IM5Domain.class );
-    // m5.addModel( new VtReportParamM5Model() );
-    // m5.addModel( new VtReportTemplateM5Model( conn ) );
-    // m5.addModel( new VtGraphParamM5Model() );
-    // m5.addModel( new VtGraphTemplateM5Model( conn ) );
-
     ValedControlFactoriesRegistry vcReg = aWinContext.get( ValedControlFactoriesRegistry.class );
-    vcReg.registerFactory( ValedGwidEditor.FACTORY );
-    vcReg.registerFactory( ValedAvValobjGwidEditor.FACTORY );
-    vcReg.registerFactory( ValedSkidEditor.FACTORY );
-    vcReg.registerFactory( ValedAvValobjSkidEditor.FACTORY );
-
-    vcReg.registerFactory( SpecValedAvValobjGwidEditor.FACTORY );
-    vcReg.registerFactory( SpecValedGwidEditor.FACTORY );
+    if( !vcReg.hasFactory( ValedGwidEditor.FACTORY_NAME ) ) {
+      vcReg.registerFactory( ValedGwidEditor.FACTORY );
+    }
+    if( !vcReg.hasFactory( ValedAvValobjGwidEditor.FACTORY_NAME ) ) {
+      vcReg.registerFactory( ValedAvValobjGwidEditor.FACTORY );
+    }
+    if( !vcReg.hasFactory( ValedSkidEditor.FACTORY_NAME ) ) {
+      vcReg.registerFactory( ValedSkidEditor.FACTORY );
+    }
+    if( !vcReg.hasFactory( ValedAvValobjSkidEditor.FACTORY_NAME ) ) {
+      vcReg.registerFactory( ValedAvValobjSkidEditor.FACTORY );
+    }
+    if( !vcReg.hasFactory( SpecValedAvValobjGwidEditor.FACTORY_NAME ) ) {
+      vcReg.registerFactory( SpecValedAvValobjGwidEditor.FACTORY );
+    }
+    if( !vcReg.hasFactory( SpecValedGwidEditor.FACTORY_NAME ) ) {
+      vcReg.registerFactory( SpecValedGwidEditor.FACTORY );
+    }
   }
 
   @Override

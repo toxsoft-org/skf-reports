@@ -53,9 +53,6 @@ public class RtChartPanel
     extends TsPanel {
 
   int refreshInterval = 1000;
-  // по умолчанию берем данные за последние 10 минут
-  static TimeInterval initValues =
-      new TimeInterval( System.currentTimeMillis() - 10L * 60L * 1000L, System.currentTimeMillis() );
 
   Runnable refreshTimer;
   Display  display;
@@ -146,8 +143,11 @@ public class RtChartPanel
         connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
 
     processData.prepare( queryParams );
+    // по берем данные за последние 10 минут
+    TimeInterval reqInterval =
+        new TimeInterval( System.currentTimeMillis() - 10L * 60L * 1000L, System.currentTimeMillis() );
 
-    processData.exec( new QueryInterval( EQueryIntervalType.OSOE, initValues.startTime(), initValues.endTime() ) );
+    processData.exec( new QueryInterval( EQueryIntervalType.OSOE, reqInterval.startTime(), reqInterval.endTime() ) );
 
     // асинхронное получение данных
     processData.genericChangeEventer().addListener( aSource -> {

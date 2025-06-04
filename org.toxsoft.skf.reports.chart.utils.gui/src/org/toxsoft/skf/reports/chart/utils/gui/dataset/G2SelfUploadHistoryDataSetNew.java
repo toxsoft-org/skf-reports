@@ -169,8 +169,11 @@ public class G2SelfUploadHistoryDataSetNew
         eventer.fireChangeEvent();
       }
     } );
+    // processData
+    // .exec( new QueryInterval( EQueryIntervalType.CSCE, aTimeInterval.startTime(), aTimeInterval.endTime() ) );
+    // dima 04.06.25 make request open from both sides
     processData
-        .exec( new QueryInterval( EQueryIntervalType.CSCE, aTimeInterval.startTime(), aTimeInterval.endTime() ) );
+        .exec( new QueryInterval( EQueryIntervalType.OSOE, aTimeInterval.startTime(), aTimeInterval.endTime() ) );
 
   }
 

@@ -450,7 +450,6 @@ public class ReportTemplateUtilities {
      */
     public ReportM5ItemProvider( IVtReportTemplate aReportTemplate, IList<ITimedList<?>> aReportData,
         boolean aIsSameTimeInEachColumn ) {
-      super();
       reportData = aReportData;
       isSameTimeInEachColumn = aIsSameTimeInEachColumn;
       hasSummary = aReportTemplate.hasSummary();
@@ -469,7 +468,6 @@ public class ReportTemplateUtilities {
      */
     public ReportM5ItemProvider( IList<ITimedList<?>> aReportData, boolean aIsSameTimeInEachColumn, boolean aHasSummary,
         IList<? extends IVtTemplateParam> aFieldParams ) {
-      super();
       reportData = aReportData;
       isSameTimeInEachColumn = aIsSameTimeInEachColumn;
       hasSummary = aHasSummary;
@@ -900,6 +898,11 @@ public class ReportTemplateUtilities {
       }
 
       @Override
+      public IStringMap<IMappedSkids> rivetRevs() {
+        return IStringMap.EMPTY;
+      }
+
+      @Override
       public String readableName() {
         return aTitle;
       }
@@ -1045,6 +1048,7 @@ public class ReportTemplateUtilities {
       public boolean writeRtdataIfOpen( String aRtdataId, IAtomicValue aValue ) {
         return false;
       }
+
     };
     return retVal;
   }

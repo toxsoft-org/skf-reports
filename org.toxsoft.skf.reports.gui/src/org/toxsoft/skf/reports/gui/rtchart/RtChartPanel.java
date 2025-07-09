@@ -30,6 +30,7 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.skf.reports.chart.utils.gui.*;
 import org.toxsoft.skf.reports.chart.utils.gui.console.*;
@@ -356,7 +357,9 @@ public class RtChartPanel
       IAtomicValue lastValue = lastPair.left().value();
       if( lastValue.asDouble() >= endYAxis.asDouble() || lastValue.asDouble() <= startYAxis.asDouble() ) {
         // сдвигаем шкалу так чтобы новое значение стало посредине шкалы
-        double shiftY = lastValue.asDouble() <= startYAxis.asDouble() ? -50 : 50;
+        // changed by dima 07.07.25 (sitting in the bunker of Baikonur)
+        // double shiftY = lastValue.asDouble() <= startYAxis.asDouble() ? -50 : 50;
+        double shiftY = calculateShift( startYAxis, endYAxis, lastValue );
         chart.console().shiftYAxis( graphDataSetId, shiftY );
       }
     }
@@ -367,6 +370,51 @@ public class RtChartPanel
     catch( Exception ex ) {
       LoggerUtils.errorLogger().error( ex );
     }
+  }
+
+  double calculateShift( IAtomicValue aStartYAxis, IAtomicValue aEndYAxis, IAtomicValue aLastValue ) {
+    double retVal = 0;
+    // calculate axis visible length
+    float axisLength = av2Float( aEndYAxis ) - av2Float( aStartYAxis );
+    // calculate value in the middle of visible axis
+    float axisCenterVal = av2Float( aStartYAxis ) + axisLength / 2;
+    // delta between visual center and last value
+    float delta = av2Float( aLastValue ) - axisCenterVal;
+    // value in percents to shift axis
+    double shiftY = (delta / axisLength) * 100;
+    chart.console().shiftYAxis( graphDataSetId, shiftY );
+
+    return retVal;
+  }
+
+  /**
+   * Convert Atomic value to float
+   *
+   * @param aValue value to convert
+   * @return value in type float
+   */
+  private static float av2Float( IAtomicValue aValue ) {
+    float retVal = 0.0f;
+    switch( aValue.atomicType() ) {
+      case FLOATING: {
+        retVal = aValue.asFloat();
+        break;
+      }
+      case BOOLEAN:
+        retVal = !aValue.asBool() ? 0.0f : 1.0f;
+        break;
+      case INTEGER:
+        retVal = aValue.asInt();
+        break;
+      case NONE:
+      case STRING:
+      case TIMESTAMP:
+      case VALOBJ:
+      default:
+        throw new TsUnsupportedFeatureRtException();
+    }
+    return retVal;
+
   }
 
   void createToolBar() {

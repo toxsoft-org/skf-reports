@@ -2,6 +2,7 @@ package org.toxsoft.skf.reports.gui.km5;
 
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
+import static org.toxsoft.core.tsgui.m5.gui.mpc.IMultiPaneComponentConstants.*;
 import static org.toxsoft.core.tsgui.valed.api.IValedControlConstants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
@@ -462,6 +463,8 @@ public class GraphParamM5Model
 
       protected IM5CollectionPanel<IVtGraphParam> doCreateCollEditPanel( ITsGuiContext aContext,
           IM5ItemsProvider<IVtGraphParam> aItemsProvider, IM5LifecycleManager<IVtGraphParam> aLifecycleManager ) {
+        OPDEF_IS_ACTIONS_CRUD.setValue( aContext.params(), AV_TRUE );
+        OPDEF_IS_FILTER_PANE.setValue( aContext.params(), AV_TRUE );
         MultiPaneComponentModown<IVtGraphParam> mpc =
             new GraphParamPaneComponentModown( aContext, model(), aItemsProvider, aLifecycleManager );
         return new M5CollectionPanelMpcModownWrapper<>( mpc, false );

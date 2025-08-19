@@ -61,6 +61,7 @@ public class PanelGwidListSelector
     // panel for RtData
     rtDataCheckedListPanel = new RtDataCheckedListPanel( verticalSashForm, tsContext(), this );
     classesPanel.setRtDataCheckedListPanel( rtDataCheckedListPanel );
+    verticalSashForm.setWeights( 2, 1 );
   }
 
   @Override

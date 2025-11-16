@@ -8,6 +8,7 @@ import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static org.toxsoft.skf.reports.gui.km5.ISkResources.*;
+import static org.toxsoft.skf.reports.gui.utils.YScaleRefbookGenerator.*;
 
 import org.toxsoft.core.tsgui.bricks.actions.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
@@ -31,13 +32,17 @@ import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.controls.av.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.impl.*;
 import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.skf.refbooks.lib.*;
 import org.toxsoft.skf.reports.gui.panels.*;
 import org.toxsoft.skf.reports.gui.panels.valed.*;
+import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
@@ -186,23 +191,33 @@ public class GraphParamM5Model
   /**
    * id field of Gwid
    */
-  public static final String FID_GWID         = "gwid";          //$NON-NLS-1$
+  public static final String FID_GWID = "gwid"; //$NON-NLS-1$
+
   /**
    * title of param
    */
-  public static final String FID_TITLE        = "title";         //$NON-NLS-1$
+  public static final String FID_TITLE = "title"; //$NON-NLS-1$
+
   /**
    * description of param
    */
-  public static final String FID_DESCR        = "descr";         //$NON-NLS-1$
+  public static final String FID_DESCR = "descr"; //$NON-NLS-1$
+
   /**
    * unit id of param
    */
-  public static final String FID_UNIT_ID      = "unitId";        //$NON-NLS-1$
+  // public static final String FID_UNIT_ID = "unitId"; //$NON-NLS-1$
+
   /**
    * unit name for
    */
-  public static final String FID_UNIT_NAME    = "unitName";      //$NON-NLS-1$
+  // public static final String FID_UNIT_NAME = "unitName"; //$NON-NLS-1$
+
+  /**
+   * Y scale
+   */
+  public static final String FID_Y_SCALE = "yScale"; //$NON-NLS-1$
+
   /**
    * id field of aggregation func
    */
@@ -211,18 +226,21 @@ public class GraphParamM5Model
    * id field of display format
    */
   public static final String FID_DISPL_FORMAT = "displayFormat"; //$NON-NLS-1$
+
   /**
    * id field of color
    */
-  public static final String FID_COLOR        = "color";         //$NON-NLS-1$
+  public static final String FID_COLOR = "color"; //$NON-NLS-1$
+
   /**
    * id field of line width
    */
-  public static final String FID_LINE_WIDTH   = "lineWidth";     //$NON-NLS-1$
+  public static final String FID_LINE_WIDTH = "lineWidth"; //$NON-NLS-1$
+
   /**
    * id field of flag "draw ladder"
    */
-  public static final String FID_IS_LADDER    = "isLadder";      //$NON-NLS-1$
+  public static final String FID_IS_LADDER = "isLadder"; //$NON-NLS-1$
 
   /**
    * id field of list set points
@@ -318,43 +336,89 @@ public class GraphParamM5Model
   /**
    * Attribute {@link IVtGraphParam#unitId() } id of unit
    */
-  public M5AttributeFieldDef<IVtGraphParam> UNIT_ID = new M5AttributeFieldDef<>( FID_UNIT_ID, EAtomicType.STRING, //
-      TSID_NAME, STR_N_PARAM_UNIT_ID, //
-      TSID_DESCRIPTION, STR_D_PARAM_UNIT_ID, //
-      OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME, //
-      TSID_IS_NULL_ALLOWED, AV_FALSE, //
-      TSID_DEFAULT_VALUE, AvUtils.avStr( "T" ) // оставлено для примера //$NON-NLS-1$
-  ) {
-
-    @Override
-    protected void doInit() {
-      setFlags( M5FF_COLUMN );
-    }
-
-    protected IAtomicValue doGetFieldValue( IVtGraphParam aEntity ) {
-      return avStr( aEntity.unitId() );
-    }
-
-  };
+  // public M5AttributeFieldDef<IVtGraphParam> UNIT_ID = new M5AttributeFieldDef<>( FID_UNIT_ID, EAtomicType.STRING, //
+  // TSID_NAME, STR_N_PARAM_UNIT_ID, //
+  // TSID_DESCRIPTION, STR_D_PARAM_UNIT_ID, //
+  // OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME, //
+  // TSID_IS_NULL_ALLOWED, AV_FALSE, //
+  // TSID_DEFAULT_VALUE, AvUtils.avStr( "T" ) // оставлено для примера //$NON-NLS-1$
+  // ) {
+  //
+  // @Override
+  // protected void doInit() {
+  // setFlags( M5FF_COLUMN );
+  // }
+  //
+  // protected IAtomicValue doGetFieldValue( IVtGraphParam aEntity ) {
+  // return avStr( aEntity.unitId() );
+  // }
+  //
+  // };
 
   /**
    * Attribute {@link IVtGraphParam#unitName() } name of unit
    */
-  public M5AttributeFieldDef<IVtGraphParam> UNIT_NAME = new M5AttributeFieldDef<>( FID_UNIT_NAME, EAtomicType.STRING, //
-      TSID_NAME, STR_N_PARAM_UNIT_NAME, //
-      TSID_DESCRIPTION, STR_D_PARAM_UNIT_NAME, //
-      OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME, //
-      TSID_IS_NULL_ALLOWED, AV_FALSE, //
-      TSID_DEFAULT_VALUE, AvUtils.avStr( "°С" ) // оставлено для примера //$NON-NLS-1$
-  ) {
+  // public M5AttributeFieldDef<IVtGraphParam> UNIT_NAME = new M5AttributeFieldDef<>( FID_UNIT_NAME, EAtomicType.STRING,
+  // //
+  // TSID_NAME, STR_N_PARAM_UNIT_NAME, //
+  // TSID_DESCRIPTION, STR_D_PARAM_UNIT_NAME, //
+  // OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME, //
+  // TSID_IS_NULL_ALLOWED, AV_FALSE, //
+  // TSID_DEFAULT_VALUE, AvUtils.avStr( "°С" ) // оставлено для примера //$NON-NLS-1$
+  // ) {
+  //
+  // @Override
+  // protected void doInit() {
+  // setFlags( M5FF_COLUMN );
+  // }
+  //
+  // protected IAtomicValue doGetFieldValue( IVtGraphParam aEntity ) {
+  // return avStr( aEntity.unitName() );
+  // }
+  //
+  // };
+
+  /**
+   * Attribute {@link IVtGraphParam#unitId() } Y scale
+   */
+  public M5SingleLookupFieldDef<IVtGraphParam, ISkRefbookItem> Y_SCALE = new M5SingleLookupFieldDef<>( FID_Y_SCALE,
+      StridUtils.makeIdPath( ISkRefbookServiceHardConstants.CLSID_PREFIX_REFBOOK_ITEM, RBID_Y_SCALE ) ) {
 
     @Override
     protected void doInit() {
+      setNameAndDescription( STR_Y_SCALE, STR_Y_SCALE_D );
       setFlags( M5FF_COLUMN );
+      params().setBool( TSID_IS_NULL_ALLOWED, AV_TRUE.asBool() );
+      setLookupProvider( () -> {
+        ISkConnectionSupplier connSupplier = tsContext().get( ISkConnectionSupplier.class );
+        ISkConnection conn = connSupplier.defConn();
+
+        ISkRefbookService skRefServ = (ISkRefbookService)conn.coreApi().getService( ISkRefbookService.SERVICE_ID );
+        ISkRefbook scalesRefbook = skRefServ.findRefbook( RBID_Y_SCALE );
+        if( scalesRefbook == null ) {
+          return new ElemArrayList<>();
+        }
+        return scalesRefbook.listItems();
+      } );
     }
 
-    protected IAtomicValue doGetFieldValue( IVtGraphParam aEntity ) {
-      return avStr( aEntity.unitName() );
+    protected ISkRefbookItem doGetFieldValue( IVtGraphParam aEntity ) {
+      String refbookItemId = aEntity.unitId();
+
+      ISkConnectionSupplier connSupplier = tsContext().get( ISkConnectionSupplier.class );
+      ISkConnection conn = connSupplier.defConn();
+
+      ISkRefbookService skRefServ = (ISkRefbookService)conn.coreApi().getService( ISkRefbookService.SERVICE_ID );
+      ISkRefbook scalesRefbook = skRefServ.findRefbook( RBID_Y_SCALE );
+      if( scalesRefbook == null ) {
+        return null;
+      }
+      return scalesRefbook.findItem( refbookItemId );
+    }
+
+    protected String doGetFieldValueName( IVtGraphParam aEntity ) {
+      ISkRefbookItem value = doGetFieldValue( aEntity );
+      return value != null ? value.nmName() : " - "; //$NON-NLS-1$
     }
 
   };
@@ -451,12 +515,14 @@ public class GraphParamM5Model
 
   /**
    * Constructor
+   *
+   * @param aConnection connection 2 server
    */
-  public GraphParamM5Model() {
+  public GraphParamM5Model( ISkConnection aConnection ) {
     super( IVtTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, IVtGraphParam.class );
+    ensureYScalesRefbook( aConnection );
 
-    addFieldDefs( GWID, TITLE, DESCR, UNIT_ID, UNIT_NAME, AGGR_FUNC, DISPL_FORMAT, COLOR, LINE_WIDTH, IS_LADDER,
-        SET_POINTS );
+    addFieldDefs( GWID, TITLE, DESCR, Y_SCALE, AGGR_FUNC, DISPL_FORMAT, COLOR, LINE_WIDTH, IS_LADDER, SET_POINTS );
 
     // panels creator
     setPanelCreator( new M5DefaultPanelCreator<>() {
@@ -479,6 +545,21 @@ public class GraphParamM5Model
       }
     } );
 
+  }
+
+  private static boolean ensureYScalesRefbook( ISkConnection aConnection ) {
+
+    ISkRefbookService skRefServ = (ISkRefbookService)aConnection.coreApi().getService( ISkRefbookService.SERVICE_ID );
+    // TODO
+    // skRefServ.removeRefbook( REFBOOK_Y_SCALES.id() );
+
+    ISkRefbook yScalesRefbook = skRefServ.findRefbook( RBID_Y_SCALE );
+    // create all essential refbooks
+    YScaleRefbookGenerator rbGenerator = new YScaleRefbookGenerator( aConnection );
+    if( yScalesRefbook == null ) {
+      rbGenerator.createYScalesRb();
+    }
+    return true;
   }
 
   class Controller

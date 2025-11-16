@@ -44,6 +44,8 @@ interface ISkResources {
   String STR_D_SET_POINTS               = Messages.getString( "STR_D_SET_POINTS" );               //$NON-NLS-1$
   String STR_N_PARAM_MAX_EXECUTION_TIME = Messages.getString( "STR_N_PARAM_MAX_EXECUTION_TIME" ); //$NON-NLS-1$
   String STR_D_PARAM_MAX_EXECUTION_TIME = Messages.getString( "STR_D_PARAM_MAX_EXECUTION_TIME" ); //$NON-NLS-1$
+  String STR_Y_SCALE                    = "шкала Y";
+  String STR_Y_SCALE_D                  = "Описание вертикальной шкалы";
 
   /**
    * {@link ReportTemplateM5Model}

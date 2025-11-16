@@ -472,26 +472,42 @@ public class ChartPanel
 
   void createYAxises( IG2Chart aChart ) {
     for( YAxisInfo axisInfo : axisInfoes ) {
-      double min = axisInfo.graphicInfoes().values().get( 0 ).minMax().left().doubleValue();
-      double max = axisInfo.graphicInfoes().values().get( 0 ).minMax().right().doubleValue();
-      // формат по умолчанию 2 знака
-      EDisplayFormat displayFormat = EDisplayFormat.AS_INTEGER;
-      for( GraphicInfo graphInfo : axisInfo.graphicInfoes() ) {
-        if( graphInfo.minMax().left().doubleValue() < min ) {
-          min = graphInfo.minMax().left().doubleValue();
+      if( !axisInfo.manualTune() ) {
+        double min = 0;
+        // dima 13.11.25, этот код оставляем на случай если нет шкалы
+        if( axisInfo.graphicInfoes().values().get( 0 ).minMax().left() != null ) {
+          min = axisInfo.graphicInfoes().values().get( 0 ).minMax().left().doubleValue();
         }
-        if( graphInfo.minMax().right().doubleValue() > max ) {
-          max = graphInfo.minMax().right().doubleValue();
+        double max = 100;
+        if( axisInfo.graphicInfoes().values().get( 0 ).minMax().right() != null ) {
+          max = axisInfo.graphicInfoes().values().get( 0 ).minMax().right().doubleValue();
         }
-        EDisplayFormat graphDisplFmt = IStdG2GraphicRendererOptions.VALUES_DISPLAY_FORMAT
-            .getValue( graphInfo.plotDef().rendererParams().params() ).asValobj();
-        if( graphDisplFmt.ordinal() > displayFormat.ordinal() ) {
-          displayFormat = graphDisplFmt;
+        // формат по умолчанию 0 знаков
+        EDisplayFormat displayFormat = EDisplayFormat.AS_INTEGER;
+        for( GraphicInfo graphInfo : axisInfo.graphicInfoes() ) {
+          if( graphInfo.minMax().left() != null && graphInfo.minMax().left().doubleValue() < min ) {
+            min = graphInfo.minMax().left().doubleValue();
+          }
+          if( graphInfo.minMax().right() != null && graphInfo.minMax().right().doubleValue() > max ) {
+            max = graphInfo.minMax().right().doubleValue();
+          }
+          EDisplayFormat graphDisplFmt = IStdG2GraphicRendererOptions.VALUES_DISPLAY_FORMAT
+              .getValue( graphInfo.plotDef().rendererParams().params() ).asValobj();
+          if( graphDisplFmt.ordinal() > displayFormat.ordinal() ) {
+            displayFormat = graphDisplFmt;
+          }
         }
+        // dima 13.11.25 для отображения шкалы используем инфу из описания шкалы
+        IYAxisDef yAxisDef = createYAxisDef( axisInfo.id(), min, max, displayFormat.format(), axisInfo.unitInfo() );
+        aChart.yAxisDefs().add( yAxisDef );
       }
-      IYAxisDef yAxisDef = createYAxisDef( axisInfo.id(), min, max, displayFormat.format(), axisInfo.unitInfo() );
-      aChart.yAxisDefs().add( yAxisDef );
+      else {
+        IYAxisDef yAxisDef = createYAxisDef( axisInfo.id(), axisInfo.minMax().left().doubleValue(),
+            axisInfo.minMax().right().doubleValue(), axisInfo.formatStr(), axisInfo.unitInfo() );
+        aChart.yAxisDefs().add( yAxisDef );
+      }
     }
+
   }
 
   IYAxisDef createYAxisDef( String aId, double aMin, double aMax, String aFormatStr, Pair<String, String> aUnitInfo ) {

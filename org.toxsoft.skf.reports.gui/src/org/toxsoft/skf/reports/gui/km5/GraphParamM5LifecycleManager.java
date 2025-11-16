@@ -10,6 +10,7 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.helpers.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.skf.refbooks.lib.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.skf.reports.templates.service.impl.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -56,8 +57,11 @@ class GraphParamM5LifecycleManager
     Gwid gwid = aValues.getAsAv( GraphParamM5Model.FID_GWID ).asValobj();
     String title = aValues.getAsAv( GraphParamM5Model.FID_TITLE ).asString();
     String descr = aValues.getAsAv( GraphParamM5Model.FID_DESCR ).asString();
-    String unitId = aValues.getAsAv( GraphParamM5Model.FID_UNIT_ID ).asString();
-    String unitName = aValues.getAsAv( GraphParamM5Model.FID_UNIT_NAME ).asString();
+    // dima 12.11.25 переходим на использование справочника шкал
+    // String unitId = aValues.getAsAv( GraphParamM5Model.FID_UNIT_ID ).asString();
+    // String unitName = aValues.getAsAv( GraphParamM5Model.FID_UNIT_NAME ).asString();
+    ISkRefbookItem yScaleRbItem = aValues.get( GraphParamM5Model.FID_Y_SCALE );
+
     EAggregationFunc func = aValues.getAsAv( GraphParamM5Model.FID_AGGR_FUNC ).asValobj();
     EDisplayFormat format = aValues.getAsAv( GraphParamM5Model.FID_DISPL_FORMAT ).asValobj();
     ETsColor color = aValues.getAsAv( GraphParamM5Model.FID_COLOR ).asValobj();
@@ -65,8 +69,8 @@ class GraphParamM5LifecycleManager
     boolean isLadder = aValues.getAsAv( GraphParamM5Model.FID_IS_LADDER ).asBool();
     IList<String> setPoints = aValues.getAs( GraphParamM5Model.FID_SET_POINTS, IList.class );
 
-    return new VtGraphParam( gwid, title, descr, unitId, unitName, func, format, color, lineWidth, isLadder,
-        new StringArrayList( setPoints ) );
+    return new VtGraphParam( gwid, title, descr, yScaleRbItem.id(), yScaleRbItem.nmName(), func, format, color,
+        lineWidth, isLadder, new StringArrayList( setPoints ) );
   }
 
   /**

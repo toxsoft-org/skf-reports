@@ -365,7 +365,8 @@ public class GraphTemplateEditorPanel
                 tabItem.setControl( chartPanel );
                 tabFolder.setSelection( tabItem );
                 // chartPanel.setReportAnswer( graphData, aSelTemplate, true );
-                ReportTemplateUtilities.setReportAnswerToChart( chartPanel, graphData, aSelTemplate, true );
+                ReportTemplateUtilities.setReportAnswerToChart( tsContext(), chartPanel, graphData, aSelTemplate,
+                    true );
                 chartPanel.requestLayout();
               }
               if( q.state() == ESkQueryState.FAILED ) {

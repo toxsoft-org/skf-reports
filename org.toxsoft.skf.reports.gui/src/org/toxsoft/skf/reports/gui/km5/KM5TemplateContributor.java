@@ -56,7 +56,7 @@ public class KM5TemplateContributor
     myModels.add( m5SpecReportTemplateModel.id() );
     m5().addModel( m5SpecReportTemplateModel );
 
-    m5().addModel( new GraphParamM5Model() );
+    m5().addModel( new GraphParamM5Model( skConn() ) );
     GraphTemplateM5Model m5GraphTemplateModel = new GraphTemplateM5Model( skConn() );
     myModels.add( m5GraphTemplateModel.id() );
     m5().addModel( m5GraphTemplateModel );

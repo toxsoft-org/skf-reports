@@ -80,8 +80,8 @@ public class RtChartPanel
   private GraphicInfo       graphInfo;
   // наша Y шкала
   private IYAxisDef yAxisDef;
-  // id набора данных
-  private String graphDataSetId;
+  // id набора данных первого графика, следим только за ним
+  private String firstGraphDataSetId = null;
 
   static class YAxisInfo {
 
@@ -226,6 +226,7 @@ public class RtChartPanel
           max = chartInfo.minMax().right().doubleValue();
         }
       }
+      //
       yAxisDef = createYAxisDef( axisInfo.id(), min, max, aGraphParam.displayFormat().format(), axisInfo.unitInfo() );
       aChart.yAxisDefs().add( yAxisDef );
     }
@@ -252,15 +253,16 @@ public class RtChartPanel
   private void fillChartData( RtGraphDataSet aGraphDataSet, IVtGraphParam aGraphParam ) {
     IList<ITemporalAtomicValue> values = aGraphDataSet.getValues( ITimeInterval.NULL );
     Pair<Double, Double> minMax = calcMinMax( values );
-
-    graphDataSetId = ReportTemplateUtilities.graphDataSetId( aGraphParam );
-
+    String graphDataSetId = ReportTemplateUtilities.graphDataSetId( aGraphParam );
+    if( firstGraphDataSetId == null ) {
+      firstGraphDataSetId = graphDataSetId;
+    }
     YAxisInfo axisInfo;
     if( axisInfoes.hasKey( aGraphParam.unitId() ) ) {
       axisInfo = axisInfoes.getByKey( aGraphParam.unitId() );
     }
     else {
-      axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( aGraphParam.unitId(), aGraphParam.unitName() ) );
+      axisInfo = new YAxisInfo( firstGraphDataSetId, new Pair<>( aGraphParam.unitId(), aGraphParam.unitName() ) );
       axisInfoes.put( aGraphParam.unitId(), axisInfo );
     }
 
@@ -351,7 +353,7 @@ public class RtChartPanel
     // проверяем что мы не выскочили из зоны видимой части шкалы
     IAtomicValue startYAxis = chart.console().getY1( yAxisDef.id() );
     IAtomicValue endYAxis = chart.console().getY2( yAxisDef.id() );
-    IG2DataSet dataSet = chart.dataSets().getByKey( graphDataSetId );
+    IG2DataSet dataSet = chart.dataSets().getByKey( firstGraphDataSetId );
     Pair<ITemporalAtomicValue, ITemporalAtomicValue> lastPair = dataSet.locate( System.currentTimeMillis() );
     if( !lastPair.left().equals( ITemporalAtomicValue.NULL ) && lastPair.left().value().isAssigned() ) {
       IAtomicValue lastValue = lastPair.left().value();
@@ -360,7 +362,7 @@ public class RtChartPanel
         // changed by dima 07.07.25 (sitting in the bunker of Baikonur)
         // double shiftY = lastValue.asDouble() <= startYAxis.asDouble() ? -50 : 50;
         double shiftY = calculateShift( startYAxis, endYAxis, lastValue );
-        chart.console().shiftYAxis( graphDataSetId, shiftY );
+        chart.console().shiftYAxis( firstGraphDataSetId, shiftY );
       }
     }
     try {
@@ -373,7 +375,6 @@ public class RtChartPanel
   }
 
   double calculateShift( IAtomicValue aStartYAxis, IAtomicValue aEndYAxis, IAtomicValue aLastValue ) {
-    double retVal = 0;
     // calculate axis visible length
     float axisLength = av2Float( aEndYAxis ) - av2Float( aStartYAxis );
     // calculate value in the middle of visible axis
@@ -381,9 +382,7 @@ public class RtChartPanel
     // delta between visual center and last value
     float delta = av2Float( aLastValue ) - axisCenterVal;
     // value in percents to shift axis
-    double shiftY = (delta / axisLength) * 100;
-    chart.console().shiftYAxis( graphDataSetId, shiftY );
-
+    double retVal = (delta / axisLength) * 100;
     return retVal;
   }
 

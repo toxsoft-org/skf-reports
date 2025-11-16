@@ -3,6 +3,7 @@ package org.toxsoft.skf.reports.gui.utils;
 import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.skf.reports.gui.utils.ISkResources.*;
+import static org.toxsoft.skf.reports.gui.utils.YScaleRefbookGenerator.*;
 import static org.toxsoft.uskat.core.api.hqserv.ISkHistoryQueryServiceConstants.*;
 
 import java.text.*;
@@ -37,6 +38,7 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.skf.refbooks.lib.*;
 import org.toxsoft.skf.reports.chart.utils.gui.dataset.*;
 import org.toxsoft.skf.reports.chart.utils.gui.panels.*;
 import org.toxsoft.skf.reports.templates.service.*;
@@ -732,7 +734,7 @@ public class ReportTemplateUtilities {
           }
         }
         // popupChart.setReportAnswer( graphData, selTemplate, false );
-        setReportAnswerToChart( popupChart, graphData, selTemplate, false );
+        setReportAnswerToChart( aContext, popupChart, graphData, selTemplate, false );
         popupChart.requestLayout();
       }
     } );
@@ -745,13 +747,14 @@ public class ReportTemplateUtilities {
   /**
    * Устанавливает в график данные, полученные по шаблону.
    *
+   * @param aContext - контекст приложения
    * @param aTargetChart ChartPanel - целевой график, в который будуд устанавливаться данные.
    * @param aGraphData IList - данные, полученные по шаблону, предназначенные для установки в график.
    * @param aTemplate IVtGraphTemplate - шаблон, по которому получены данные.
    * @param aFromBegin boolean - показывать данные сначала.
    */
-  public static void setReportAnswerToChart( ChartPanel aTargetChart, IList<IG2DataSet> aGraphData,
-      IVtGraphTemplate aTemplate, boolean aFromBegin ) {
+  public static void setReportAnswerToChart( ITsGuiContext aContext, ChartPanel aTargetChart,
+      IList<IG2DataSet> aGraphData, IVtGraphTemplate aTemplate, boolean aFromBegin ) {
 
     IStringMapEdit<YAxisInfo> axisInfoes = new StringMap<>();
     IListEdit<GraphicInfo> graphicInfoes = new ElemArrayList<>();
@@ -768,7 +771,24 @@ public class ReportTemplateUtilities {
         axisInfo = axisInfoes.getByKey( param.unitId() );
       }
       else {
-        axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( param.unitId(), param.unitName() ) );
+        // dima 12.11.25 используем справочник
+        ISkConnectionSupplier connSupp = aContext.get( ISkConnectionSupplier.class );
+        ISkConnection conn = connSupp.defConn();
+        ISkRefbookService skRefServ = (ISkRefbookService)conn.coreApi().getService( ISkRefbookService.SERVICE_ID );
+        if( hasYScaleRefbook( skRefServ, param.unitId() ) ) {
+          ISkRefbook yScalesRb = skRefServ.findRefbook( REFBOOK_Y_SCALES.id() );
+          ISkRefbookItem yScaleRbItem = yScalesRb.findItem( param.unitId() );
+          String unitId = yScaleRbItem.attrs().getStr( RBATRID_Y_SCALE___ID );
+          String scaleName = yScaleRbItem.attrs().getStr( RBATRID_Y_SCALE___NAME );
+          float min = yScaleRbItem.attrs().getFloat( RBATRID_Y_SCALE___MIN );
+          float max = yScaleRbItem.attrs().getFloat( RBATRID_Y_SCALE___MAX );
+          EDisplayFormat format = yScaleRbItem.attrs().getValobj( RBATRID_Y_SCALE___FORMAT );
+          axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( unitId, scaleName ), Double.valueOf( min ),
+              Double.valueOf( max ), format.format() );
+        }
+        else {
+          axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( param.unitId(), param.unitName() ) );
+        }
         axisInfoes.put( param.unitId(), axisInfo );
       }
 
@@ -777,7 +797,7 @@ public class ReportTemplateUtilities {
       IStridable graphStridable = new Stridable( graphDataSetId, param.title(), param.description() );
 
       GraphicInfo graphInfo =
-          new GraphicInfo( graphStridable, axisInfo.id(), graphDataSetId, minMax, param.isLadder() );
+          new GraphicInfo( graphStridable, axisInfo.id(), graphDataSetId, axisInfo.minMax(), param.isLadder() );
 
       PlotDefTuner plotTuner = new PlotDefTuner( aTargetChart.tsContext() );
       RGB plotColor = param.color().rgb();
@@ -796,6 +816,17 @@ public class ReportTemplateUtilities {
 
     String chartTitle = aTemplate.title().strip().length() > 0 ? aTemplate.title() : aTemplate.nmName();
     aTargetChart.setReportAnswer( aGraphData, graphicInfoes, axisInfoes, aTemplate.aggrStep(), chartTitle, aFromBegin );
+  }
+
+  private static boolean hasYScaleRefbook( ISkRefbookService aSkRefServ, String aUnitId ) {
+    ISkRefbook yScalesRb = aSkRefServ.findRefbook( REFBOOK_Y_SCALES.id() );
+    if( yScalesRb != null ) {
+      ISkRefbookItem yScaleRbItem = yScalesRb.findItem( aUnitId );
+      if( yScaleRbItem != null ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

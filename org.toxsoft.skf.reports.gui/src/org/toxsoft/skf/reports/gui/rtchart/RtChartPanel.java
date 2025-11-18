@@ -1,5 +1,7 @@
 package org.toxsoft.skf.reports.gui.rtchart;
 
+import java.util.*;
+
 import org.eclipse.jface.resource.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
@@ -32,6 +34,7 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.skf.refbooks.lib.*;
 import org.toxsoft.skf.reports.chart.utils.gui.*;
 import org.toxsoft.skf.reports.chart.utils.gui.console.*;
 import org.toxsoft.skf.reports.chart.utils.gui.panels.*;
@@ -52,6 +55,8 @@ import org.toxsoft.uskat.core.gui.conn.*;
  */
 public class RtChartPanel
     extends TsPanel {
+
+  final ISkCoreApi coreApi;
 
   int refreshInterval = 1000;
 
@@ -79,9 +84,10 @@ public class RtChartPanel
   IListEdit<RtGraphDataSet> graphDataSetList = new ElemArrayList<>();
   private GraphicInfo       graphInfo;
   // наша Y шкала
-  private IYAxisDef yAxisDef;
+  // private IYAxisDef yAxisDef;
   // id набора данных первого графика, следим только за ним
-  private String firstGraphDataSetId = null;
+  private StringMap<String> unitId2GrapDataSetMap = new StringMap<>();
+  private StringMap<String> unitId2YAxisIdMap     = new StringMap<>();
 
   static class YAxisInfo {
 
@@ -134,7 +140,7 @@ public class RtChartPanel
     super( aParent, aContext );
     setLayout( new BorderLayout() );
 
-    ISkCoreApi serverApi = aConnection.coreApi();
+    coreApi = aConnection.coreApi();
     createToolBar();
     // формируем запрос к одноименному сервису
     IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aGraphTemplate );
@@ -158,7 +164,7 @@ public class RtChartPanel
         IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( processData, queryParams );
         Display display2 = aContext.get( Display.class );
         for( IVtGraphParam graphParam : aGraphTemplate.listParams() ) {
-          graphDataSetList.add( new RtGraphDataSet( display2, graphParam, serverApi, requestAnswer.get( i++ ) ) );
+          graphDataSetList.add( new RtGraphDataSet( display2, graphParam, coreApi, requestAnswer.get( i++ ) ) );
         }
         init();
         start();
@@ -215,6 +221,7 @@ public class RtChartPanel
   }
 
   void createYAxis( IG2Chart aChart, IVtGraphParam aGraphParam ) {
+
     for( YAxisInfo axisInfo : axisInfoes ) {
       double min = axisInfo.graphicInfoes().values().get( 0 ).minMax().left().doubleValue();
       double max = axisInfo.graphicInfoes().values().get( 0 ).minMax().right().doubleValue();
@@ -226,9 +233,11 @@ public class RtChartPanel
           max = chartInfo.minMax().right().doubleValue();
         }
       }
-      //
-      yAxisDef = createYAxisDef( axisInfo.id(), min, max, aGraphParam.displayFormat().format(), axisInfo.unitInfo() );
+      IYAxisDef yAxisDef =
+          createYAxisDef( axisInfo.id(), min, max, aGraphParam.displayFormat().format(), axisInfo.unitInfo() );
       aChart.yAxisDefs().add( yAxisDef );
+      // dima 18.11.25 сохраняем unitId -> шкала Y
+      unitId2YAxisIdMap.put( aGraphParam.unitId(), yAxisDef.id() );
     }
   }
 
@@ -254,15 +263,29 @@ public class RtChartPanel
     IList<ITemporalAtomicValue> values = aGraphDataSet.getValues( ITimeInterval.NULL );
     Pair<Double, Double> minMax = calcMinMax( values );
     String graphDataSetId = ReportTemplateUtilities.graphDataSetId( aGraphParam );
-    if( firstGraphDataSetId == null ) {
-      firstGraphDataSetId = graphDataSetId;
+    if( !unitId2GrapDataSetMap.hasKey( aGraphParam.unitId() ) ) {
+      unitId2GrapDataSetMap.put( aGraphParam.unitId(), graphDataSetId );
     }
+    // dima 18.11.25 используем справочник
+    ISkRefbookService skRefServ = (ISkRefbookService)coreApi.getService( ISkRefbookService.SERVICE_ID );
     YAxisInfo axisInfo;
     if( axisInfoes.hasKey( aGraphParam.unitId() ) ) {
       axisInfo = axisInfoes.getByKey( aGraphParam.unitId() );
     }
     else {
-      axisInfo = new YAxisInfo( firstGraphDataSetId, new Pair<>( aGraphParam.unitId(), aGraphParam.unitName() ) );
+      if( ReportTemplateUtilities.hasYScaleRefbook( skRefServ, aGraphParam.unitId() ) ) {
+        ISkRefbook yScalesRb = skRefServ.findRefbook( YScaleRefbookGenerator.REFBOOK_Y_SCALES.id() );
+        ISkRefbookItem yScaleRbItem = yScalesRb.findItem( aGraphParam.unitId() );
+        String unitId = yScaleRbItem.attrs().getStr( YScaleRefbookGenerator.RBATRID_Y_SCALE___ID );
+        String scaleName = yScaleRbItem.attrs().getStr( YScaleRefbookGenerator.RBATRID_Y_SCALE___UNIT_NAME );
+        // float min = yScaleRbItem.attrs().getFloat( YScaleRefbookGenerator.RBATRID_Y_SCALE___MIN );
+        // float max = yScaleRbItem.attrs().getFloat( YScaleRefbookGenerator.RBATRID_Y_SCALE___MAX );
+        // EDisplayFormat format = yScaleRbItem.attrs().getValobj( YScaleRefbookGenerator.RBATRID_Y_SCALE___FORMAT );
+        axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( unitId, scaleName ) );
+      }
+      else {
+        axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( aGraphParam.unitId(), aGraphParam.unitName() ) );
+      }
       axisInfoes.put( aGraphParam.unitId(), axisInfo );
     }
 
@@ -347,26 +370,33 @@ public class RtChartPanel
   }
 
   void onTimerTick() {
-    ITimeInterval ti = ((G2Chart)chart).xAxisModel().timeInterval();
-    long time = System.currentTimeMillis();
-    chart.console().locateX( time - (long)(ti.duration() * 0.8) );
-    // проверяем что мы не выскочили из зоны видимой части шкалы
-    IAtomicValue startYAxis = chart.console().getY1( yAxisDef.id() );
-    IAtomicValue endYAxis = chart.console().getY2( yAxisDef.id() );
-    IG2DataSet dataSet = chart.dataSets().getByKey( firstGraphDataSetId );
-    Pair<ITemporalAtomicValue, ITemporalAtomicValue> lastPair = dataSet.locate( System.currentTimeMillis() );
-    if( !lastPair.left().equals( ITemporalAtomicValue.NULL ) && lastPair.left().value().isAssigned() ) {
-      IAtomicValue lastValue = lastPair.left().value();
-      if( lastValue.asDouble() >= endYAxis.asDouble() || lastValue.asDouble() <= startYAxis.asDouble() ) {
-        // сдвигаем шкалу так чтобы новое значение стало посредине шкалы
-        // changed by dima 07.07.25 (sitting in the bunker of Baikonur)
-        // double shiftY = lastValue.asDouble() <= startYAxis.asDouble() ? -50 : 50;
-        double shiftY = calculateShift( startYAxis, endYAxis, lastValue );
-        chart.console().shiftYAxis( firstGraphDataSetId, shiftY );
-      }
-    }
     try {
       // dima 31.05.23 тут может случится ошибка
+      ITimeInterval ti = ((G2Chart)chart).xAxisModel().timeInterval();
+      long time = System.currentTimeMillis();
+      chart.console().locateX( time - (long)(ti.duration() * 0.8) );
+      for( String unitId : unitId2GrapDataSetMap.keys() ) {
+        // проверяем что мы не выскочили из зоны видимой части шкалы
+        // IAtomicValue startYAxis = chart.console().getY1( yAxisDef.id() );
+        // IAtomicValue endYAxis = chart.console().getY2( yAxisDef.id() );
+        // IG2DataSet dataSet = chart.dataSets().getByKey( firstGraphDataSetId );
+        String graphDataSetId = unitId2GrapDataSetMap.getByKey( unitId );
+        String yAxisDefId = unitId2YAxisIdMap.getByKey( unitId );
+        IAtomicValue startYAxis = chart.console().getY1( yAxisDefId );
+        IAtomicValue endYAxis = chart.console().getY2( yAxisDefId );
+        IG2DataSet dataSet = chart.dataSets().getByKey( graphDataSetId );
+        Pair<ITemporalAtomicValue, ITemporalAtomicValue> lastPair = dataSet.locate( System.currentTimeMillis() );
+        if( !lastPair.left().equals( ITemporalAtomicValue.NULL ) && lastPair.left().value().isAssigned() ) {
+          IAtomicValue lastValue = lastPair.left().value();
+          if( lastValue.asDouble() >= endYAxis.asDouble() || lastValue.asDouble() <= startYAxis.asDouble() ) {
+            // сдвигаем шкалу так чтобы новое значение стало посредине шкалы
+            // changed by dima 07.07.25 (sitting in the bunker of Baikonur)
+            // double shiftY = lastValue.asDouble() <= startYAxis.asDouble() ? -50 : 50;
+            double shiftY = calculateShift( startYAxis, endYAxis, lastValue );
+            chart.console().shiftYAxis( graphDataSetId, shiftY );
+          }
+        }
+      }
       chart.refresh();
     }
     catch( Exception ex ) {

@@ -779,7 +779,7 @@ public class ReportTemplateUtilities {
           ISkRefbook yScalesRb = skRefServ.findRefbook( REFBOOK_Y_SCALES.id() );
           ISkRefbookItem yScaleRbItem = yScalesRb.findItem( param.unitId() );
           String unitId = yScaleRbItem.attrs().getStr( RBATRID_Y_SCALE___ID );
-          String scaleName = yScaleRbItem.attrs().getStr( RBATRID_Y_SCALE___NAME );
+          String scaleName = yScaleRbItem.attrs().getStr( RBATRID_Y_SCALE___UNIT_NAME );
           float min = yScaleRbItem.attrs().getFloat( RBATRID_Y_SCALE___MIN );
           float max = yScaleRbItem.attrs().getFloat( RBATRID_Y_SCALE___MAX );
           EDisplayFormat format = yScaleRbItem.attrs().getValobj( RBATRID_Y_SCALE___FORMAT );
@@ -818,7 +818,14 @@ public class ReportTemplateUtilities {
     aTargetChart.setReportAnswer( aGraphData, graphicInfoes, axisInfoes, aTemplate.aggrStep(), chartTitle, aFromBegin );
   }
 
-  private static boolean hasYScaleRefbook( ISkRefbookService aSkRefServ, String aUnitId ) {
+  /**
+   * Check Y scale refbook existence
+   *
+   * @param aSkRefServ - rb service
+   * @param aUnitId - id of refbook
+   * @return true if refbook exist
+   */
+  public static boolean hasYScaleRefbook( ISkRefbookService aSkRefServ, String aUnitId ) {
     ISkRefbook yScalesRb = aSkRefServ.findRefbook( REFBOOK_Y_SCALES.id() );
     if( yScalesRb != null ) {
       ISkRefbookItem yScaleRbItem = yScalesRb.findItem( aUnitId );

@@ -66,16 +66,17 @@ public class YScaleRefbookGenerator {
   private final ISkConnection conn;
 
   // y.scale - описание Y шкалы
-  public static String RBID_Y_SCALE             = "y.scale";
-  public static String RBATRID_Y_SCALE___ID     = "scaleId"; // id шкалы
-  public static String RBATRID_Y_SCALE___NAME   = "name";    // Название шкалы
-  public static String RBATRID_Y_SCALE___FORMAT = "format";  // Формат отображения значений шкалы
-  public static String RBATRID_Y_SCALE___MIN    = "minVal";  // Мин. начальное значение
-  public static String RBATRID_Y_SCALE___MAX    = "maxVal";  // Макс. начальное значение
+  public static String RBID_Y_SCALE                = "y.scale";
+  public static String RBATRID_Y_SCALE___ID        = "scaleId"; // id шкалы
+  public static String RBATRID_Y_SCALE___UNIT_NAME = "name";    // Единицы измерения
+  public static String RBATRID_Y_SCALE___FORMAT    = "format";  // Формат отображения значений шкалы
+  public static String RBATRID_Y_SCALE___MIN       = "minVal";  // Мин. начальное значение
+  public static String RBATRID_Y_SCALE___MAX       = "maxVal";  // Макс. начальное значение
 
   public static String ITEMID_Y_SCALE___TEMPERATURE = "Temperature"; // scale for temperature
   public static String ITEMID_Y_SCALE___VIBRATION   = "Vibration";   // scale for vibration
   public static String ITEMID_Y_SCALE___PRESSURE    = "Pressure";    // scale for pressure
+  public static String ITEMID_Y_SCALE___FLOW        = "Flow";        // scale for flow
 
   /**
    * Attribute {@link ISkRefbook#attrs() #RBATRID_Y_SCALE___SCALEID}.
@@ -89,9 +90,9 @@ public class YScaleRefbookGenerator {
   /**
    * Attribute {@link ISkRefbook#attrs() #RBATRID_Y_SCALE___NAME}.
    */
-  static IDtoAttrInfo ATRINF_Y_SCALE_NAME = DtoAttrInfo.create2( RBATRID_Y_SCALE___NAME, DT_STRING, //
-      TSID_NAME, STR_Y_SCALE_NAME, //
-      TSID_DESCRIPTION, STR_Y_SCALE_NAME_D //
+  static IDtoAttrInfo ATRINF_Y_SCALE_NAME = DtoAttrInfo.create2( RBATRID_Y_SCALE___UNIT_NAME, DT_STRING, //
+      TSID_NAME, STR_Y_SCALE_UNIT_NAME, //
+      TSID_DESCRIPTION, STR_Y_SCALE_UNIT_NAME_D //
   );
 
   /**
@@ -174,6 +175,8 @@ public class YScaleRefbookGenerator {
         EDisplayFormat.ONE_DIGIT, 0, 20 );
     addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___PRESSURE, "Pressure", "Pressure Y scale", "P", "кГс/см²",
         EDisplayFormat.TWO_DIGIT, 0, 10 );
+    addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___FLOW, "Flow", "Flow Y scale", "F", "м³/ч",
+        EDisplayFormat.AS_INTEGER, 0, 20000 );
   }
 
   private static void addYScaleRbItem( ISkRefbook aRefbook, String aItemId, String aName, String aDescr,
@@ -181,7 +184,7 @@ public class YScaleRefbookGenerator {
     String rbItemId = aItemId;
     RefookItemBuider b = new RefookItemBuider( rbItemId, aName, aDescr, aRefbook );
     b.setValue( RBATRID_Y_SCALE___ID, AvUtils.avStr( aScaleId ) );
-    b.setValue( RBATRID_Y_SCALE___NAME, AvUtils.avStr( aScaleName ) );
+    b.setValue( RBATRID_Y_SCALE___UNIT_NAME, AvUtils.avStr( aScaleName ) );
     b.setValue( RBATRID_Y_SCALE___FORMAT, AvUtils.avValobj( aDisplayFormat ) );
     b.setValue( RBATRID_Y_SCALE___MIN, AvUtils.avFloat( aMin ) );
     b.setValue( RBATRID_Y_SCALE___MAX, AvUtils.avFloat( aMax ) );

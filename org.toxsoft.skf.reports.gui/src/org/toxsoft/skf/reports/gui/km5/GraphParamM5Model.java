@@ -171,7 +171,15 @@ public class GraphParamM5Model
                 copyBunch.set( fd.id(), AvUtils.avStr( skObj.nmName() ) );
               }
               else {
-                copyBunch.set( fd.id(), originalBunch.get( fd ) );
+                if( fd.id().equals( FID_DESCR ) ) {
+                  ISkObject skObj =
+                      connection().coreApi().objService().find( new Skid( gwid.classId(), gwid.strid() ) );
+                  copyBunch.set( fd.id(), AvUtils.avStr( skObj.description() ) );
+                }
+                else {
+                  // остальное берем из оригинала
+                  copyBunch.set( fd.id(), originalBunch.get( fd ) );
+                }
               }
             }
           }
@@ -450,7 +458,7 @@ public class GraphParamM5Model
       TSID_NAME, STR_N_PARAM_LINE_WIDTH, //
       TSID_DESCRIPTION, STR_D_PARAM_LINE_WIDTH, //
       OPID_EDITOR_FACTORY_NAME, ValedAvIntegerSpinner.FACTORY_NAME, //
-      TSID_DEFAULT_VALUE, avInt( 3 ) //
+      TSID_DEFAULT_VALUE, avInt( 2 ) //
   ) {
 
     @Override

@@ -77,6 +77,8 @@ public class YScaleRefbookGenerator {
   public static String ITEMID_Y_SCALE___VIBRATION   = "Vibration";   // scale for vibration
   public static String ITEMID_Y_SCALE___PRESSURE    = "Pressure";    // scale for pressure
   public static String ITEMID_Y_SCALE___FLOW        = "Flow";        // scale for flow
+  public static String ITEMID_Y_SCALE___PERCENT     = "Percent";     // scale for %
+  public static String ITEMID_Y_SCALE___DZ_ANGLE    = "Angle";       // scale for DZ angle
 
   /**
    * Attribute {@link ISkRefbook#attrs() #RBATRID_Y_SCALE___SCALEID}.
@@ -177,6 +179,10 @@ public class YScaleRefbookGenerator {
         EDisplayFormat.TWO_DIGIT, 0, 10 );
     addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___FLOW, "Flow", "Flow Y scale", "F", "м³/ч",
         EDisplayFormat.AS_INTEGER, 0, 20000 );
+    addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___PERCENT, "Percent", "Percent Y scale", "Percent", "%",
+        EDisplayFormat.AS_INTEGER, 0, 80 );
+    addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___DZ_ANGLE, "Angle", "Angle DZ Y scale", "Angle", "° град.",
+        EDisplayFormat.AS_INTEGER, 0, 90 );
   }
 
   private static void addYScaleRbItem( ISkRefbook aRefbook, String aItemId, String aName, String aDescr,

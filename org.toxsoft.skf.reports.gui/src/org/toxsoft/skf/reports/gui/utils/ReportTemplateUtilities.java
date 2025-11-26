@@ -708,13 +708,14 @@ public class ReportTemplateUtilities {
    */
   public static ChartPanel popupChart( ITsGuiContext aContext, Composite aParent, Gwid aParamGwid, String aTitle,
       String aDescription ) {
-    IVtGraphTemplate selTemplate = createTemplate( aParamGwid, aTitle, aDescription );
-    // формируем запрос к одноименному сервису
-    IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( selTemplate );
     ISkConnectionSupplier connSupp = aContext.get( ISkConnectionSupplier.class );
-
     ISkQueryProcessedData processData =
         connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
+
+    IVtGraphTemplate selTemplate = createTemplate( connSupp.defConn().coreApi(), aParamGwid, aTitle, aDescription );
+
+    // формируем запрос к одноименному сервису
+    IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( selTemplate );
 
     processData.prepare( queryParams );
     TimeInterval popupChartIntvl =
@@ -828,9 +829,11 @@ public class ReportTemplateUtilities {
   public static boolean hasYScaleRefbook( ISkRefbookService aSkRefServ, String aUnitId ) {
     ISkRefbook yScalesRb = aSkRefServ.findRefbook( REFBOOK_Y_SCALES.id() );
     if( yScalesRb != null ) {
-      ISkRefbookItem yScaleRbItem = yScalesRb.findItem( aUnitId );
-      if( yScaleRbItem != null ) {
-        return true;
+      for( ISkRefbookItem item : yScalesRb.listItems() ) {
+        String itemUnitId = item.id();
+        if( aUnitId.equals( itemUnitId ) ) {
+          return true;
+        }
       }
     }
     return false;
@@ -894,12 +897,14 @@ public class ReportTemplateUtilities {
   /**
    * Создаеет пустой шаблон графика
    *
-   * @param aParamGwid {@Gwid }
+   * @param aCoreApi - API сервера
+   * @param aParamGwid {@Gwid } - id отображаемого параметра
    * @param aTitle название
    * @param aDescription описание
    * @return пустой шаблон
    */
-  public static IVtGraphTemplate createTemplate( Gwid aParamGwid, String aTitle, String aDescription ) {
+  public static IVtGraphTemplate createTemplate( ISkCoreApi aCoreApi, Gwid aParamGwid, String aTitle,
+      String aDescription ) {
     IVtGraphTemplate retVal = new IVtGraphTemplate() {
 
       /**
@@ -1051,7 +1056,13 @@ public class ReportTemplateUtilities {
 
           @Override
           public String unitId() {
-            return "Y"; //$NON-NLS-1$
+            String unitId = null;
+            // ищем атрибут id Y шкалы
+            ISkObject paramObj = aCoreApi.objService().get( aParamGwid.skid() );
+            if( paramObj.attrs().hasKey( "atrYScale" ) ) {
+              unitId = paramObj.attrs().getStr( "atrYScale" );
+            }
+            return unitId == null ? "Y" : unitId; //$NON-NLS-1$
           }
 
           @Override

@@ -64,10 +64,9 @@ public class ChartPanel
   Button btnConsole;
   Button btnPrint;
 
-  G2Chart        chart        = null;
-  ETimeUnit      axisTimeUnit = null;
-  G2ChartConsole console      = null;
-  // private IVtGraphTemplate template = null;
+  G2Chart          chart        = null;
+  ETimeUnit        axisTimeUnit = null;
+  G2ChartConsole   console      = null;
   final ISkCoreApi serverApi;
 
   ValedComboSelector<ETimeUnit> timeUnitCombo;
@@ -77,7 +76,7 @@ public class ChartPanel
   LegendWindow                      legendWindow  = null;
   ConsoleWindow                     consoleWindow = null;
 
-  String chartTitle;
+  private String chartTitle;
 
   /**
    * Конструктор панели
@@ -301,15 +300,18 @@ public class ChartPanel
           return; // отказ от печати
         }
         Printer printer = new Printer( printerData );
-        GC printerGc = createPrintGc( printer, new TsPoint( 5, 5 ), new TsPoint( 5, 5 ) );
+        // dima 01.12.25 этот методы должен вызываться ПОСЛЕ printer.startJob(...)
+        // GC printerGc = createPrintGc( printer, new TsPoint( 5, 5 ), new TsPoint( 5, 5 ) );
+        GC printerGc = null;
         try {
           if( printer.startJob( "printChart" ) ) { //$NON-NLS-1$
+            // dima 01.12.25 здесь уже канва готова
+            printerGc = createPrintGc( printer, new TsPoint( 5, 5 ), new TsPoint( 5, 5 ) );
             chart.print( printerGc );
             // напечатаем название шаблона
             Point chartSize = chart.getControl().getSize();
             Color oldColor = printerGc.getForeground();
             printerGc.setForeground( colorManager().getColor( ETsColor.BLACK ) );
-            // String chartTitle = template.title().strip().length() > 0 ? template.title() : template.nmName();
             Point titleSize = printerGc.textExtent( chartTitle );
             printerGc.drawText( chartTitle, chartSize.x / 2 - titleSize.x / 2, (int)(chartSize.y * 0.05), true );
             printerGc.setForeground( oldColor );

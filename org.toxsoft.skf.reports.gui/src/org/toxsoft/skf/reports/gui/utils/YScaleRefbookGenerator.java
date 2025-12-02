@@ -172,17 +172,17 @@ public class YScaleRefbookGenerator {
     ISkRefbook rbTranslators = rbServ.defineRefbook( REFBOOK_Y_SCALES );
     // fill refbook
     addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___TEMPERATURE, "Temperature", "Temperature Y scale", "T", "°С",
-        EDisplayFormat.ONE_DIGIT, 0, 100 );
+        EDisplayFormat.ONE_DIGIT, 0, 80 );
     addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___VIBRATION, "Vibration", "Vibration Y scale", "V", "мм/с",
-        EDisplayFormat.ONE_DIGIT, 0, 20 );
+        EDisplayFormat.ONE_DIGIT, 0, 8 );
     addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___PRESSURE, "Pressure", "Pressure Y scale", "P", "кГс/см²",
-        EDisplayFormat.TWO_DIGIT, 0, 10 );
+        EDisplayFormat.TWO_DIGIT, 0, 8 );
     addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___FLOW, "Flow", "Flow Y scale", "F", "м³/ч",
         EDisplayFormat.AS_INTEGER, 0, 20000 );
     addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___PERCENT, "Percent", "Percent Y scale", "Percent", "%",
         EDisplayFormat.AS_INTEGER, 0, 80 );
     addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___DZ_ANGLE, "Angle", "Angle DZ Y scale", "Angle", "° град.",
-        EDisplayFormat.AS_INTEGER, 0, 90 );
+        EDisplayFormat.AS_INTEGER, 15, 80 );
   }
 
   private static void addYScaleRbItem( ISkRefbook aRefbook, String aItemId, String aName, String aDescr,

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vetrol WorkStation Reports
+Bundle-Name: Reports WorkStation Modulw
 Bundle-SymbolicName: org.toxsoft.skf.reports.mws;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.toxsoft.skf.reports.mws.Activator

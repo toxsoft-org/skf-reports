@@ -1098,6 +1098,12 @@ public class ReportTemplateUtilities {
         return false;
       }
 
+      @Override
+      public void setClob( String aClobId, String aClobString ) {
+        // TODO Auto-generated method stub
+
+      }
+
     };
     return retVal;
   }

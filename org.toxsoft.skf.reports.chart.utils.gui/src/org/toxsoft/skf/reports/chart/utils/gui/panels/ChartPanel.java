@@ -300,7 +300,7 @@ public class ChartPanel
           return; // отказ от печати
         }
         Printer printer = new Printer( printerData );
-        // dima 01.12.25 этот методы должен вызываться ПОСЛЕ printer.startJob(...)
+        // dima 01.12.25 этот метод должен вызываться ПОСЛЕ printer.startJob(...)
         // GC printerGc = createPrintGc( printer, new TsPoint( 5, 5 ), new TsPoint( 5, 5 ) );
         GC printerGc = null;
         try {

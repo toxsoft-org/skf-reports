@@ -171,8 +171,9 @@ public class SpecValedGwidEditor
         if( selUgwi == null ) {
           return null;
         }
-        retVal = Gwid.createAttr( UgwiKindRriAttr.getClassId( selUgwi ), UgwiKindRriAttr.getObjStrid( selUgwi ),
-            UgwiKindRriAttr.getAttrId( selUgwi ) );
+        retVal = UgwiKindRriAttr.INSTANCE.getGwid( selUgwi );
+        // retVal = Gwid.createAttr( UgwiKindRriAttr.getClassId( selUgwi ), UgwiKindRriAttr.getObjStrid( selUgwi ),
+        // UgwiKindRriAttr.getAttrId( selUgwi ) );
         break;
       default:
         break;

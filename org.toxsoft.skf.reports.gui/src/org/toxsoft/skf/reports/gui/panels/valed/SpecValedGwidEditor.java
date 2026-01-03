@@ -13,6 +13,7 @@ import org.toxsoft.core.tsgui.valed.controls.helpers.*;
 import org.toxsoft.core.tsgui.valed.impl.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
+import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.ugwi.*;
@@ -171,12 +172,30 @@ public class SpecValedGwidEditor
         if( selUgwi == null ) {
           return null;
         }
-        retVal = Gwid.createAttr( UgwiKindRriAttr.getClassId( selUgwi ), UgwiKindRriAttr.getObjStrid( selUgwi ),
-            UgwiKindRriAttr.getAttrId( selUgwi ) );
+        // dima 03/01/26 patch for build error
+        // retVal = Gwid.createAttr( UgwiKindRriAttr.getClassId( selUgwi ), UgwiKindRriAttr.getObjStrid( selUgwi ),
+        // UgwiKindRriAttr.getAttrId( selUgwi ) );
+        retVal = Gwid.createAttr( getClassId( selUgwi ), getObjStrid( selUgwi ), getAttrId( selUgwi ) );
         break;
       default:
         break;
     }
     return retVal;
   }
+
+  String getClassId( Ugwi aUgwi ) {
+    IdChain chain = IdChain.of( aUgwi.essence() );
+    return chain.get( 1 );
+  }
+
+  String getObjStrid( Ugwi aUgwi ) {
+    IdChain chain = IdChain.of( aUgwi.essence() );
+    return chain.get( 2 );
+  }
+
+  String getAttrId( Ugwi aUgwi ) {
+    IdChain chain = IdChain.of( aUgwi.essence() );
+    return chain.get( 3 );
+  }
+
 }

@@ -13,7 +13,6 @@ import org.toxsoft.core.tsgui.valed.controls.helpers.*;
 import org.toxsoft.core.tsgui.valed.impl.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.ugwi.*;
@@ -180,21 +179,6 @@ public class SpecValedGwidEditor
         break;
     }
     return retVal;
-  }
-
-  String getClassId( Ugwi aUgwi ) {
-    IdChain chain = IdChain.of( aUgwi.essence() );
-    return chain.get( 1 );
-  }
-
-  String getObjStrid( Ugwi aUgwi ) {
-    IdChain chain = IdChain.of( aUgwi.essence() );
-    return chain.get( 2 );
-  }
-
-  String getAttrId( Ugwi aUgwi ) {
-    IdChain chain = IdChain.of( aUgwi.essence() );
-    return chain.get( 3 );
   }
 
 }

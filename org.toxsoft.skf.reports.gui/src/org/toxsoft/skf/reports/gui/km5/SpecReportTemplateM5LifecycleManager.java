@@ -83,6 +83,9 @@ public class SpecReportTemplateM5LifecycleManager
     FileDialog d = new FileDialog( master().get( Shell.class ), SWT.OPEN );
 
     String file = d.open();
+    if( file == null ) {
+      return;
+    }
     try( FileInputStream fr = new FileInputStream( file ) ) {
       byte[] result = fr.readAllBytes();
       String design = new String( result );

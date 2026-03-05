@@ -44,6 +44,7 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.skf.reports.gui.km5.*;
 import org.toxsoft.skf.reports.gui.utils.*;
@@ -333,6 +334,25 @@ public class ReportTemplateEditorPanel
               LoggerUtils.defaultLogger().info( "State %s , %s", q.toString(), q.state().nmName() ); //$NON-NLS-1$
               if( q.state() == ESkQueryState.READY ) {
                 IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( aQuery, queryParams );
+
+                // TODO: 2026-03-05 mvkd+++
+                if( true ) {
+                  ILogger logger = LoggerUtils.defaultLogger();
+                  StringBuilder sb = new StringBuilder();
+                  for( int index = 0, n = reportData.size(); index < n; index++ ) {
+                    String paramId = queryParams.keys().get( index );
+                    ITimedList<?> data = reportData.get( index );
+                    sb.append( String.format( "************** paramId = %s, data size = %d\n", paramId, //$NON-NLS-1$
+                        Integer.valueOf( data.size() ) ) );
+                    for( int index2 = 0; index2 < data.size(); index2++ ) {
+                      sb.append( String.format( "   [%d]  %s\n", Integer.valueOf( index2 ), //$NON-NLS-1$
+                          data.get( index2 ) ) );
+                    }
+                    sb.append( "**************\n" ); //$NON-NLS-1$
+                  }
+                  logger.info( "ReportTemplateEditorPanel::doPrepareQuery(...): query is completed:\n%s", sb );
+                }
+
                 IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
                     ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
                 // if( reportV == null ) {

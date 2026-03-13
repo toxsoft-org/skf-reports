@@ -517,21 +517,30 @@ public class ReportTemplateUtilities {
         }
       }
 
+      ITimedList<?> longestTimedList = reportData.get( longestColumnIndex );
+
       for( int j = 0; j < rowCount; j++ ) {
         IStringMapEdit<IAtomicValue> rowValues = new StringMap<>();
         if( isSameTimeInEachColumn ) {
           String timeId = String.format( MODEL_TIME_COLUMN_ID_FORMAT, Integer.valueOf( 0 ) );
           rowValues.put( timeId, AvUtils.avStr( timeColumnValue.get( j ) ) );
         }
+        long timestamp = getTimestamp( longestTimedList, j );
 
         for( int i = 0; i < reportParams.size(); i++ ) {
           IVtTemplateParam param = reportParams.get( i );
           EDisplayFormat displayFormat = param.displayFormat();
 
           ITimedList<?> timedList = reportData.get( i );
-
-          ITemporalAtomicValue val =
-              j < timedList.size() ? (TemporalAtomicValue)timedList.get( j ) : EMPTY_TEMPORAL_ATOMIC_VALUE;
+          // dima 13.03.26 fix invalid algorithm
+          // ITemporalAtomicValue val =
+          // j < timedList.size() ? (TemporalAtomicValue)timedList.get( j ) : EMPTY_TEMPORAL_ATOMIC_VALUE;
+          // get curr row timestamp
+          ITemporalAtomicValue val = EMPTY_TEMPORAL_ATOMIC_VALUE;
+          int indexOfElem = timedList.firstIndexOf( timestamp );
+          if( indexOfElem >= 0 ) {
+            val = (TemporalAtomicValue)timedList.get( indexOfElem );
+          }
 
           if( !isSameTimeInEachColumn ) {
             String strTime = convertTime( val );
@@ -573,6 +582,12 @@ public class ReportTemplateUtilities {
 
         items().add( summaryRowValues );
       }
+    }
+
+    private long getTimestamp( ITimedList<?> longestTimedList, int j ) {
+      ITemporalAtomicValue tmpVal = (ITemporalAtomicValue)longestTimedList.get( j );
+      long timestamp = tmpVal.timestamp();
+      return timestamp;
     }
   }
 

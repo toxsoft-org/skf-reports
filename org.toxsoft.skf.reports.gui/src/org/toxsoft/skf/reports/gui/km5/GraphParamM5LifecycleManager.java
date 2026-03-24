@@ -1,5 +1,7 @@
 package org.toxsoft.skf.reports.gui.km5;
 
+import static org.toxsoft.skf.reports.gui.ISkResources.*;
+
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tsgui.m5.*;
@@ -37,6 +39,10 @@ class GraphParamM5LifecycleManager
    */
   @Override
   protected ValidationResult doBeforeCreate( IM5Bunch<IVtGraphParam> aValues ) {
+    ISkRefbookItem yScaleRbItem = aValues.get( GraphParamM5Model.FID_Y_SCALE );
+    if( yScaleRbItem == null ) {
+      return ValidationResult.error( STR_ERR_NO_YSCALE_SELECTED );
+    }
     return ValidationResult.SUCCESS;
   }
 

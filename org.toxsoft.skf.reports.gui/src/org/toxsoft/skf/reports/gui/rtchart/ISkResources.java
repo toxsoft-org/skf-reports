@@ -22,5 +22,7 @@ interface ISkResources {
   String STR_EDIT_TEMPLATE_D         = Messages.getString( "STR_EDIT_TEMPLATE_D" );         //$NON-NLS-1$
   String STR_CONFIRM_REMOVE_TEMPLATE = Messages.getString( "STR_CONFIRM_REMOVE_TEMPLATE" ); //$NON-NLS-1$
   String STR_REMOVE_TEMPLATE_D       = Messages.getString( "STR_REMOVE_TEMPLATE_D" );       //$NON-NLS-1$
-
+  String STR_VIZIR                   = Messages.getString("STR_VIZIR"); //$NON-NLS-1$
+  String STR_PULT                    = Messages.getString("STR_PULT"); //$NON-NLS-1$
+  String STR_DIVISION                = Messages.getString("STR_DIVISION"); //$NON-NLS-1$
 }

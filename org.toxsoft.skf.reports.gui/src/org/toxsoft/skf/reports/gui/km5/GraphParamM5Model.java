@@ -28,6 +28,7 @@ import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.m5.std.models.misc.*;
 import org.toxsoft.core.tsgui.panels.toolbar.*;
+import org.toxsoft.core.tsgui.utils.*;
 import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.controls.av.*;
 import org.toxsoft.core.tslib.av.*;
@@ -385,6 +386,11 @@ public class GraphParamM5Model
   // }
   //
   // };
+
+  @Override
+  public ITsVisualsProvider<IVtGraphParam> visualsProvider() {
+    return IVtGraphParam::title;
+  }
 
   /**
    * Attribute {@link IVtGraphParam#unitId() } Y scale

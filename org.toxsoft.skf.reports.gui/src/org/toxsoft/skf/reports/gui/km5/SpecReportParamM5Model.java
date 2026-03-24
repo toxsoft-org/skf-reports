@@ -23,6 +23,7 @@ import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.panels.toolbar.*;
+import org.toxsoft.core.tsgui.utils.*;
 import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.controls.av.*;
 import org.toxsoft.core.tslib.av.*;
@@ -457,13 +458,17 @@ public class SpecReportParamM5Model
     } );
   }
 
+  @Override
+  public ITsVisualsProvider<IVtSpecReportParam> visualsProvider() {
+    return IVtSpecReportParam::title;
+  }
+
   class Controller
       extends M5EntityPanelWithValedsController<IVtSpecReportParam> {
 
     private final ISkConnection conn;
 
     public Controller( ISkConnection aConn ) {
-      super();
       conn = aConn;
     }
 

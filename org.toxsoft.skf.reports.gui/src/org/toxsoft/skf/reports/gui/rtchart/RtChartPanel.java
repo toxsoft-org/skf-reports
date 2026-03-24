@@ -1,6 +1,6 @@
 package org.toxsoft.skf.reports.gui.rtchart;
 
-import java.util.*;
+import static org.toxsoft.skf.reports.gui.rtchart.ISkResources.*;
 
 import org.eclipse.jface.resource.*;
 import org.eclipse.swt.*;
@@ -87,41 +87,50 @@ public class RtChartPanel
   // private IYAxisDef yAxisDef;
   // id набора данных первого графика, следим только за ним
   private StringMap<String> unitId2GrapDataSetMap = new StringMap<>();
-  private StringMap<String> unitId2YAxisIdMap     = new StringMap<>();
+  // dima
+  // эта карта мне нужна только потому что я не знаю как вытащить из графика Y шкалы
+  private StringMap<String> unitId2YAxisIdMap = new StringMap<>();
 
   static class YAxisInfo {
 
-    private final String                      id;
-    private final Pair<String, String>        unitInfo;
-    private final IStringMapEdit<GraphicInfo> graphicInfoes = new StringMap<>();
+    private final String               id;
+    private final Pair<String, String> unitInfo;
+    // private final IStringMapEdit<GraphicInfo> graphicInfoes = new StringMap<>();
 
-    private Double min = null;
-    private Double max = null;
+    private Double min = Double.valueOf( 0 );
+    private Double max = Double.valueOf( 100 );
 
     YAxisInfo( String aId, Pair<String, String> aUnitInfo ) {
       id = aId;
       unitInfo = aUnitInfo;
     }
 
+    public YAxisInfo( String aId, Pair<String, String> aUnitInfo, Double aMin, Double aMax ) {
+      id = aId;
+      unitInfo = aUnitInfo;
+      min = aMin;
+      max = aMax;
+    }
+
     String id() {
       return id;
     }
 
-    IStringMapEdit<GraphicInfo> graphicInfoes() {
-      return graphicInfoes;
-    }
+    // IStringMapEdit<GraphicInfo> graphicInfoes() {
+    // return graphicInfoes;
+    // }
 
-    void putGraphicInfo( GraphicInfo aGraphInfo ) {
-      Pair<Double, Double> minMax = aGraphInfo.minMax();
-      if( min == null || min > minMax.left() ) {
-        min = minMax.left();
-      }
-      if( max == null || max < minMax.right() ) {
-        max = minMax.right();
-      }
-      graphicInfoes.put( aGraphInfo.id(), aGraphInfo );
-    }
-
+    // void putGraphicInfo( GraphicInfo aGraphInfo ) {
+    // Pair<Double, Double> minMax = aGraphInfo.minMax();
+    // if( min.doubleValue() > minMax.left().doubleValue() ) {
+    // min = minMax.left();
+    // }
+    // if( max.doubleValue() < minMax.right().doubleValue() ) {
+    // max = minMax.right();
+    // }
+    // graphicInfoes.put( aGraphInfo.id(), aGraphInfo );
+    // }
+    //
     Pair<String, String> unitInfo() {
       return unitInfo;
     }
@@ -221,24 +230,33 @@ public class RtChartPanel
   }
 
   void createYAxis( IG2Chart aChart, IVtGraphParam aGraphParam ) {
-
     for( YAxisInfo axisInfo : axisInfoes ) {
-      double min = axisInfo.graphicInfoes().values().get( 0 ).minMax().left().doubleValue();
-      double max = axisInfo.graphicInfoes().values().get( 0 ).minMax().right().doubleValue();
-      for( GraphicInfo chartInfo : axisInfo.graphicInfoes() ) {
-        if( chartInfo.minMax().left().doubleValue() < min ) {
-          min = chartInfo.minMax().left().doubleValue();
-        }
-        if( chartInfo.minMax().right().doubleValue() > max ) {
-          max = chartInfo.minMax().right().doubleValue();
-        }
-      }
-      IYAxisDef yAxisDef =
-          createYAxisDef( axisInfo.id(), min, max, aGraphParam.displayFormat().format(), axisInfo.unitInfo() );
+      // берем min/max из описания шкалы в которое ранее установлены эти значения из справочника
+      IYAxisDef yAxisDef = createYAxisDef( axisInfo.id(), axisInfo.min.doubleValue(), axisInfo.max.doubleValue(),
+          aGraphParam.displayFormat().format(), axisInfo.unitInfo() );
       aChart.yAxisDefs().add( yAxisDef );
-      // dima 18.11.25 сохраняем unitId -> шкала Y
       unitId2YAxisIdMap.put( aGraphParam.unitId(), yAxisDef.id() );
     }
+
+    // old version
+    // for( YAxisInfo axisInfo : axisInfoes ) {
+    // double min = axisInfo.graphicInfoes().values().get( 0 ).minMax().left().doubleValue();
+    // double max = axisInfo.graphicInfoes().values().get( 0 ).minMax().right().doubleValue();
+    // for( GraphicInfo chartInfo : axisInfo.graphicInfoes() ) {
+    // if( chartInfo.minMax().left().doubleValue() < min ) {
+    // min = chartInfo.minMax().left().doubleValue();
+    // }
+    // if( chartInfo.minMax().right().doubleValue() > max ) {
+    // max = chartInfo.minMax().right().doubleValue();
+    // }
+    // }
+    // IYAxisDef yAxisDef =
+    // createYAxisDef( axisInfo.id(), min, max, aGraphParam.displayFormat().format(), axisInfo.unitInfo() );
+    // aChart.yAxisDefs().add( yAxisDef );
+    // // dima 18.11.25 сохраняем unitId -> шкала Y
+    // unitId2YAxisIdMap.put( aGraphParam.unitId(), yAxisDef.id() );
+    // }
+
   }
 
   IYAxisDef createYAxisDef( String aId, double aMin, double aMax, String aFormatStr, Pair<String, String> aUnitInfo ) {
@@ -254,7 +272,7 @@ public class RtChartPanel
 
     yTuner.setTitle( aUnitInfo.right() );
     yTuner.setTitleOrientation( ETsOrientation.VERTICAL );
-    yTuner.setTitleFont( new FontInfo( "Arial", 18, false, false ) );
+    yTuner.setTitleFont( new FontInfo( "Arial", 18, false, false ) ); //$NON-NLS-1$
 
     return yTuner.createAxisDef( aId, aUnitInfo.right(), aUnitInfo.left() );
   }
@@ -278,10 +296,13 @@ public class RtChartPanel
         ISkRefbookItem yScaleRbItem = yScalesRb.findItem( aGraphParam.unitId() );
         String unitId = yScaleRbItem.attrs().getStr( YScaleRefbookGenerator.RBATRID_Y_SCALE___ID );
         String scaleName = yScaleRbItem.attrs().getStr( YScaleRefbookGenerator.RBATRID_Y_SCALE___UNIT_NAME );
-        // float min = yScaleRbItem.attrs().getFloat( YScaleRefbookGenerator.RBATRID_Y_SCALE___MIN );
-        // float max = yScaleRbItem.attrs().getFloat( YScaleRefbookGenerator.RBATRID_Y_SCALE___MAX );
+        float min = yScaleRbItem.attrs().getFloat( YScaleRefbookGenerator.RBATRID_Y_SCALE___MIN );
+        float max = yScaleRbItem.attrs().getFloat( YScaleRefbookGenerator.RBATRID_Y_SCALE___MAX );
         // EDisplayFormat format = yScaleRbItem.attrs().getValobj( YScaleRefbookGenerator.RBATRID_Y_SCALE___FORMAT );
-        axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( unitId, scaleName ) );
+        // axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( unitId, scaleName ) );
+        minMax = new Pair<>( Double.valueOf( min ), Double.valueOf( max ) );
+        axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( unitId, scaleName ), Double.valueOf( min ),
+            Double.valueOf( max ) );
       }
       else {
         axisInfo = new YAxisInfo( graphDataSetId, new Pair<>( aGraphParam.unitId(), aGraphParam.unitName() ) );
@@ -292,9 +313,8 @@ public class RtChartPanel
     chart.dataSets().add( aGraphDataSet );
 
     IStridable graphStridable = new Stridable( graphDataSetId, aGraphParam.title(), aGraphParam.description() );
-
     graphInfo = new GraphicInfo( graphStridable, axisInfo.id(), graphDataSetId, minMax, aGraphParam.isLadder() );
-    axisInfo.putGraphicInfo( graphInfo );
+    // axisInfo.putGraphicInfo( graphInfo );
   }
 
   /**
@@ -456,7 +476,7 @@ public class RtChartPanel
     comp.setLayoutData( BorderLayout.NORTH );
 
     btnVisir = new Button( comp, SWT.CHECK );
-    btnVisir.setText( "Визир" );
+    btnVisir.setText( STR_VIZIR );
     btnVisir.setSelection( false );
     imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/vizir.png" ); //$NON-NLS-1$
     btnVisir.setImage( imgDescr.createImage() );
@@ -473,7 +493,7 @@ public class RtChartPanel
     } );
 
     btnConsole = new Button( comp, SWT.CHECK );
-    btnConsole.setText( "Пульт" );
+    btnConsole.setText( STR_PULT );
     imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/manage_pult.png" ); //$NON-NLS-1$
     btnConsole.setImage( imgDescr.createImage() );
     // явно удаляем ранее загруженную картинку
@@ -499,7 +519,7 @@ public class RtChartPanel
     } );
 
     CLabel l = new CLabel( comp, SWT.CENTER );
-    l.setText( "Цена деления:" );
+    l.setText( STR_DIVISION );
 
     IList<ETimeUnit> values = new ElemArrayList<>( ETimeUnit.values() );
     ITsVisualsProvider<ETimeUnit> visualsProvider = ETimeUnit::nmName;

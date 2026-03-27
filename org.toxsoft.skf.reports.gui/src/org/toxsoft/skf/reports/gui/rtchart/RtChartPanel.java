@@ -1,5 +1,7 @@
 package org.toxsoft.skf.reports.gui.rtchart;
 
+import static org.toxsoft.skf.reports.chart.utils.gui.IChartUtilsGuiSharedResources.*;
+import static org.toxsoft.skf.reports.chart.utils.gui.IReportsChartUtilsGuiConstants.*;
 import static org.toxsoft.skf.reports.gui.rtchart.ISkResources.*;
 
 import org.eclipse.jface.resource.*;
@@ -80,6 +82,7 @@ public class RtChartPanel
   ETimeUnit      axisTimeUnit  = null;
   G2ChartConsole console       = null;
   ConsoleWindow  consoleWindow = null;
+  LegendWindow   legendWindow  = null;
 
   IListEdit<RtGraphDataSet> graphDataSetList = new ElemArrayList<>();
   private GraphicInfo       graphInfo;
@@ -489,6 +492,32 @@ public class RtChartPanel
       public void widgetSelected( SelectionEvent e ) {
         chart.visir().setVisible( btnVisir.getSelection() );
         chart.refresh();
+      }
+    } );
+
+    btnLegend = new Button( comp, SWT.CHECK );
+    btnLegend.setText( STR_LEGEND );
+    imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/legenda_on.png" ); //$NON-NLS-1$
+    btnLegend.setImage( imgDescr.createImage() );
+    // явно удаляем ранее загруженную картинку
+    btnLegend.addDisposeListener( aE -> btnLegend.getImage().dispose() );
+
+    btnLegend.setSelection( false );
+    btnLegend.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent e ) {
+        if( !btnLegend.getSelection() && legendWindow != null ) {
+          legendWindow.dispose();
+          legendWindow = null;
+        }
+        else {
+          legendWindow = new LegendWindow( getParent(), chart.plotDefs(), tsContext() );
+          legendWindow.shell().addDisposeListener( aE -> {
+            btnLegend.setSelection( false );
+            legendWindow = null;
+          } );
+        }
       }
     } );
 

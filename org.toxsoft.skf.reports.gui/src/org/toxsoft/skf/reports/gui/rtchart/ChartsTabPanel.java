@@ -35,6 +35,7 @@ import org.toxsoft.skf.ggprefs.lib.*;
 import org.toxsoft.skf.ggprefs.lib.impl.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
 
 /**
@@ -89,6 +90,33 @@ public class ChartsTabPanel
     top = isTop;
     masterObjGwid4GwPrefs = Gwid.createObj( aMasterSkid );
 
+    initComp();
+  }
+
+  /**
+   * Конструктор панели.
+   * <p>
+   * Конструктор просто запоминает ссылку на контекст, без создания копии.
+   *
+   * @param aParent {@link Composite} - родительская панель
+   * @param aConnection {@link ISkConnection} - соединение с сервером
+   * @param aContext {@link ITsGuiContext} - контекст панели
+   * @param aUser {@link ISkUser } - текущий пользователь для которого настройки актуализируются
+   * @param isTop признак того что панель сверху
+   * @throws TsNullArgumentRtException любой аргумент = null
+   */
+  public ChartsTabPanel( Composite aParent, ISkConnection aConnection, ITsGuiContext aContext, ISkUser aUser,
+      boolean isTop ) {
+    super( aParent, aContext );
+    this.setLayout( new BorderLayout() );
+    conn = aConnection;
+    top = isTop;
+    masterObjGwid4GwPrefs = Gwid.createObj( aUser.skid() );
+
+    initComp();
+  }
+
+  private void initComp() {
     // инициализируем панель быстрых кнопок
     initToolBar();
     // инициализируем настройки панели

@@ -11,7 +11,12 @@ import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tslib.bricks.geometry.impl.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 
-class LegendWindow {
+/**
+ * Окно отображения пояснений по отображаемым в виде графиков параметрам
+ *
+ * @author vs
+ */
+public class LegendWindow {
 
   Shell         wnd = null;
   final Control parent;
@@ -26,7 +31,14 @@ class LegendWindow {
 
   private final ITsGuiContext context;
 
-  LegendWindow( Control aParent, IStridablesList<IPlotDef> aPlotDefs, ITsGuiContext aContext ) {
+  /**
+   * Constructor.
+   *
+   * @param aParent - материнский контроль
+   * @param aPlotDefs - описание отображаемых параметров-графиков
+   * @param aContext - контекст приложения
+   */
+  public LegendWindow( Control aParent, IStridablesList<IPlotDef> aPlotDefs, ITsGuiContext aContext ) {
     parent = aParent;
     plotDefs = aPlotDefs;
     context = aContext;
@@ -46,8 +58,11 @@ class LegendWindow {
 
       Color oldColor = aE.gc.getForeground();
       for( IPlotDef pd : plotDefs ) {
-        Point p = aE.gc.textExtent( pd.nmName() );
-        aE.gc.drawText( pd.nmName(), x, y, true );
+        // dima 27.03.26 если есть описание, то пишем его, если нет то название
+        Point p = aE.gc.textExtent( getPlotDescr( pd ) );
+        aE.gc.drawText( getPlotDescr( pd ), x, y, true );
+        // Point p = aE.gc.textExtent( pd.nmName() );
+        // aE.gc.drawText( pd.nmName(), x, y, true );
         // dima 04.11.22 ts4 conversion
         // TsLineInfo lineInfo =
         // IStdG2GraphicRendererOptions.GRAPHIC_LINE_INFO.getValue( pd.rendererParams().params() ).asValobj();
@@ -77,7 +92,7 @@ class LegendWindow {
     wnd.setLocation( p.x, p.y + 2 );
   }
 
-  void dispose() {
+  public void dispose() {
     if( wnd != null && !wnd.isDisposed() ) {
       wnd.dispose();
       wnd = null;
@@ -100,7 +115,7 @@ class LegendWindow {
     GC gc = new GC( Display.getCurrent() );
 
     for( IPlotDef pd : plotDefs ) {
-      Point p = gc.textExtent( pd.nmName() );
+      Point p = gc.textExtent( getPlotDescr( pd ) );
       if( p.x > width ) {
         width = p.x;
       }
@@ -125,8 +140,8 @@ class LegendWindow {
 
     Color oldColor = aGc.getForeground();
     for( IPlotDef pd : plotDefs ) {
-      Point p = aGc.textExtent( pd.nmName() );
-      aGc.drawText( pd.nmName(), x, y, true );
+      Point p = aGc.textExtent( getPlotDescr( pd ) );
+      aGc.drawText( getPlotDescr( pd ), x, y, true );
       // dima 04.11.22 ts4 conversion
       // TsLineInfo lineInfo =
       // IStdG2GraphicRendererOptions.GRAPHIC_LINE_INFO.getValue( pd.rendererParams().params() ).asValobj();
@@ -151,4 +166,11 @@ class LegendWindow {
     paint( aGc );
   }
 
+  /**
+   * @param aPlotDef - описание графика
+   * @return строка пояснения
+   */
+  private static String getPlotDescr( IPlotDef aPlotDef ) {
+    return aPlotDef.description().isBlank() ? aPlotDef.nmName() : aPlotDef.description();
+  }
 }

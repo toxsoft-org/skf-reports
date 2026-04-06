@@ -114,7 +114,7 @@ public class ReportsTemplatesMigrationUtiles {
       }
     }
     catch( Exception ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
     return retVal;
   }
@@ -202,7 +202,7 @@ public class ReportsTemplatesMigrationUtiles {
       }
     }
     catch( Exception ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
     return retVal;
   }

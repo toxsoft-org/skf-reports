@@ -96,12 +96,12 @@ public class SpecReportTemplateM5LifecycleManager
         master().put( IReportsGuiConstants.JR_TEMPLATE, jasperReport );
       }
       catch( Exception ee ) {
-        LoggerUtils.errorLogger().error( ee );
+        LoggerUtils.error( ee );
       }
 
     }
     catch( IOException e ) {
-      LoggerUtils.errorLogger().error( e );
+      LoggerUtils.error( e );
     }
   }
 

@@ -331,13 +331,13 @@ public class ReportTemplateEditorPanel
                 ReportTemplateUtilities.createM5ModelForTemplate( aSelTemplate );
             aQuery.genericChangeEventer().addListener( aSource -> {
               ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-              LoggerUtils.defaultLogger().info( "State %s , %s", q.toString(), q.state().nmName() ); //$NON-NLS-1$
+              LoggerUtils.info( "State %s , %s", q.toString(), q.state().nmName() ); //$NON-NLS-1$
               if( q.state() == ESkQueryState.READY ) {
                 IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( aQuery, queryParams );
 
                 // TODO: 2026-03-05 mvkd+++
                 if( true ) {
-                  ILogger logger = LoggerUtils.defaultLogger();
+                  ILogger logger = LoggerUtils.getLogger( getClass() );
                   StringBuilder sb = new StringBuilder();
                   for( int index = 0, n = reportData.size(); index < n; index++ ) {
                     String paramId = queryParams.keys().get( index );
@@ -444,19 +444,19 @@ public class ReportTemplateEditorPanel
       // query.
 
       query.genericChangeEventer().addListener( aSource -> {
-        LoggerUtils.defaultLogger().info( "addListener Quary state: %s", query.state().nmName() ); //$NON-NLS-1$
+        LoggerUtils.info( "addListener Quary state: %s", query.state().nmName() ); //$NON-NLS-1$
         if( query != aSource ) {
           return;
         }
 
-        LoggerUtils.defaultLogger().info( "Quary state: %s", query.state().nmName() ); //$NON-NLS-1$
+        LoggerUtils.info( "Quary state: %s", query.state().nmName() ); //$NON-NLS-1$
       } );
 
       query.exec( interval );
 
     }
     catch( Exception ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
   }
 

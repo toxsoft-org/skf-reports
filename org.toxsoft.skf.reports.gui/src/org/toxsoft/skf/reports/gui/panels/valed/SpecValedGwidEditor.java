@@ -95,10 +95,10 @@ public class SpecValedGwidEditor
 
   @Override
   protected boolean doProcessButtonPress() {
-    // TODO - conver ugwi to gwid and back
+    // TODO - convert ugwi to gwid and back
     EJrParamSourceType gwidKind = params().getValobj( OPDEF_GWID_KIND_BY_JR );
 
-    // create and dispaly Gwid selector
+    // create and display Gwid selector
     Gwid gwid = selectGwid( gwidKind );
 
     if( gwid != null ) {

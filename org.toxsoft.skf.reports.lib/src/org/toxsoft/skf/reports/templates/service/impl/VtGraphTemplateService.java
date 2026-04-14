@@ -124,7 +124,7 @@ public class VtGraphTemplateService
           l.onGraphTemplateChanged( coreApi(), aOp, aGraphTemplateId );
         }
         catch( Exception ex ) {
-          LoggerUtils.errorLogger().error( ex );
+          LoggerUtils.error( ex );
         }
       }
     }

@@ -125,7 +125,7 @@ public class SpecReportTemplateEditorPanel
           return super.doEditItem( aItem );
         }
         catch( Exception ee ) {
-          LoggerUtils.errorLogger().error( ee );
+          LoggerUtils.error( ee );
         }
       }
 
@@ -487,7 +487,7 @@ public class SpecReportTemplateEditorPanel
             // Настройка обработки результатов запроса
             aQuery.genericChangeEventer().addListener( aSource -> {
               ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-              LoggerUtils.defaultLogger().info( "State %s , %s", q.toString(), q.state().nmName() ); //$NON-NLS-1$
+              LoggerUtils.info( "State %s , %s", q.toString(), q.state().nmName() ); //$NON-NLS-1$
               if( q.state() == ESkQueryState.READY ) {
 
                 formView( aSelTemplate, aQuery, allRequestParams, fieldParams, calcParams, presetVals, retVal );
@@ -555,7 +555,7 @@ public class SpecReportTemplateEditorPanel
         reportV.requestLayout();
       }
       catch( Exception ee ) {
-        LoggerUtils.errorLogger().error( ee );
+        LoggerUtils.error( ee );
       }
     }
   }

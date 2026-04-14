@@ -1,7 +1,6 @@
 package org.toxsoft.skf.reports.gui.rtchart;
 
 import static org.toxsoft.skf.reports.chart.utils.gui.IChartUtilsGuiSharedResources.*;
-import static org.toxsoft.skf.reports.chart.utils.gui.IReportsChartUtilsGuiConstants.*;
 import static org.toxsoft.skf.reports.gui.rtchart.ISkResources.*;
 
 import org.eclipse.jface.resource.*;
@@ -423,7 +422,7 @@ public class RtChartPanel
       chart.refresh();
     }
     catch( Exception ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
   }
 

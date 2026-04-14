@@ -124,7 +124,7 @@ public class VtReportTemplateService
           l.onReportTemplateChanged( coreApi(), aOp, aReportTemplateId );
         }
         catch( Exception ex ) {
-          LoggerUtils.errorLogger().error( ex );
+          LoggerUtils.error( ex );
         }
       }
     }

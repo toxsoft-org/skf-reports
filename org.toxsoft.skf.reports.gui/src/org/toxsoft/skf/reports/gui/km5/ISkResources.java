@@ -85,4 +85,10 @@ interface ISkResources {
    */
   String STR_D_PARAM_DESIGN = Messages.getString( "STR_D_PARAM_DESIGN" ); //$NON-NLS-1$
   String STR_N_PARAM_DESIGN = Messages.getString( "STR_N_PARAM_DESIGN" ); //$NON-NLS-1$
+
+  /**
+   * {@link GraphTemplateM5LifecycleManager}
+   */
+  String STR_GRAPH_TEMPLATE_REMOVE_COMMENT = "после подтверждения шаблон удален";
+
 }

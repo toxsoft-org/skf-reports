@@ -260,6 +260,8 @@ public class VtGraphTemplateService
     cinf.attrInfos().add( ATRINF_MAX_EXECUTION_TIME );
     cinf.clobInfos().add( CLBINF_TEMPLATE_PARAMS );
     cinf.linkInfos().add( LNKINF_TEMPLATE_AUTHOR );
+    cinf.eventInfos().add( EVINF_GRAPH_TEMPLATE_CREATED );
+    cinf.eventInfos().add( EVINF_GRAPH_TEMPLATE_REMOVED );
     return cinf;
   }
 

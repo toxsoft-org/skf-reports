@@ -1,5 +1,6 @@
 package org.toxsoft.skf.reports.gui.km5;
 
+import static org.toxsoft.skf.reports.gui.km5.ISkResources.*;
 import static org.toxsoft.skf.reports.templates.service.IVtTemplateEditorServiceHardConstants.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
@@ -8,10 +9,12 @@ import org.toxsoft.core.tslib.bricks.strid.idgen.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.skf.reports.templates.service.impl.*;
+import org.toxsoft.uskat.core.api.evserv.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -63,7 +66,16 @@ public class ReportTemplateM5LifecycleManager
   @Override
   protected IVtReportTemplate doCreate( IM5Bunch<IVtReportTemplate> aValues ) {
     IDtoFullObject dtoReportTemplate = makeReportTemplateDto( aValues, master() );
-    return reportTemplateService().createReportTemplate( dtoReportTemplate );
+    IVtReportTemplate retVal = reportTemplateService().createReportTemplate( dtoReportTemplate );
+    SkEvent removeEvent = makeCreateEvent( retVal );
+    master().coreApi().eventService().fireEvent( removeEvent );
+    return retVal;
+  }
+
+  private static SkEvent makeCreateEvent( IVtReportTemplate aRetVal ) {
+    SkEvent retVal =
+        SkEvent.create( aRetVal.skid(), IVtTemplateEditorServiceHardConstants.EVID_REPORT_TEMPLATE_CREATED );
+    return retVal;
   }
 
   @Override
@@ -87,6 +99,14 @@ public class ReportTemplateM5LifecycleManager
   @Override
   protected void doRemove( IVtReportTemplate aEntity ) {
     reportTemplateService().removeReportTemplate( aEntity.id() );
+    SkEvent removeEvent = makeRemoveEvent( aEntity );
+    master().coreApi().eventService().fireEvent( removeEvent );
+  }
+
+  private static SkEvent makeRemoveEvent( IVtReportTemplate aEntity ) {
+    SkEvent retVal =
+        SkEvent.create( aEntity.skid(), IVtTemplateEditorServiceHardConstants.EVID_REPORT_TEMPLATE_REMOVED );
+    return retVal;
   }
 
   @Override

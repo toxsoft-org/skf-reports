@@ -2,16 +2,19 @@ package org.toxsoft.skf.reports.gui.km5;
 
 import static org.toxsoft.skf.reports.templates.service.IVtTemplateEditorServiceHardConstants.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
+import static org.toxsoft.skf.reports.gui.km5.ISkResources.*;
 
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tslib.bricks.strid.idgen.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;
 import org.toxsoft.skf.reports.templates.service.impl.*;
+import org.toxsoft.uskat.core.api.evserv.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -26,7 +29,10 @@ import org.toxsoft.uskat.core.impl.dto.*;
 public class GraphTemplateM5LifecycleManager
     extends KM5LifecycleManagerBasic<IVtGraphTemplate> {
 
-  private static SimpleStridGenerator stridGenerator = new SimpleStridGenerator();
+  private static String PREFIX_TEMPLATE = "graphTemplate"; //$NON-NLS-1$
+
+  private static IStridGenerator stridGenerator =
+      new UuidStridGenerator( UuidStridGenerator.createState( PREFIX_TEMPLATE ) );
 
   /**
    * Constructor.
@@ -61,6 +67,14 @@ public class GraphTemplateM5LifecycleManager
   protected IVtGraphTemplate doCreate( IM5Bunch<IVtGraphTemplate> aValues ) {
     IDtoFullObject dtoGraphTemplate = makeGraphTemplateDto( aValues, master() );
     IVtGraphTemplate retVal = graphTemplateService().createGraphTemplate( dtoGraphTemplate );
+    SkEvent removeEvent = makeCreateEvent( retVal );
+    master().coreApi().eventService().fireEvent( removeEvent );
+    return retVal;
+  }
+
+  private static SkEvent makeCreateEvent( IVtGraphTemplate aRetVal ) {
+    SkEvent retVal =
+        SkEvent.create( aRetVal.skid(), IVtTemplateEditorServiceHardConstants.EVID_GRAPH_TEMPLATE_CREATED );
     return retVal;
   }
 
@@ -84,6 +98,14 @@ public class GraphTemplateM5LifecycleManager
   @Override
   protected void doRemove( IVtGraphTemplate aEntity ) {
     graphTemplateService().removeGraphTemplate( aEntity.id() );
+    SkEvent removeEvent = makeRemoveEvent( aEntity );
+    master().coreApi().eventService().fireEvent( removeEvent );
+  }
+
+  private static SkEvent makeRemoveEvent( IVtGraphTemplate aEntity ) {
+    SkEvent retVal =
+        SkEvent.create( aEntity.skid(), IVtTemplateEditorServiceHardConstants.EVID_GRAPH_TEMPLATE_REMOVED );
+    return retVal;
   }
 
   @Override

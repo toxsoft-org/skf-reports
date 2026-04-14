@@ -1,10 +1,14 @@
 package org.toxsoft.skf.reports.templates.service;
 
+import static org.toxsoft.core.tslib.av.EAtomicType.*;
+import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static org.toxsoft.skf.reports.templates.service.IVtResources.*;
 
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.coll.helpers.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.uskat.core.*;
@@ -72,6 +76,38 @@ public interface IVtTemplateEditorServiceHardConstants {
   IDtoAttrInfo ATRINF_HAS_SUMMARY = DtoAttrInfo.create2( ATRID_HAS_SUMMARY, DDEF_BOOLEAN, //
       TSID_NAME, STR_N_HAS_SUMMARY, //
       TSID_DESCRIPTION, STR_D_HAS_SUMMARY );
+
+  /**
+   * ID of event of report template creation.
+   */
+  String EVID_REPORT_TEMPLATE_CREATED = "reportTemplateCreated"; //$NON-NLS-1$
+
+  /**
+   * Event of report template createion
+   */
+  IDtoEventInfo EVINF_REPORT_TEMPLATE_CREATED = DtoEventInfo.create1( EVID_REPORT_TEMPLATE_CREATED, true, //
+      new StridablesList<>( //
+      ), //
+      OptionSetUtils.createOpSet( //
+          TSID_NAME, STR_GRAPH_TEMPLATE_CREATED, //
+          TSID_DESCRIPTION, STR_GRAPH_TEMPLATE_CREATED_D //
+      ) );
+
+  /**
+   * ID of event of report template deletion.
+   */
+  String EVID_REPORT_TEMPLATE_REMOVED = "reportTemplateRemoved"; //$NON-NLS-1$
+
+  /**
+   * Event of graph template deletion
+   */
+  IDtoEventInfo EVINF_REPORT_TEMPLATE_REMOVED = DtoEventInfo.create1( EVID_REPORT_TEMPLATE_REMOVED, true, //
+      new StridablesList<>( //
+      ), //
+      OptionSetUtils.createOpSet( //
+          TSID_NAME, STR_GRAPH_TEMPLATE_REMOVED, //
+          TSID_DESCRIPTION, STR_GRAPH_TEMPLATE_REMOVED_D //
+      ) );
 
   // ------------------------------------------------------------------------------------
   // IVtSpecReportTemplate
@@ -141,6 +177,38 @@ public interface IVtTemplateEditorServiceHardConstants {
    * VtGraphParamM5Model model id
    */
   String GRAPH_PARAM_MODEL_ID = "sk.GraphParam"; //$NON-NLS-1$
+
+  /**
+   * ID of event of graph template creation.
+   */
+  String EVID_GRAPH_TEMPLATE_CREATED = "graphTemplateCreated"; //$NON-NLS-1$
+
+  /**
+   * Event of graph template createion
+   */
+  IDtoEventInfo EVINF_GRAPH_TEMPLATE_CREATED = DtoEventInfo.create1( EVID_GRAPH_TEMPLATE_CREATED, true, //
+      new StridablesList<>( //
+      ), //
+      OptionSetUtils.createOpSet( //
+          TSID_NAME, STR_GRAPH_TEMPLATE_CREATED, //
+          TSID_DESCRIPTION, STR_GRAPH_TEMPLATE_CREATED_D //
+      ) );
+
+  /**
+   * ID of event of graph template deletion.
+   */
+  String EVID_GRAPH_TEMPLATE_REMOVED = "graphTemplateRemoved"; //$NON-NLS-1$
+
+  /**
+   * Event of graph template deletion
+   */
+  IDtoEventInfo EVINF_GRAPH_TEMPLATE_REMOVED = DtoEventInfo.create1( EVID_GRAPH_TEMPLATE_REMOVED, true, //
+      new StridablesList<>( //
+      ), //
+      OptionSetUtils.createOpSet( //
+          TSID_NAME, STR_GRAPH_TEMPLATE_REMOVED, //
+          TSID_DESCRIPTION, STR_GRAPH_TEMPLATE_REMOVED_D //
+      ) );
 
   /**
    * id тип возможности «Редактор шаблонов графиков и отчетов»

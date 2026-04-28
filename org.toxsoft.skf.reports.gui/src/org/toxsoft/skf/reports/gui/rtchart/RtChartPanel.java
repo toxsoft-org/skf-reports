@@ -66,13 +66,8 @@ public class RtChartPanel
   boolean  timerStopped = false;
   IG2Chart chart;
 
-  Button btnPageLeft;
-  Button btnStepLeft;
-  Button btnStepRight;
-  Button btnPageRight;
-
   Button btnVisir;
-  Button btnLegend;
+  Button btnYScaleAutoTune;
   Button btnConsole;
 
   ValedComboSelector<ETimeUnit>   timeUnitCombo;
@@ -397,25 +392,28 @@ public class RtChartPanel
       ITimeInterval ti = ((G2Chart)chart).xAxisModel().timeInterval();
       long time = System.currentTimeMillis();
       chart.console().locateX( time - (long)(ti.duration() * 0.8) );
-      for( String unitId : unitId2GrapDataSetMap.keys() ) {
-        // проверяем что мы не выскочили из зоны видимой части шкалы
-        // IAtomicValue startYAxis = chart.console().getY1( yAxisDef.id() );
-        // IAtomicValue endYAxis = chart.console().getY2( yAxisDef.id() );
-        // IG2DataSet dataSet = chart.dataSets().getByKey( firstGraphDataSetId );
-        String graphDataSetId = unitId2GrapDataSetMap.getByKey( unitId );
-        String yAxisDefId = unitId2YAxisIdMap.getByKey( unitId );
-        IAtomicValue startYAxis = chart.console().getY1( yAxisDefId );
-        IAtomicValue endYAxis = chart.console().getY2( yAxisDefId );
-        IG2DataSet dataSet = chart.dataSets().getByKey( graphDataSetId );
-        Pair<ITemporalAtomicValue, ITemporalAtomicValue> lastPair = dataSet.locate( System.currentTimeMillis() );
-        if( !lastPair.left().equals( ITemporalAtomicValue.NULL ) && lastPair.left().value().isAssigned() ) {
-          IAtomicValue lastValue = lastPair.left().value();
-          if( lastValue.asDouble() >= endYAxis.asDouble() || lastValue.asDouble() <= startYAxis.asDouble() ) {
-            // сдвигаем шкалу так чтобы новое значение стало посредине шкалы
-            // changed by dima 07.07.25 (sitting in the bunker of Baikonur)
-            // double shiftY = lastValue.asDouble() <= startYAxis.asDouble() ? -50 : 50;
-            double shiftY = calculateShift( startYAxis, endYAxis, lastValue );
-            chart.console().shiftYAxis( graphDataSetId, shiftY );
+      // проверка условия что нужно автоподстраивать шкалы
+      if( btnYScaleAutoTune.getSelection() ) {
+        for( String unitId : unitId2GrapDataSetMap.keys() ) {
+          // проверяем что мы не выскочили из зоны видимой части шкалы
+          // IAtomicValue startYAxis = chart.console().getY1( yAxisDef.id() );
+          // IAtomicValue endYAxis = chart.console().getY2( yAxisDef.id() );
+          // IG2DataSet dataSet = chart.dataSets().getByKey( firstGraphDataSetId );
+          String graphDataSetId = unitId2GrapDataSetMap.getByKey( unitId );
+          String yAxisDefId = unitId2YAxisIdMap.getByKey( unitId );
+          IAtomicValue startYAxis = chart.console().getY1( yAxisDefId );
+          IAtomicValue endYAxis = chart.console().getY2( yAxisDefId );
+          IG2DataSet dataSet = chart.dataSets().getByKey( graphDataSetId );
+          Pair<ITemporalAtomicValue, ITemporalAtomicValue> lastPair = dataSet.locate( System.currentTimeMillis() );
+          if( !lastPair.left().equals( ITemporalAtomicValue.NULL ) && lastPair.left().value().isAssigned() ) {
+            IAtomicValue lastValue = lastPair.left().value();
+            if( lastValue.asDouble() >= endYAxis.asDouble() || lastValue.asDouble() <= startYAxis.asDouble() ) {
+              // сдвигаем шкалу так чтобы новое значение стало посредине шкалы
+              // changed by dima 07.07.25 (sitting in the bunker of Baikonur)
+              // double shiftY = lastValue.asDouble() <= startYAxis.asDouble() ? -50 : 50;
+              double shiftY = calculateShift( startYAxis, endYAxis, lastValue );
+              chart.console().shiftYAxis( graphDataSetId, shiftY );
+            }
           }
         }
       }
@@ -494,32 +492,6 @@ public class RtChartPanel
       }
     } );
 
-    btnLegend = new Button( comp, SWT.CHECK );
-    btnLegend.setText( STR_LEGEND );
-    imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/legenda_on.png" ); //$NON-NLS-1$
-    btnLegend.setImage( imgDescr.createImage() );
-    // явно удаляем ранее загруженную картинку
-    btnLegend.addDisposeListener( aE -> btnLegend.getImage().dispose() );
-
-    btnLegend.setSelection( false );
-    btnLegend.addSelectionListener( new SelectionAdapter() {
-
-      @Override
-      public void widgetSelected( SelectionEvent e ) {
-        if( !btnLegend.getSelection() && legendWindow != null ) {
-          legendWindow.dispose();
-          legendWindow = null;
-        }
-        else {
-          legendWindow = new LegendWindow( getParent(), chart.plotDefs(), tsContext() );
-          legendWindow.shell().addDisposeListener( aE -> {
-            btnLegend.setSelection( false );
-            legendWindow = null;
-          } );
-        }
-      }
-    } );
-
     btnConsole = new Button( comp, SWT.CHECK );
     btnConsole.setText( STR_PULT );
     imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/manage_pult.png" ); //$NON-NLS-1$
@@ -559,6 +531,19 @@ public class RtChartPanel
         axisTimeUnit = tu;
         chart.console().setTimeUnit( tu );
         chart.refresh();
+      }
+    } );
+
+    btnYScaleAutoTune = new Button( comp, SWT.CHECK );
+    btnYScaleAutoTune.setText( STR_Y_SCALE_AUTOTUNE );
+    btnYScaleAutoTune.setSelection( false );
+    btnYScaleAutoTune.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent e ) {
+        if( btnYScaleAutoTune.getSelection() ) {
+          // TODO подтянуть в область видимости
+        }
       }
     } );
 

@@ -28,16 +28,17 @@ public interface IChartUtilsGuiSharedResources {
   // ---------------------------------------------
   // @link ChartPanel
 
-  String STR_SCALE_VALUE     = Messages.getString( "STR_SCALE_VALUE" );
-  String STR_PRINT           = Messages.getString( "STR_PRINT" );
-  String STR_N_CONTROL_PANEL = Messages.getString( "STR_N_CONTROL_PANEL" );
-  String STR_LEGEND          = Messages.getString( "STR_LEGEND" );
-  String STR_VIZIER          = Messages.getString( "STR_VIZIER" );
-  String STR_CHOICE          = Messages.getString( "STR_CHOICE" );
-  String STR_DISPLAY_FORWARD = Messages.getString( "STR_DISPLAY_FORWARD" );
-  String STR_FORWARD         = Messages.getString( "STR_FORWARD" );
-  String STR_BACK            = Messages.getString( "STR_BACK" );
-  String STR_DISPLAY_BACK    = Messages.getString( "STR_DISPLAY_BACK" );
+  String STR_SCALE_VALUE      = Messages.getString( "STR_SCALE_VALUE" );
+  String STR_PRINT            = Messages.getString( "STR_PRINT" );
+  String STR_N_CONTROL_PANEL  = Messages.getString( "STR_N_CONTROL_PANEL" );
+  String STR_LEGEND           = Messages.getString( "STR_LEGEND" );
+  String STR_Y_SCALE_AUTOTUNE = "автоподстройка";
+  String STR_VIZIER           = Messages.getString( "STR_VIZIER" );
+  String STR_CHOICE           = Messages.getString( "STR_CHOICE" );
+  String STR_DISPLAY_FORWARD  = Messages.getString( "STR_DISPLAY_FORWARD" );
+  String STR_FORWARD          = Messages.getString( "STR_FORWARD" );
+  String STR_BACK             = Messages.getString( "STR_BACK" );
+  String STR_DISPLAY_BACK     = Messages.getString( "STR_DISPLAY_BACK" );
 
   //
   // ---------------------------------------------

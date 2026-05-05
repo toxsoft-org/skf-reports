@@ -35,15 +35,15 @@ interface ISkResources {
   /**
    * {@link YScaleRefbookGenerator}
    */
-  String STR_Y_SCALE_ID          = "id шкалы";
-  String STR_Y_SCALE_ID_D        = "Идентификатор шкалы";
-  String STR_Y_SCALE_UNIT_NAME   = "Ед.изм.";
-  String STR_Y_SCALE_UNIT_NAME_D = "Название единиц измерения";
-  String STR_Y_SCALE_FORMAT      = "формат";
-  String STR_Y_SCALE_FORMAT_D    = "Формат отображения значений";
-  String STR_Y_SCALE_MIN         = "min";
-  String STR_Y_SCALE_MIN_D       = "Нижнее значение шкалы";
-  String STR_Y_SCALE_MAX         = "max";
-  String STR_Y_SCALE_MAX_D       = "Верхнее значение шкалы";
+  String STR_Y_SCALE_ID          = "id шкалы";                   //$NON-NLS-1$
+  String STR_Y_SCALE_ID_D        = "Идентификатор шкалы";        //$NON-NLS-1$
+  String STR_Y_SCALE_UNIT_NAME   = "Ед.изм.";                    //$NON-NLS-1$
+  String STR_Y_SCALE_UNIT_NAME_D = "Название единиц измерения";  //$NON-NLS-1$
+  String STR_Y_SCALE_FORMAT      = "формат";                     //$NON-NLS-1$
+  String STR_Y_SCALE_FORMAT_D    = "Формат отображения значений";//$NON-NLS-1$
+  String STR_Y_SCALE_MIN         = "min";                        //$NON-NLS-1$
+  String STR_Y_SCALE_MIN_D       = "Нижнее значение шкалы";      //$NON-NLS-1$
+  String STR_Y_SCALE_MAX         = "max";                        //$NON-NLS-1$
+  String STR_Y_SCALE_MAX_D       = "Верхнее значение шкалы";     //$NON-NLS-1$
 
 }

@@ -66,19 +66,19 @@ public class YScaleRefbookGenerator {
   private final ISkConnection conn;
 
   // y.scale - описание Y шкалы
-  public static String RBID_Y_SCALE                = "y.scale";
-  public static String RBATRID_Y_SCALE___ID        = "scaleId"; // id шкалы
-  public static String RBATRID_Y_SCALE___UNIT_NAME = "name";    // Единицы измерения
-  public static String RBATRID_Y_SCALE___FORMAT    = "format";  // Формат отображения значений шкалы
-  public static String RBATRID_Y_SCALE___MIN       = "minVal";  // Мин. начальное значение
-  public static String RBATRID_Y_SCALE___MAX       = "maxVal";  // Макс. начальное значение
+  public static String RBID_Y_SCALE                = "y.scale"; //$NON-NLS-1$
+  public static String RBATRID_Y_SCALE___ID        = "scaleId"; //$NON-NLS-1$ id шкалы
+  public static String RBATRID_Y_SCALE___UNIT_NAME = "name";    //$NON-NLS-1$ Единицы измерения
+  public static String RBATRID_Y_SCALE___FORMAT    = "format";  //$NON-NLS-1$ Формат отображения значений шкалы
+  public static String RBATRID_Y_SCALE___MIN       = "minVal";  //$NON-NLS-1$ Мин. начальное значение
+  public static String RBATRID_Y_SCALE___MAX       = "maxVal";  //$NON-NLS-1$ Макс. начальное значение
 
-  public static String ITEMID_Y_SCALE___TEMPERATURE = "Temperature"; // scale for temperature
-  public static String ITEMID_Y_SCALE___VIBRATION   = "Vibration";   // scale for vibration
-  public static String ITEMID_Y_SCALE___PRESSURE    = "Pressure";    // scale for pressure
-  public static String ITEMID_Y_SCALE___FLOW        = "Flow";        // scale for flow
-  public static String ITEMID_Y_SCALE___PERCENT     = "Percent";     // scale for %
-  public static String ITEMID_Y_SCALE___DZ_ANGLE    = "Angle";       // scale for DZ angle
+  public static String ITEMID_Y_SCALE___TEMPERATURE = "Temperature"; //$NON-NLS-1$ scale for temperature
+  public static String ITEMID_Y_SCALE___VIBRATION   = "Vibration";   //$NON-NLS-1$ scale for vibration
+  public static String ITEMID_Y_SCALE___PRESSURE    = "Pressure";    //$NON-NLS-1$ scale for pressure
+  public static String ITEMID_Y_SCALE___FLOW        = "Flow";        //$NON-NLS-1$ scale for flow
+  public static String ITEMID_Y_SCALE___PERCENT     = "Percent";     //$NON-NLS-1$ scale for %
+  public static String ITEMID_Y_SCALE___DZ_ANGLE    = "Angle";       //$NON-NLS-1$ scale for DZ angle
 
   /**
    * Attribute {@link ISkRefbook#attrs() #RBATRID_Y_SCALE___SCALEID}.
@@ -131,8 +131,8 @@ public class YScaleRefbookGenerator {
    */
   public static IDtoRefbookInfo REFBOOK_Y_SCALES = DtoRefbookInfo.create( RBID_Y_SCALE, ///
       OptionSetUtils.createOpSet( ///
-          TSID_NAME, "Y шкалы", //
-          TSID_DESCRIPTION, "Вертикальные шкалы для графиков" //
+          TSID_NAME, "Y шкалы", //$NON-NLS-1$
+          TSID_DESCRIPTION, "Вертикальные шкалы для графиков" //$NON-NLS-1$
       ), ///
       new StridablesList<>( ///
           ATRINF_Y_SCALE_ID, //

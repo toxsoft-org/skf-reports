@@ -44,8 +44,8 @@ interface ISkResources {
   String STR_D_SET_POINTS               = Messages.getString( "STR_D_SET_POINTS" );               //$NON-NLS-1$
   String STR_N_PARAM_MAX_EXECUTION_TIME = Messages.getString( "STR_N_PARAM_MAX_EXECUTION_TIME" ); //$NON-NLS-1$
   String STR_D_PARAM_MAX_EXECUTION_TIME = Messages.getString( "STR_D_PARAM_MAX_EXECUTION_TIME" ); //$NON-NLS-1$
-  String STR_Y_SCALE                    = "шкала Y";
-  String STR_Y_SCALE_D                  = "Описание вертикальной шкалы";
+  String STR_Y_SCALE                    = Messages.getString( "STR_Y_SCALE" );                    //$NON-NLS-1$
+  String STR_Y_SCALE_D                  = Messages.getString( "STR_Y_SCALE_D" );                  //$NON-NLS-1$
 
   /**
    * {@link ReportTemplateM5Model}
@@ -89,6 +89,6 @@ interface ISkResources {
   /**
    * {@link GraphTemplateM5LifecycleManager}
    */
-  String STR_GRAPH_TEMPLATE_REMOVE_COMMENT = "после подтверждения шаблон удален";
+  String STR_GRAPH_TEMPLATE_REMOVE_COMMENT = Messages.getString( "STR_GRAPH_TEMPLATE_REMOVE_COMMENT" ); //$NON-NLS-1$
 
 }

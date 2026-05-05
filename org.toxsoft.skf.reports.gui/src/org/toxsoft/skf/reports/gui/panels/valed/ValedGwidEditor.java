@@ -54,6 +54,7 @@ public class ValedGwidEditor
    */
   public static final String OPID_IS_EMPTY_GWID_VALID = "IsEmptyGwidValid"; //$NON-NLS-1$
 
+  // FIXME l10n
   public static final IDataDef OPDEF_IS_EMPTY_GWID_VALID = DataDef.create( OPID_IS_EMPTY_GWID_VALID, BOOLEAN, //
       TSID_NAME, "Is Empty GWID valid", //
       TSID_DESCRIPTION, "Is Empty value of GWID valid", //

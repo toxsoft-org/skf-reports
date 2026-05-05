@@ -42,11 +42,11 @@ public interface ISkidePluginReportsSharedResources {
   /**
    * {@link TaskTemplatesUpload}
    */
-  String STR_TEMPLATES_DOWNLOAD   = "выгрузка шаблонов";
-  String STR_TEMPLATES_DOWNLOAD_D = "Загрузка/выгрузка шаблонов отчетов и графиков";
-  String MSG_TEMPLATES_DOWNLOAD   = "Идет выгрузка шаблонов с удаленного сервера";
-  String MSG_TEMPLATES_UPLOAD     = "Идет загрузка шаблонов на удаленный сервер";
-  String FMT_TEMPLATES_DOWNLOADED = "Выгружено с удаленного сервера %d шаблонов отчетов и %d шаблонов графиков";
-  String FMT_TEMPLATES_UPLOADED   = "Загружено на удаленный сервер %d шаблонов отчетов и %d шаблонов графиков";
+  String STR_TEMPLATES_DOWNLOAD   = Messages.getString( "STR_TEMPLATES_DOWNLOAD" );   //$NON-NLS-1$
+  String STR_TEMPLATES_DOWNLOAD_D = Messages.getString( "STR_TEMPLATES_DOWNLOAD_D" ); //$NON-NLS-1$
+  String MSG_TEMPLATES_DOWNLOAD   = Messages.getString( "MSG_TEMPLATES_DOWNLOAD" );   //$NON-NLS-1$
+  String MSG_TEMPLATES_UPLOAD     = Messages.getString( "MSG_TEMPLATES_UPLOAD" );     //$NON-NLS-1$
+  String FMT_TEMPLATES_DOWNLOADED = Messages.getString( "FMT_TEMPLATES_DOWNLOADED" ); //$NON-NLS-1$
+  String FMT_TEMPLATES_UPLOADED   = Messages.getString( "FMT_TEMPLATES_UPLOADED" );   //$NON-NLS-1$
 
 }

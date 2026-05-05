@@ -56,12 +56,12 @@ public interface IVtResources {
   String STR_ABKIND_TEMPLATES_D       = Messages.getString( "STR_ABKIND_TEMPLATES_D" );       //$NON-NLS-1$
   String STR_ABILITY_EDIT_TEMPLATES   = Messages.getString( "STR_ABILITY_EDIT_TEMPLATES" );   //$NON-NLS-1$
   String STR_ABILITY_EDIT_TEMPLATES_D = Messages.getString( "STR_ABILITY_EDIT_TEMPLATES_D" ); //$NON-NLS-1$
-  String STR_GRAPH_TEMPLATE_CREATED   = "создан шаблон графика";
-  String STR_GRAPH_TEMPLATE_CREATED_D = "Создание шаблона графика";
-  String STR_GRAPH_TEMPLATE_REMOVED   = "удален шаблон графика";
-  String STR_GRAPH_TEMPLATE_REMOVED_D = "Удаление шаблона графика";
-  String STR_COMMENT                  = "комментарий";
-  String STR_COMMENT_D                = "Коментарий пользователя";
+  String STR_GRAPH_TEMPLATE_CREATED   = Messages.getString( "STR_GRAPH_TEMPLATE_CREATED" );   //$NON-NLS-1$
+  String STR_GRAPH_TEMPLATE_CREATED_D = Messages.getString( "STR_GRAPH_TEMPLATE_CREATED_D" ); //$NON-NLS-1$
+  String STR_GRAPH_TEMPLATE_REMOVED   = Messages.getString( "STR_GRAPH_TEMPLATE_REMOVED" );   //$NON-NLS-1$
+  String STR_GRAPH_TEMPLATE_REMOVED_D = Messages.getString( "STR_GRAPH_TEMPLATE_REMOVED_D" ); //$NON-NLS-1$
+  String STR_COMMENT                  = Messages.getString( "STR_COMMENT" );                  //$NON-NLS-1$
+  String STR_COMMENT_D                = Messages.getString( "STR_COMMENT_D" );                //$NON-NLS-1$
 
   /**
    * {@link EJrParamSourceType}

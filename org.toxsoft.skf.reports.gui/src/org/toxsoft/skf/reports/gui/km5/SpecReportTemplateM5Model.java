@@ -40,7 +40,7 @@ public class SpecReportTemplateM5Model
 
         @Override
         protected void doInit() {
-          setNameAndDescription( STR_N_TEMPLATE_PARAMS, STR_D_TEMPLATE_PARAMS );
+          setNameAndDescription( STR_TEMPLATE_PARAMS, STR_TEMPLATE_PARAMS_D );
           setFlags( M5FF_DETAIL );
         }
 
@@ -55,7 +55,7 @@ public class SpecReportTemplateM5Model
    */
   public final M5AttributeFieldDef<IVtSpecReportTemplate> REPORT_DESIGN =
       new M5AttributeFieldDef<>( CLBID_TEMPLATE_DESIGN, EAtomicType.STRING, //
-          TSID_NAME, STR_N_PARAM_DESIGN, TSID_DESCRIPTION, STR_D_PARAM_DESIGN ) {
+          TSID_NAME, STR_PARAM_DESIGN, TSID_DESCRIPTION, STR_PARAM_DESIGN_D ) {
 
         @Override
         protected void doInit() {
@@ -106,7 +106,7 @@ public class SpecReportTemplateM5Model
 
         @Override
         protected void doInit() {
-          setNameAndDescription( STR_N_FDEF_HAS_SUMMARY, STR_D_FDEF_HAS_SUMMARY );
+          setNameAndDescription( STR_FDEF_HAS_SUMMARY, STR_FDEF_HAS_SUMMARY_D );
           setFlags( M5FF_COLUMN );
         }
 
@@ -144,7 +144,7 @@ public class SpecReportTemplateM5Model
    */
   public SpecReportTemplateM5Model( ISkConnection aConn ) {
     super( IVtSpecReportTemplate.CLASS_ID, IVtSpecReportTemplate.class, aConn );
-    setNameAndDescription( STR_N_REPORT_TEMPLATE, STR_D_REPORT_TEMPLATE );
+    setNameAndDescription( STR_REPORT_TEMPLATE, STR_REPORT_TEMPLATE_D );
 
     // add fields
     addFieldDefs( NAME, DESCRIPTION, AGGR_STEP, MAX_EXECUTION_TIME, HAS_SUMMARY, REPORT_PARAMS, REPORT_DESIGN );

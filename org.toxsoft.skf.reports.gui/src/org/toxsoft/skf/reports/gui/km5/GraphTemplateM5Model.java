@@ -34,7 +34,7 @@ public class GraphTemplateM5Model
 
         @Override
         protected void doInit() {
-          setNameAndDescription( STR_N_TEMPLATE_PARAMS, STR_D_TEMPLATE_PARAMS );
+          setNameAndDescription( STR_TEMPLATE_PARAMS, STR_TEMPLATE_PARAMS_D );
           setFlags( M5FF_DETAIL );
         }
 

@@ -256,8 +256,8 @@ public class SpecReportParamM5Model
    */
 
   public M5AttributeFieldDef<IVtSpecReportParam> GWID_KIND = new M5AttributeFieldDef<>( FID_GWID_KIND, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_GWID_TYPE, //
-      TSID_DESCRIPTION, STR_D_PARAM_GWID_TYPE, //
+      TSID_NAME, STR_PARAM_GWID_TYPE, //
+      TSID_DESCRIPTION, STR_PARAM_GWID_TYPE_D, //
       TSID_KEEPER_ID, EJrParamSourceType.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( EJrParamSourceType.RTDATA ) ) {
 
@@ -374,8 +374,8 @@ public class SpecReportParamM5Model
    */
   public M5AttributeFieldDef<IVtSpecReportParam> PRESET_VALUE =
       new M5AttributeFieldDef<>( FID_PRESET_VALUE, EAtomicType.STRING, //
-          TSID_NAME, STR_N_PARAM_JR_PARAM_VALUE, //
-          TSID_DESCRIPTION, STR_D_PARAM_JR_PARAM_VALUE, //
+          TSID_NAME, STR_PARAM_JR_PARAM_VALUE, //
+          TSID_DESCRIPTION, STR_PARAM_JR_PARAM_VALUE_D, //
           OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME //
       ) {
 
@@ -398,7 +398,7 @@ public class SpecReportParamM5Model
 
         @Override
         protected void doInit() {
-          setNameAndDescription( STR_N_PARAM_JR_PARAM, STR_D_PARAM_JR_PARAM );
+          setNameAndDescription( STR_PARAM_JR_PARAM, STR_PARAM_JR_PARAM_D );
           setFlags( M5FF_COLUMN );
         }
 
@@ -413,8 +413,8 @@ public class SpecReportParamM5Model
    */
   public M5AttributeFieldDef<IVtSpecReportParam> FLAG_OVERRIDE_VALUE =
       new M5AttributeFieldDef<>( FID_FLAG_OVERRIDE_VALUE, EAtomicType.BOOLEAN, //
-          TSID_NAME, STR_N_PARAM_JR_PARAM_RESET, //
-          TSID_DESCRIPTION, STR_D_PARAM_JR_PARAM_RESET //
+          TSID_NAME, STR_PARAM_JR_PARAM_RESET, //
+          TSID_DESCRIPTION, STR_PARAM_JR_PARAM_RESET_D //
       ) {
 
         @Override

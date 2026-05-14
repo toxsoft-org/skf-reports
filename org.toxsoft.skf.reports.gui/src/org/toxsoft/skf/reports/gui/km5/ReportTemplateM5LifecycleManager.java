@@ -1,6 +1,5 @@
 package org.toxsoft.skf.reports.gui.km5;
 
-import static org.toxsoft.skf.reports.gui.km5.ISkResources.*;
 import static org.toxsoft.skf.reports.templates.service.IVtTemplateEditorServiceHardConstants.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
@@ -9,7 +8,6 @@ import org.toxsoft.core.tslib.bricks.strid.idgen.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.skf.reports.gui.utils.*;
 import org.toxsoft.skf.reports.templates.service.*;

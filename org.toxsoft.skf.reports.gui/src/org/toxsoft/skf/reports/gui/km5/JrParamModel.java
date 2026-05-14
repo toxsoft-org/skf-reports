@@ -30,8 +30,8 @@ public class JrParamModel
    * Attribute jr param name
    */
   public M5AttributeFieldDef<String> NAME = new M5AttributeFieldDef<>( FID_JR_PARAM_NAME, EAtomicType.STRING, //
-      TSID_NAME, STR_N_PARAM_JR_PARAM_ID, //
-      TSID_DESCRIPTION, STR_N_PARAM_JR_PARAM_ID ) {
+      TSID_NAME, STR_PARAM_JR_PARAM_ID, //
+      TSID_DESCRIPTION, STR_PARAM_JR_PARAM_ID ) {
 
     @Override
     protected void doInit() {

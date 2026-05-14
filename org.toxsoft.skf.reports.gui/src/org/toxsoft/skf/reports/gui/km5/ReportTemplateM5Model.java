@@ -36,7 +36,7 @@ public class ReportTemplateM5Model
 
         @Override
         protected void doInit() {
-          setNameAndDescription( STR_N_TEMPLATE_PARAMS, STR_D_TEMPLATE_PARAMS );
+          setNameAndDescription( STR_TEMPLATE_PARAMS, STR_TEMPLATE_PARAMS_D );
           setFlags( M5FF_DETAIL );
         }
 
@@ -54,7 +54,7 @@ public class ReportTemplateM5Model
 
         @Override
         protected void doInit() {
-          setNameAndDescription( STR_N_FDEF_HAS_SUMMARY, STR_D_FDEF_HAS_SUMMARY );
+          setNameAndDescription( STR_FDEF_HAS_SUMMARY, STR_FDEF_HAS_SUMMARY_D );
           setFlags( M5FF_COLUMN );
         }
 
@@ -117,7 +117,7 @@ public class ReportTemplateM5Model
    */
   public ReportTemplateM5Model( ISkConnection aConn ) {
     super( IVtReportTemplate.CLASS_ID, IVtReportTemplate.class, aConn );
-    setNameAndDescription( STR_N_REPORT_TEMPLATE, STR_D_REPORT_TEMPLATE );
+    setNameAndDescription( STR_REPORT_TEMPLATE, STR_REPORT_TEMPLATE_D );
 
     // add fields
     addFieldDefs( NAME, DESCRIPTION, AGGR_STEP, MAX_EXECUTION_TIME, HAS_SUMMARY, REPORT_PARAMS );

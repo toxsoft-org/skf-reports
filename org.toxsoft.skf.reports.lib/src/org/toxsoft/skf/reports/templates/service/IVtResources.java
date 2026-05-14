@@ -19,38 +19,38 @@ public interface IVtResources {
   /**
    * {@link EAggregationFunc}
    */
-  String STR_N_AVERAGE = Messages.getString( "STR_N_AVERAGE" ); //$NON-NLS-1$
-  String STR_D_AVERAGE = Messages.getString( "STR_D_AVERAGE" ); //$NON-NLS-1$
-  String STR_N_MIN     = Messages.getString( "STR_N_MIN" );     //$NON-NLS-1$
-  String STR_D_MIN     = Messages.getString( "STR_D_MIN" );     //$NON-NLS-1$
-  String STR_N_MAX     = Messages.getString( "STR_N_MAX" );     //$NON-NLS-1$
-  String STR_D_MAX     = Messages.getString( "STR_D_MAX" );     //$NON-NLS-1$
-  String STR_N_SUM     = Messages.getString( "STR_N_SUM" );     //$NON-NLS-1$
-  String STR_D_SUM     = Messages.getString( "STR_D_SUM" );     //$NON-NLS-1$
-  String STR_N_COUNT   = Messages.getString( "STR_N_COUNT" );   //$NON-NLS-1$
-  String STR_D_COUNT   = Messages.getString( "STR_D_COUNT" );   //$NON-NLS-1$
+  String STR_AVERAGE   = Messages.getString( "STR_AVERAGE" );   //$NON-NLS-1$
+  String STR_AVERAGE_D = Messages.getString( "STR_AVERAGE_D" ); //$NON-NLS-1$
+  String STR_MIN       = Messages.getString( "STR_MIN" );       //$NON-NLS-1$
+  String STR_MIN_D     = Messages.getString( "STR_MIN_D" );     //$NON-NLS-1$
+  String STR_MAX       = Messages.getString( "STR_MAX" );       //$NON-NLS-1$
+  String STR_MAX_D     = Messages.getString( "STR_MAX_D" );     //$NON-NLS-1$
+  String STR_SUM       = Messages.getString( "STR_SUM" );       //$NON-NLS-1$
+  String STR_SUM_D     = Messages.getString( "STR_SUM_D" );     //$NON-NLS-1$
+  String STR_COUNT     = Messages.getString( "STR_COUNT" );     //$NON-NLS-1$
+  String STR_COUNT_D   = Messages.getString( "STR_COUNT_D" );   //$NON-NLS-1$
 
   /**
    * {@link IVtTemplateEditorServiceHardConstants}
    */
-  String STR_N_AGGR_FUNC           = Messages.getString( "STR_N_AGGR_FUNC" );           //$NON-NLS-1$
-  String STR_D_AGGR_FUNC           = Messages.getString( "STR_D_AGGR_FUNC" );           //$NON-NLS-1$
-  String STR_N_DISPLAY_FORMAT      = Messages.getString( "STR_N_DISPLAY_FORMAT" );      //$NON-NLS-1$
-  String STR_D_DISPLAY_FORMAT      = Messages.getString( "STR_D_DISPLAY_FORMAT" );      //$NON-NLS-1$
-  String STR_N_TITLE               = Messages.getString( "STR_N_TITLE" );               //$NON-NLS-1$
-  String STR_D_TITLE               = Messages.getString( "STR_D_TITLE" );               //$NON-NLS-1$
-  String STR_N_TEMPLATE_PARAMS     = Messages.getString( "STR_N_TEMPLATE_PARAMS" );     //$NON-NLS-1$
-  String STR_D_TEMPLATE_PARAMS     = Messages.getString( "STR_D_TEMPLATE_PARAMS" );     //$NON-NLS-1$
-  String STR_N_HAS_SUMMARY         = Messages.getString( "STR_N_HAS_SUMMARY" );         //$NON-NLS-1$
-  String STR_D_HAS_SUMMARY         = Messages.getString( "STR_D_HAS_SUMMARY" );         //$NON-NLS-1$
-  String STR_N_AGGR_STEP           = Messages.getString( "STR_N_AGGR_STEP" );           //$NON-NLS-1$
-  String STR_D_AGGR_STEP           = Messages.getString( "STR_D_AGGR_STEP" );           //$NON-NLS-1$
-  String STR_N_CLB_TEMPLATE_PARAMS = Messages.getString( "STR_N_CLB_TEMPLATE_PARAMS" ); //$NON-NLS-1$
-  String STR_D_CLB_TEMPLATE_PARAMS = Messages.getString( "STR_D_CLB_TEMPLATE_PARAMS" ); //$NON-NLS-1$
-  String STR_N_TEMPLATE_AUTHOR     = Messages.getString( "STR_N_TEMPLATE_AUTHOR" );     //$NON-NLS-1$
-  String STR_D_TEMPLATE_AUTHOR     = Messages.getString( "STR_D_TEMPLATE_AUTHOR" );     //$NON-NLS-1$
-  String STR_N_MAX_EXECUTION_TIME  = Messages.getString( "STR_N_MAX_EXECUTION_TIME" );  //$NON-NLS-1$
-  String STR_D_MAX_EXECUTION_TIME  = Messages.getString( "STR_D_MAX_EXECUTION_TIME" );  //$NON-NLS-1$
+  String STR_AGGR_FUNC             = Messages.getString( "STR_AGGR_FUNC" );             //$NON-NLS-1$
+  String STR_AGGR_FUNC_D           = Messages.getString( "STR_AGGR_FUNC_D" );           //$NON-NLS-1$
+  String STR_DISPLAY_FORMAT        = Messages.getString( "STR_DISPLAY_FORMAT" );        //$NON-NLS-1$
+  String STR_DISPLAY_FORMAT_D      = Messages.getString( "STR_DISPLAY_FORMAT_D" );      //$NON-NLS-1$
+  String STR_TITLE                 = Messages.getString( "STR_TITLE" );                 //$NON-NLS-1$
+  String STR_TITLE_D               = Messages.getString( "STR_TITLE_D" );               //$NON-NLS-1$
+  String STR_TEMPLATE_PARAMS       = Messages.getString( "STR_TEMPLATE_PARAMS" );       //$NON-NLS-1$
+  String STR_TEMPLATE_PARAMS_D     = Messages.getString( "STR_TEMPLATE_PARAMS_D" );     //$NON-NLS-1$
+  String STR_HAS_SUMMARY           = Messages.getString( "STR_HAS_SUMMARY" );           //$NON-NLS-1$
+  String STR_HAS_SUMMARY_D         = Messages.getString( "STR_HAS_SUMMARY_D" );         //$NON-NLS-1$
+  String STR_AGGR_STEP             = Messages.getString( "STR_AGGR_STEP" );             //$NON-NLS-1$
+  String STR_AGGR_STEP_D           = Messages.getString( "STR_AGGR_STEP_D" );           //$NON-NLS-1$
+  String STR_CLB_TEMPLATE_PARAMS   = Messages.getString( "STR_CLB_TEMPLATE_PARAMS" );   //$NON-NLS-1$
+  String STR_CLB_TEMPLATE_PARAMS_D = Messages.getString( "STR_CLB_TEMPLATE_PARAMS_D" ); //$NON-NLS-1$
+  String STR_TEMPLATE_AUTHOR       = Messages.getString( "STR_TEMPLATE_AUTHOR" );       //$NON-NLS-1$
+  String STR_TEMPLATE_AUTHOR_D     = Messages.getString( "STR_TEMPLATE_AUTHOR_D" );     //$NON-NLS-1$
+  String STR_MAX_EXECUTION_TIME    = Messages.getString( "STR_MAX_EXECUTION_TIME" );    //$NON-NLS-1$
+  String STR_MAX_EXECUTION_TIME_D  = Messages.getString( "STR_MAX_EXECUTION_TIME_D" );  //$NON-NLS-1$
 
   String STR_ABKIND_TEMPLATES         = Messages.getString( "STR_ABKIND_TEMPLATES" );         //$NON-NLS-1$
   String STR_ABKIND_TEMPLATES_D       = Messages.getString( "STR_ABKIND_TEMPLATES_D" );       //$NON-NLS-1$
@@ -63,11 +63,14 @@ public interface IVtResources {
   String STR_COMMENT                  = Messages.getString( "STR_COMMENT" );                  //$NON-NLS-1$
   String STR_COMMENT_D                = Messages.getString( "STR_COMMENT_D" );                //$NON-NLS-1$
 
+  String STR_CLBINF_TEMPLATE_DESIGN   = Messages.getString( "STR_CLBINF_TEMPLATE_DESIGN" );   //$NON-NLS-1$
+  String STR_CLBINF_TEMPLATE_DESIGN_D = Messages.getString( "STR_CLBINF_TEMPLATE_DESIGN_D" ); //$NON-NLS-1$
+
   /**
    * {@link EJrParamSourceType}
    */
-  String STR_N_DATA           = Messages.getString( "STR_N_DATA" );           //$NON-NLS-1$
-  String STR_N_ATTRIBUTES     = Messages.getString( "STR_N_ATTRIBUTES" );     //$NON-NLS-1$
-  String STR_N_RRI_ATTRIBUTES = Messages.getString( "STR_N_RRI_ATTRIBUTES" ); //$NON-NLS-1$
+  String STR_DATA           = Messages.getString( "STR_DATA" );           //$NON-NLS-1$
+  String STR_ATTRIBUTES     = Messages.getString( "STR_ATTRIBUTES" );     //$NON-NLS-1$
+  String STR_RRI_ATTRIBUTES = Messages.getString( "STR_RRI_ATTRIBUTES" ); //$NON-NLS-1$
 
 }

@@ -1,7 +1,5 @@
 package org.toxsoft.skf.reports.templates.service;
 
-import static org.toxsoft.core.tslib.av.EAtomicType.*;
-import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static org.toxsoft.skf.reports.templates.service.IVtResources.*;
 
@@ -41,8 +39,8 @@ public interface IVtTemplateEditorServiceHardConstants {
    * CLOB {@link IVtBaseTemplate#listParams()}.
    */
   IDtoClobInfo CLBINF_TEMPLATE_PARAMS = DtoClobInfo.create2( CLBID_TEMPLATE_PARAMS, //
-      TSID_NAME, STR_N_CLB_TEMPLATE_PARAMS, //
-      TSID_DESCRIPTION, STR_D_CLB_TEMPLATE_PARAMS //
+      TSID_NAME, STR_CLB_TEMPLATE_PARAMS, //
+      TSID_DESCRIPTION, STR_CLB_TEMPLATE_PARAMS_D //
   );
 
   // ------------------------------------------------------------------------------------
@@ -62,8 +60,8 @@ public interface IVtTemplateEditorServiceHardConstants {
    * Attribute {@link IVtReportTemplate#title()}.
    */
   IDtoAttrInfo ATRINF_TITLE = DtoAttrInfo.create2( ATRID_TITLE, DDEF_STRING, //
-      TSID_NAME, STR_N_TITLE, //
-      TSID_DESCRIPTION, STR_D_TITLE );
+      TSID_NAME, STR_TITLE, //
+      TSID_DESCRIPTION, STR_TITLE_D );
 
   /**
    * ID of attribute {@link IVtReportTemplate#hasSummary()}.
@@ -74,8 +72,8 @@ public interface IVtTemplateEditorServiceHardConstants {
    * Attribute {@link IVtReportTemplate#hasSummary()}.
    */
   IDtoAttrInfo ATRINF_HAS_SUMMARY = DtoAttrInfo.create2( ATRID_HAS_SUMMARY, DDEF_BOOLEAN, //
-      TSID_NAME, STR_N_HAS_SUMMARY, //
-      TSID_DESCRIPTION, STR_D_HAS_SUMMARY );
+      TSID_NAME, STR_HAS_SUMMARY, //
+      TSID_DESCRIPTION, STR_HAS_SUMMARY_D );
 
   /**
    * ID of event of report template creation.
@@ -126,8 +124,8 @@ public interface IVtTemplateEditorServiceHardConstants {
    * CLOB {@link IVtSpecReportTemplate#design()}.
    */
   IDtoClobInfo CLBINF_TEMPLATE_DESIGN = DtoClobInfo.create2( CLBID_TEMPLATE_DESIGN, //
-      TSID_NAME, "Template Design", //
-      TSID_DESCRIPTION, "Template Design base on jrxml" //
+      TSID_NAME, STR_CLBINF_TEMPLATE_DESIGN, //
+      TSID_DESCRIPTION, STR_CLBINF_TEMPLATE_DESIGN_D //
   );
 
   // ------------------------------------------------------------------------------------
@@ -143,8 +141,8 @@ public interface IVtTemplateEditorServiceHardConstants {
    */
   IDtoLinkInfo LNKINF_TEMPLATE_AUTHOR = DtoLinkInfo.create2( LNKID_TEMPLATE_AUTHOR, //
       new SingleStringList( ISkUser.CLASS_ID ), new CollConstraint( 1, true, true, true ), //
-      TSID_NAME, STR_N_TEMPLATE_AUTHOR, //
-      TSID_DESCRIPTION, STR_D_TEMPLATE_AUTHOR //
+      TSID_NAME, STR_TEMPLATE_AUTHOR, //
+      TSID_DESCRIPTION, STR_TEMPLATE_AUTHOR_D //
   );
 
   /**
@@ -156,8 +154,8 @@ public interface IVtTemplateEditorServiceHardConstants {
    * Attribute {@link IVtGraphTemplate#aggrStep()}.
    */
   IDtoAttrInfo ATRINF_AGGR_STEP = DtoAttrInfo.create2( ATRID_AGGR_STEP, DDEF_VALOBJ, //
-      TSID_NAME, STR_N_AGGR_STEP, //
-      TSID_DESCRIPTION, STR_D_AGGR_STEP, //
+      TSID_NAME, STR_AGGR_STEP, //
+      TSID_DESCRIPTION, STR_AGGR_STEP_D, //
       TSID_DEFAULT_VALUE, ETimeUnit.MIN01 );
 
   /**
@@ -169,8 +167,8 @@ public interface IVtTemplateEditorServiceHardConstants {
    * Attribute {@link IVtGraphTemplate#maxExecutionTime()}.
    */
   IDtoAttrInfo ATRINF_MAX_EXECUTION_TIME = DtoAttrInfo.create2( ATRID_MAX_EXECUTION_TIME, DDEF_INTEGER, //
-      TSID_NAME, STR_N_MAX_EXECUTION_TIME, //
-      TSID_DESCRIPTION, STR_D_MAX_EXECUTION_TIME, //
+      TSID_NAME, STR_MAX_EXECUTION_TIME, //
+      TSID_DESCRIPTION, STR_MAX_EXECUTION_TIME_D, //
       TSID_DEFAULT_VALUE, AvUtils.avInt( 10000 ) );
 
   /**

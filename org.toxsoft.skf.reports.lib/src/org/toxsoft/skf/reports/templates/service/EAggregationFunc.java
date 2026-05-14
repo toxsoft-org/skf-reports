@@ -20,27 +20,27 @@ public enum EAggregationFunc
   /**
    * Calculate average value of series values
    */
-  AVERAGE( "AVERAGE", STR_N_AVERAGE, STR_D_AVERAGE ), //$NON-NLS-1$
+  AVERAGE( "AVERAGE", STR_AVERAGE, STR_AVERAGE_D ), //$NON-NLS-1$
 
   /**
    * Calculate min value of series values.
    */
-  MIN( "MIN", STR_N_MIN, STR_D_MIN ), //$NON-NLS-1$
+  MIN( "MIN", STR_MIN, STR_MIN_D ), //$NON-NLS-1$
 
   /**
    * Calculate max value of series values.
    */
-  MAX( "MAX", STR_N_MAX, STR_D_MAX ), //$NON-NLS-1$
+  MAX( "MAX", STR_MAX, STR_MAX_D ), //$NON-NLS-1$
 
   /**
    * Calculate sum value of series values.
    */
-  SUM( "SUM", STR_N_SUM, STR_D_SUM ), //$NON-NLS-1$
+  SUM( "SUM", STR_SUM, STR_SUM_D ), //$NON-NLS-1$
 
   /**
    * Calculate count value of series values.
    */
-  COUNT( "COUNT", STR_N_COUNT, STR_D_COUNT ); //$NON-NLS-1$
+  COUNT( "COUNT", STR_COUNT, STR_COUNT_D ); //$NON-NLS-1$
 
   /**
    * The keeper ID.

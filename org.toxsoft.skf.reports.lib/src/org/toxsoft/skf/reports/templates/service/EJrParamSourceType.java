@@ -20,17 +20,17 @@ public enum EJrParamSourceType
   /**
    * History of rt data
    */
-  RTDATA( "rtdata", STR_N_DATA ), //$NON-NLS-1$
+  RTDATA( "rtdata", STR_DATA ), //$NON-NLS-1$
 
   /**
    * Value of attribure of object
    */
-  ATTRIBURES( "attributes", STR_N_ATTRIBUTES ), //$NON-NLS-1$
+  ATTRIBURES( "attributes", STR_ATTRIBUTES ), //$NON-NLS-1$
 
   /**
    * Value of rri attributte of object
    */
-  RRI_ATTRIBUTES( "rri_attributes", STR_N_RRI_ATTRIBUTES ); //$NON-NLS-1$
+  RRI_ATTRIBUTES( "rri_attributes", STR_RRI_ATTRIBUTES ); //$NON-NLS-1$
 
   /**
    * The keeper ID.

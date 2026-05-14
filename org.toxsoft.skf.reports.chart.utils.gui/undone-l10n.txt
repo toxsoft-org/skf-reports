@@ -1,3 +1,4 @@
 не вынесены константы:
     org.toxsoft.skf.reports.chart.utils.gui.IReportsChartUtilsGuiConstants
-    
+ нет грузинского перевода:
+    org.toxsoft.skf.reports.chart.utils.gui

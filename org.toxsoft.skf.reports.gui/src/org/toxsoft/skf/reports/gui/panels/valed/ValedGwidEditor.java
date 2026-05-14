@@ -56,8 +56,8 @@ public class ValedGwidEditor
 
   // FIXME l10n
   public static final IDataDef OPDEF_IS_EMPTY_GWID_VALID = DataDef.create( OPID_IS_EMPTY_GWID_VALID, BOOLEAN, //
-      TSID_NAME, "Is Empty GWID valid", //
-      TSID_DESCRIPTION, "Is Empty value of GWID valid", //
+      TSID_NAME, STR_OPDEF_IS_EMPTY_GWID_VALID, //
+      TSID_DESCRIPTION, STR_OPDEF_IS_EMPTY_GWID_VALID_D, //
       TSID_DEFAULT_VALUE, AV_FALSE //
   );
 

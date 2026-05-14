@@ -69,8 +69,8 @@ public class GraphTemplateM5Model
    */
   public M5AttributeFieldDef<IVtGraphTemplate> MAX_EXECUTION_TIME =
       new M5AttributeFieldDef<>( ATRID_MAX_EXECUTION_TIME, INTEGER, //
-          TSID_NAME, STR_N_PARAM_MAX_EXECUTION_TIME, //
-          TSID_DESCRIPTION, STR_D_PARAM_MAX_EXECUTION_TIME, //
+          TSID_NAME, STR_PARAM_MAX_EXECUTION_TIME, //
+          TSID_DESCRIPTION, STR_PARAM_MAX_EXECUTION_TIME_D, //
           TSID_DEFAULT_VALUE, avInt( 10000 ) ) {
 
         @Override
@@ -92,7 +92,7 @@ public class GraphTemplateM5Model
    */
   public GraphTemplateM5Model( ISkConnection aConn ) {
     super( IVtGraphTemplate.CLASS_ID, IVtGraphTemplate.class, aConn );
-    setNameAndDescription( STR_N_GRAPH_TEMPLATE, STR_D_GRAPH_TEMPLATE );
+    setNameAndDescription( STR_GRAPH_TEMPLATE, STR_GRAPH_TEMPLATE_D );
 
     // add fields
     addFieldDefs( NAME, DESCRIPTION, AGGR_STEP, MAX_EXECUTION_TIME, REPORT_PARAMS );

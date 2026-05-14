@@ -28,10 +28,10 @@ import org.toxsoft.core.tslib.utils.errors.*;
 public class ConsoleWindow {
 
   final static TsActionDef ACDEF_ZOOM_IN =
-      TsActionDef.ofPush2( ACTID_PLOT_ZOOM_IN, STR_N_PLOT_ZOOM_IN, STR_D_PLOT_ZOOM_IN, ICONID_ZOOM_IN );
+      TsActionDef.ofPush2( ACTID_PLOT_ZOOM_IN, STR_PLOT_ZOOM_IN, STR_PLOT_ZOOM_IN_D, ICONID_ZOOM_IN );
 
   final static TsActionDef ACDEF_ZOOM_OUT =
-      TsActionDef.ofPush2( ACTID_PLOT_ZOOM_OUT, STR_N_PLOT_ZOOM_OUT, STR_D_PLOT_ZOOM_OUT, ICONID_ZOOM_OUT );
+      TsActionDef.ofPush2( ACTID_PLOT_ZOOM_OUT, STR_PLOT_ZOOM_OUT, STR_PLOT_ZOOM_OUT_D, ICONID_ZOOM_OUT );
 
   Shell            wnd = null;
   final Control    parent;

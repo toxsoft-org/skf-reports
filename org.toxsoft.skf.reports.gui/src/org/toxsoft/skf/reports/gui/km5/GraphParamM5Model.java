@@ -260,8 +260,8 @@ public class GraphParamM5Model
    * Attribute {@link IVtGraphParam#gwid() } Green world ID
    */
   public M5AttributeFieldDef<IVtGraphParam> GWID = new M5AttributeFieldDef<>( FID_GWID, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_GWID, //
-      TSID_DESCRIPTION, STR_D_PARAM_GWID, //
+      TSID_NAME, STR_PARAM_GWID, //
+      TSID_DESCRIPTION, STR_PARAM_GWID_D, //
       TSID_KEEPER_ID, Gwid.KEEPER_ID, //
       OPID_EDITOR_FACTORY_NAME, ValedAvValobjGwidEditor.FACTORY_NAME //
   ) {
@@ -276,8 +276,8 @@ public class GraphParamM5Model
    * Attribute {@link IVtGraphParam#aggrFunc() } function of aggregation for values
    */
   public M5AttributeFieldDef<IVtGraphParam> AGGR_FUNC = new M5AttributeFieldDef<>( FID_AGGR_FUNC, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_AGGR_FUNC, //
-      TSID_DESCRIPTION, STR_D_PARAM_AGGR_FUNC, //
+      TSID_NAME, STR_PARAM_AGGR_FUNC, //
+      TSID_DESCRIPTION, STR_PARAM_AGGR_FUNC_D, //
       TSID_KEEPER_ID, EAggregationFunc.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( EAggregationFunc.AVERAGE ) ) {
 
@@ -291,8 +291,8 @@ public class GraphParamM5Model
    * Attribute {@link IVtGraphParam#displayFormat() } values display format
    */
   public M5AttributeFieldDef<IVtGraphParam> DISPL_FORMAT = new M5AttributeFieldDef<>( FID_DISPL_FORMAT, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_DISPLAY_FORMAT, //
-      TSID_DESCRIPTION, STR_D_PARAM_DISPLAY_FORMAT, //
+      TSID_NAME, STR_PARAM_DISPLAY_FORMAT, //
+      TSID_DESCRIPTION, STR_PARAM_DISPLAY_FORMAT_D, //
       TSID_KEEPER_ID, EDisplayFormat.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( EDisplayFormat.TWO_DIGIT ) ) {
 
@@ -306,8 +306,8 @@ public class GraphParamM5Model
    * Attribute {@link IVtGraphParam#title() } title of parameter
    */
   public M5AttributeFieldDef<IVtGraphParam> TITLE = new M5AttributeFieldDef<>( FID_TITLE, EAtomicType.STRING, //
-      TSID_NAME, STR_N_PARAM_TITLE, //
-      TSID_DESCRIPTION, STR_D_PARAM_TITLE, //
+      TSID_NAME, STR_PARAM_TITLE, //
+      TSID_DESCRIPTION, STR_PARAM_TITLE_D, //
       OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME //
   ) {
 
@@ -326,8 +326,8 @@ public class GraphParamM5Model
    * Attribute {@link IVtGraphParam#description() } description of parameter
    */
   public M5AttributeFieldDef<IVtGraphParam> DESCR = new M5AttributeFieldDef<>( FID_DESCR, EAtomicType.STRING, //
-      TSID_NAME, STR_N_PARAM_DESCRIPTION, //
-      TSID_DESCRIPTION, STR_D_PARAM_DESCRIPTION, //
+      TSID_NAME, STR_PARAM_DESCRIPTION, //
+      TSID_DESCRIPTION, STR_PARAM_DESCRIPTION_D, //
       OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME //
   ) {
 
@@ -441,8 +441,8 @@ public class GraphParamM5Model
    * Attribute {@link IVtGraphParam#color() } description of parameter
    */
   public M5AttributeFieldDef<IVtGraphParam> COLOR = new M5AttributeFieldDef<>( FID_COLOR, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_COLOR, //
-      TSID_DESCRIPTION, STR_D_PARAM_COLOR, //
+      TSID_NAME, STR_PARAM_COLOR, //
+      TSID_DESCRIPTION, STR_PARAM_COLOR_D, //
       TSID_KEEPER_ID, ETsColor.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( ETsColor.BLACK ) ) {
 
@@ -461,8 +461,8 @@ public class GraphParamM5Model
    * Attribute {@link IVtGraphParam#lineWidth() } description of parameter
    */
   public M5AttributeFieldDef<IVtGraphParam> LINE_WIDTH = new M5AttributeFieldDef<>( FID_LINE_WIDTH, EAtomicType.INTEGER, //
-      TSID_NAME, STR_N_PARAM_LINE_WIDTH, //
-      TSID_DESCRIPTION, STR_D_PARAM_LINE_WIDTH, //
+      TSID_NAME, STR_PARAM_LINE_WIDTH, //
+      TSID_DESCRIPTION, STR_PARAM_LINE_WIDTH_D, //
       OPID_EDITOR_FACTORY_NAME, ValedAvIntegerSpinner.FACTORY_NAME, //
       TSID_DEFAULT_VALUE, avInt( 2 ) //
   ) {
@@ -482,8 +482,8 @@ public class GraphParamM5Model
    * Attribute {@link IVtGraphParam#isLadder() } description of parameter
    */
   public M5AttributeFieldDef<IVtGraphParam> IS_LADDER = new M5AttributeFieldDef<>( FID_IS_LADDER, EAtomicType.BOOLEAN, //
-      TSID_NAME, STR_N_IS_LADDER, //
-      TSID_DESCRIPTION, STR_D_IS_LADDER, //
+      TSID_NAME, STR_IS_LADDER, //
+      TSID_DESCRIPTION, STR_IS_LADDER_D, //
       TSID_DEFAULT_VALUE, avBool( false ) //
 
   ) {
@@ -509,7 +509,7 @@ public class GraphParamM5Model
 
         @Override
         protected void doInit() {
-          setNameAndDescription( STR_N_SET_POINTS, STR_D_SET_POINTS );
+          setNameAndDescription( STR_SET_POINTS, STR_SET_POINTS_D );
           setFlags( M5FF_DETAIL );
           // панель высотой в 4 строки
           params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 4 ); //

@@ -121,8 +121,8 @@ public class SpecReportTemplateM5Model
    */
   public M5AttributeFieldDef<IVtSpecReportTemplate> MAX_EXECUTION_TIME =
       new M5AttributeFieldDef<>( ATRID_MAX_EXECUTION_TIME, INTEGER, //
-          TSID_NAME, STR_N_PARAM_MAX_EXECUTION_TIME, //
-          TSID_DESCRIPTION, STR_D_PARAM_MAX_EXECUTION_TIME, //
+          TSID_NAME, STR_PARAM_MAX_EXECUTION_TIME, //
+          TSID_DESCRIPTION, STR_PARAM_MAX_EXECUTION_TIME_D, //
           TSID_DEFAULT_VALUE, avInt( 10000 ) ) {
 
         @Override

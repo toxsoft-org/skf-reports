@@ -64,7 +64,7 @@ public class YScaleRefbookGenerator {
    * server connection
    */
   private final ISkConnection conn;
-
+  // FIXME Че за хрень?!
   // y.scale - описание Y шкалы
   public static String RBID_Y_SCALE                = "y.scale"; //$NON-NLS-1$
   public static String RBATRID_Y_SCALE___ID        = "scaleId"; //$NON-NLS-1$ id шкалы
@@ -131,9 +131,8 @@ public class YScaleRefbookGenerator {
    */
   public static IDtoRefbookInfo REFBOOK_Y_SCALES = DtoRefbookInfo.create( RBID_Y_SCALE, ///
       OptionSetUtils.createOpSet( ///
-          TSID_NAME, "Y шкалы", //$NON-NLS-1$
-          TSID_DESCRIPTION, "Вертикальные шкалы для графиков" //$NON-NLS-1$
-      ), ///
+          TSID_NAME, STR_REFBOOK_Y_SCALES, ///
+          TSID_DESCRIPTION, STR_REFBOOK_Y_SCALES_D ), ///
       new StridablesList<>( ///
           ATRINF_Y_SCALE_ID, //
           ATRINF_Y_SCALE_NAME, //

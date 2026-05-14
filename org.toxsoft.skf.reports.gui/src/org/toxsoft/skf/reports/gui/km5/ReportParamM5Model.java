@@ -201,19 +201,19 @@ public class ReportParamM5Model
   final static String ACTID_SELECT_MULTY_PARAMS = SK_ID + ".reports.SelectParams"; //$NON-NLS-1$
 
   final static TsActionDef ACDEF_SELECT_MULTY_PARAMS = TsActionDef.ofPush2( ACTID_SELECT_MULTY_PARAMS,
-      STR_N_SELECT_MULTY_PARAMS, STR_D_SELECT_MULTY_PARAMS, ITsStdIconIds.ICONID_ITEMS_CHECK_GROUP );
+      STR_SELECT_MULTY_PARAMS, STR_SELECT_MULTY_PARAMS_D, ITsStdIconIds.ICONID_ITEMS_CHECK_GROUP );
 
   final static String ACTID_COPY_PARAM = SK_ID + ".reports.CopyParam"; //$NON-NLS-1$
 
   final static TsActionDef ACDEF_COPY_PARAM =
-      TsActionDef.ofPush2( ACTID_COPY_PARAM, STR_N_COPY_PARAM, STR_D_COPY_PARAM, ITsStdIconIds.ICONID_EDIT_COPY );
+      TsActionDef.ofPush2( ACTID_COPY_PARAM, STR_COPY_PARAM, STR_COPY_PARAM_D, ITsStdIconIds.ICONID_EDIT_COPY );
 
   /**
    * Attribute {@link IVtReportParam#gwid() } Green world ID
    */
   public M5AttributeFieldDef<IVtReportParam> GWID = new M5AttributeFieldDef<>( FID_GWID, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_GWID, //
-      TSID_DESCRIPTION, STR_D_PARAM_GWID, //
+      TSID_NAME, STR_PARAM_GWID, //
+      TSID_DESCRIPTION, STR_PARAM_GWID_D, //
       TSID_KEEPER_ID, Gwid.KEEPER_ID, //
       OPID_EDITOR_FACTORY_NAME, ValedAvValobjGwidEditor.FACTORY_NAME //
   ) {
@@ -228,8 +228,8 @@ public class ReportParamM5Model
    * Attribute {@link IVtReportParam#aggrFunc() } function of aggregation for values
    */
   public M5AttributeFieldDef<IVtReportParam> AGGR_FUNC = new M5AttributeFieldDef<>( FID_AGGR_FUNC, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_AGGR_FUNC, //
-      TSID_DESCRIPTION, STR_D_PARAM_AGGR_FUNC, //
+      TSID_NAME, STR_PARAM_AGGR_FUNC, //
+      TSID_DESCRIPTION, STR_PARAM_AGGR_FUNC_D, //
       TSID_KEEPER_ID, EAggregationFunc.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( EAggregationFunc.AVERAGE ) ) {
 
@@ -248,8 +248,8 @@ public class ReportParamM5Model
    * Attribute {@link IVtReportParam#displayFormat() } values display format
    */
   public M5AttributeFieldDef<IVtReportParam> DISPL_FORMAT = new M5AttributeFieldDef<>( FID_DISPL_FORMAT, VALOBJ, //
-      TSID_NAME, STR_N_PARAM_DISPLAY_FORMAT, //
-      TSID_DESCRIPTION, STR_D_PARAM_DISPLAY_FORMAT, //
+      TSID_NAME, STR_PARAM_DISPLAY_FORMAT, //
+      TSID_DESCRIPTION, STR_PARAM_DISPLAY_FORMAT_D, //
       TSID_KEEPER_ID, EDisplayFormat.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( EDisplayFormat.TWO_DIGIT ) ) {
 
@@ -268,8 +268,8 @@ public class ReportParamM5Model
    * Attribute {@link IVtReportParam#title() } title of parameter
    */
   public M5AttributeFieldDef<IVtReportParam> TITLE = new M5AttributeFieldDef<>( FID_TITLE, EAtomicType.STRING, //
-      TSID_NAME, STR_N_PARAM_TITLE, //
-      TSID_DESCRIPTION, STR_D_PARAM_TITLE, //
+      TSID_NAME, STR_PARAM_TITLE, //
+      TSID_DESCRIPTION, STR_PARAM_TITLE_D, //
       OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME //
   ) {
 
@@ -288,8 +288,8 @@ public class ReportParamM5Model
    * Attribute {@link IVtReportParam#description() } description of parameter
    */
   public M5AttributeFieldDef<IVtReportParam> DESCR = new M5AttributeFieldDef<>( FID_DESCR, EAtomicType.STRING, //
-      TSID_NAME, STR_N_PARAM_DESCRIPTION, //
-      TSID_DESCRIPTION, STR_D_PARAM_DESCRIPTION, //
+      TSID_NAME, STR_PARAM_DESCRIPTION, //
+      TSID_DESCRIPTION, STR_PARAM_DESCRIPTION_D, //
       OPID_EDITOR_FACTORY_NAME, ValedAvStringText.FACTORY_NAME //
   ) {
 

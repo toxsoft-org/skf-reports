@@ -18,11 +18,12 @@ public interface IChartUtilsGuiSharedResources {
   // -------------------------------------------------
   // @link ConsoleWindow
 
-  String STR_D_CONTROL_PANEL = Messages.getString( "STR_D_CONTROL_PANEL" );//$NON-NLS-1$
-  String STR_N_PLOT_ZOOM_IN  = Messages.getString( "STR_N_PLOT_ZOOM_IN" ); //$NON-NLS-1$
-  String STR_D_PLOT_ZOOM_IN  = Messages.getString( "STR_D_PLOT_ZOOM_IN" ); //$NON-NLS-1$
-  String STR_N_PLOT_ZOOM_OUT = Messages.getString( "STR_N_PLOT_ZOOM_OUT" );//$NON-NLS-1$
-  String STR_D_PLOT_ZOOM_OUT = Messages.getString( "STR_D_PLOT_ZOOM_OUT" );//$NON-NLS-1$
+  String STR_CONTROL_PANEL   = Messages.getString( "STR_CONTROL_PANEL" );  //$NON-NLS-1$
+  String STR_CONTROL_PANEL_D = Messages.getString( "STR_CONTROL_PANEL_D" );//$NON-NLS-1$
+  String STR_PLOT_ZOOM_IN    = Messages.getString( "STR_PLOT_ZOOM_IN" );   //$NON-NLS-1$
+  String STR_PLOT_ZOOM_IN_D  = Messages.getString( "STR_PLOT_ZOOM_IN_D" ); //$NON-NLS-1$
+  String STR_PLOT_ZOOM_OUT   = Messages.getString( "STR_PLOT_ZOOM_OUT" );  //$NON-NLS-1$
+  String STR_PLOT_ZOOM_OUT_D = Messages.getString( "STR_PLOT_ZOOM_OUT_D" );//$NON-NLS-1$
 
   //
   // ---------------------------------------------

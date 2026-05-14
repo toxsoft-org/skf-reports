@@ -177,7 +177,7 @@ public class IntervalSelectionExtandedDialogPanel
     }
 
     Button intervalCheck = new Button( gridParamsGroup, SWT.CHECK );
-    intervalCheck.setText( STR_N_INTERVAL_FROM_REFBOOK );
+    intervalCheck.setText( STR_INTERVAL_FROM_REFBOOK );
     intervalCheck.addSelectionListener( new SelectionListener() {
 
       @Override

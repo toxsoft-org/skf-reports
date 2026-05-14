@@ -364,7 +364,7 @@ public class ReportTemplateUtilities {
         String timeId = String.format( MODEL_TIME_COLUMN_ID_FORMAT, Integer.valueOf( 0 ) );
 
         M5AttributeFieldDef<IStringMap<IAtomicValue>> timeField =
-            createFieldDef( timeId, STR_N_TIME_COLUMN, STR_N_TIME_COLUMN, EDisplayFormat.AS_INTEGER );
+            createFieldDef( timeId, STR_TIME_COLUMN, STR_TIME_COLUMN, EDisplayFormat.AS_INTEGER );
         fDefs.add( timeField );
       }
 
@@ -378,8 +378,8 @@ public class ReportTemplateUtilities {
         if( !aIsSameTimeInEachColumn ) {
           String timeId = String.format( MODEL_TIME_COLUMN_ID_FORMAT, Integer.valueOf( i ) );
           M5AttributeFieldDef<IStringMap<IAtomicValue>> jointModelTimeField =
-              createFieldDef( timeId, String.format( FMT_N_TIME_COLUMN, fieldName ),
-                  String.format( FMT_N_TIME_COLUMN, fieldDescr ), displayFormat );
+              createFieldDef( timeId, String.format( FMT_TIME_COLUMN, fieldName ),
+                  String.format( FMT_TIME_COLUMN, fieldDescr ), displayFormat );
           fDefs.add( jointModelTimeField );
         }
 

@@ -54,9 +54,9 @@ public class RtDataInfoViewerPanel
 
   public final static String ACTID_HIDE_ASYNC = SK_ID + ".rtDataInfo.HideAsync"; //$NON-NLS-1$
 
-  public final static TsActionDef ACDEF_HIDE_ASYNC = TsActionDef.ofCheck2( ACTID_HIDE_ASYNC, STR_N_HIDE_ASYNC,
+  public final static TsActionDef ACDEF_HIDE_ASYNC = TsActionDef.ofCheck2( ACTID_HIDE_ASYNC, STR_HIDE_ASYNC,
 
-      STR_D_HIDE_ASYNC, ITsStdIconIds.ICONID_VIEW_FILTER );
+      STR_HIDE_ASYNC_D, ITsStdIconIds.ICONID_VIEW_FILTER );
 
   /**
    * @return {#link IDtoClassPropInfoBase} prop selected by user

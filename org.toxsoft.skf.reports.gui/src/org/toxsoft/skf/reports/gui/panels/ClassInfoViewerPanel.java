@@ -67,9 +67,9 @@ public class ClassInfoViewerPanel
   public final static String ACTID_HIDE_NO_HIST_DATA = SK_ID + ".ISkClassInfo.NoHistDataAsync"; //$NON-NLS-1$
 
   public final static TsActionDef ACDEF_HIDE_NO_HIST_DATA =
-      TsActionDef.ofCheck2( ACTID_HIDE_NO_HIST_DATA, STR_N_HIDE_NO_HIST_DATA,
+      TsActionDef.ofCheck2( ACTID_HIDE_NO_HIST_DATA, STR_HIDE_NO_HIST_DATA,
 
-          STR_D_HIDE_NO_HIST_DATA, ITsStdIconIds.ICONID_VIEW_FILTER );
+          STR_HIDE_NO_HIST_DATA_D, ITsStdIconIds.ICONID_VIEW_FILTER );
 
   /**
    * @return {@link ISkClassInfo} class selected by user

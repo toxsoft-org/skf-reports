@@ -67,7 +67,7 @@ public class GraphTemplateEditorPanel
   final static String ACTID_FORM_GRAPH = SK_ID + ".users.gui.RunGraphForm"; //$NON-NLS-1$
 
   final static TsActionDef ACDEF_FORM_GRAPH =
-      TsActionDef.ofPush2( ACTID_FORM_GRAPH, STR_N_GENERATE_CHART, STR_D_GENERATE_CHART, ICONID_RUN );
+      TsActionDef.ofPush2( ACTID_FORM_GRAPH, STR_GENERATE_CHART, STR_GENERATE_CHART_D, ICONID_RUN );
 
   final ISkConnection                  conn;
   IM5CollectionPanel<IVtGraphTemplate> graphTemplatesPanel;

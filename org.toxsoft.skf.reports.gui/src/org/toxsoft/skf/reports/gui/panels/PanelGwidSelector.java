@@ -31,8 +31,8 @@ public class PanelGwidSelector
   static String MPC_OP_ID = TS_ID + ".m5.gui.mpc"; //$NON-NLS-1$
 
   static IDataDef OPDEF_CLASS_PROP_KIND = DataDef.create( MPC_OP_ID + ".SkClassPropKind", VALOBJ, //$NON-NLS-1$
-      TSID_NAME, STR_N_CLASS_PROP_KIND, //
-      TSID_DESCRIPTION, STR_D_CLASS_PROP_KIND, //
+      TSID_NAME, STR_CLASS_PROP_KIND, //
+      TSID_DESCRIPTION, STR_CLASS_PROP_KIND_D, //
       TSID_KEEPER_ID, ESkClassPropKind.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( ESkClassPropKind.RTDATA ) //
   );

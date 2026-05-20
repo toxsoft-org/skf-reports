@@ -87,8 +87,8 @@ public class SpecReportTemplateEditorPanel
   private static final String PARID_RRI_SECTION = "rri.section"; //$NON-NLS-1$
 
   private static IDataDef PARDEF_RRI_SECTION = DataDef.create( PARID_RRI_SECTION, VALOBJ, //
-      TSID_NAME, STR_N_RRI_SECTION, //
-      TSID_DESCRIPTION, STR_D_RRI_SECTION, //
+      TSID_NAME, STR_RRI_SECTION, //
+      TSID_DESCRIPTION, STR_RRI_SECTION_D, //
       OPID_EDITOR_FACTORY_NAME, ValedComboSelector.FACTORY_NAME //
   );
 
@@ -197,12 +197,12 @@ public class SpecReportTemplateEditorPanel
   final static String ACTID_FORM_REPORT = SK_ID + ".users.gui.RunReportForm"; //$NON-NLS-1$
 
   final static TsActionDef ACDEF_FORM_REPORT =
-      TsActionDef.ofPush2( ACTID_FORM_REPORT, STR_N_GENERATE_REPORT, STR_D_GENERATE_REPORT, ICONID_RUN );
+      TsActionDef.ofPush2( ACTID_FORM_REPORT, STR_GENERATE_REPORT, STR_GENERATE_REPORT_D, ICONID_RUN );
 
   final static String ACTID_COPY_TEMPLATE = SK_ID + ".users.gui.CopyTemplate"; //$NON-NLS-1$
 
-  final static TsActionDef ACDEF_COPY_TEMPLATE = TsActionDef.ofPush2( ACTID_COPY_TEMPLATE, STR_N_COPY_TEMPLATE,
-      STR_D_COPY_TEMPLATE, ITsStdIconIds.ICONID_EDIT_COPY );
+  final static TsActionDef ACDEF_COPY_TEMPLATE = TsActionDef.ofPush2( ACTID_COPY_TEMPLATE, STR_COPY_TEMPLATE,
+      STR_COPY_TEMPLATE_D, ITsStdIconIds.ICONID_EDIT_COPY );
 
   static TimeInterval initValues =
       new TimeInterval( System.currentTimeMillis() - 24L * 60L * 60L * 1000L, System.currentTimeMillis() );

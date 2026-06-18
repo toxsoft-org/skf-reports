@@ -184,6 +184,7 @@ public class RtChartPanel
     for( RtGraphDataSet graphDataSet : graphDataSetList ) {
       graphDataSet.close();
     }
+    stop();
   }
 
   void init() {

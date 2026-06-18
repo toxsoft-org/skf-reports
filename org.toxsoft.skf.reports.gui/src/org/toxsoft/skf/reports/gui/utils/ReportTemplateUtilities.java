@@ -777,8 +777,8 @@ public class ReportTemplateUtilities {
 
     for( int i = 0; i < aGraphData.size(); i++ ) {
       IVtGraphParam param = aTemplate.listParams().get( i );
-      IList<ITemporalAtomicValue> values = aGraphData.get( i ).getValues( ITimeInterval.NULL );
-      Pair<Double, Double> minMax = calcMinMax( values );
+      // IList<ITemporalAtomicValue> values = aGraphData.get( i ).getValues( ITimeInterval.NULL );
+      // Pair<Double, Double> minMax = calcMinMax( values );
 
       String graphDataSetId = graphDataSetId( param );
 

@@ -79,6 +79,7 @@ public class YScaleRefbookGenerator {
   public static String ITEMID_Y_SCALE___FLOW        = "Flow";        // scale for flow
   public static String ITEMID_Y_SCALE___PERCENT     = "Percent";     // scale for %
   public static String ITEMID_Y_SCALE___DZ_ANGLE    = "Angle";       // scale for DZ angle
+  public static String ITEMID_Y_SCALE___CURRENT     = "Current";     // scale for DZ angle
 
   /**
    * Attribute {@link ISkRefbook#attrs() #RBATRID_Y_SCALE___SCALEID}.
@@ -183,6 +184,8 @@ public class YScaleRefbookGenerator {
         EDisplayFormat.AS_INTEGER, 0, 80 );
     addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___DZ_ANGLE, "Angle", "Angle DZ Y scale", "Angle", "° град.",
         EDisplayFormat.AS_INTEGER, 15, 80 );
+    addYScaleRbItem( rbTranslators, ITEMID_Y_SCALE___CURRENT, "Current", "Current Y scale", "Current", "Ампер",
+        EDisplayFormat.ONE_DIGIT, 0, 80 );
   }
 
   private static void addYScaleRbItem( ISkRefbook aRefbook, String aItemId, String aName, String aDescr,
